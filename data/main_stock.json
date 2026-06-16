@@ -1,0 +1,105 @@
+{
+  "update_time": "2026-06-16 20:06",
+  "top_main_in": [
+    {
+      "code": "300274",
+      "name": "阳光电源",
+      "net_in": 9.1,
+      "unit": "亿",
+      "day_count": 1
+    },
+    {
+      "code": "300502",
+      "name": "新易盛",
+      "net_in": 6.0,
+      "unit": "亿",
+      "day_count": 2
+    },
+    {
+      "code": "000063",
+      "name": "中兴通讯",
+      "net_in": 4.9,
+      "unit": "亿",
+      "day_count": 2
+    },
+    {
+      "code": "300750",
+      "name": "宁德时代",
+      "net_in": 4.7,
+      "unit": "亿",
+      "day_count": 3
+    },
+    {
+      "code": "688256",
+      "name": "寒武纪",
+      "net_in": 0.6,
+      "unit": "亿",
+      "day_count": 15
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "net_in": 0.6,
+      "unit": "亿",
+      "day_count": 3
+    }
+  ],
+  "top_main_out": [
+    {
+      "code": "002475",
+      "name": "立讯精密",
+      "net_out": 12.6,
+      "unit": "亿",
+      "day_count": 1
+    },
+    {
+      "code": "688981",
+      "name": "中芯国际",
+      "net_out": 6.9,
+      "unit": "亿",
+      "day_count": 1
+    },
+    {
+      "code": "601899",
+      "name": "紫金矿业",
+      "net_out": 5.8,
+      "unit": "亿",
+      "day_count": 1
+    },
+    {
+      "code": "002594",
+      "name": "比亚迪",
+      "net_out": 5.7,
+      "unit": "亿",
+      "day_count": 2
+    },
+    {
+      "code": "600519",
+      "name": "贵州茅台",
+      "net_out": 5.4,
+      "unit": "亿",
+      "day_count": 2
+    },
+    {
+      "code": "600900",
+      "name": "长江电力",
+      "net_out": 4.6,
+      "unit": "亿",
+      "day_count": 2
+    },
+    {
+      "code": "603019",
+      "name": "中科曙光",
+      "net_out": 4.1,
+      "unit": "亿",
+      "day_count": 1
+    },
+    {
+      "code": "601318",
+      "name": "中国平安",
+      "net_out": 3.8,
+      "unit": "亿",
+      "day_count": 1
+    }
+  ]
+}

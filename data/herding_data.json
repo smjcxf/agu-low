@@ -1,0 +1,91 @@
+{
+  "update_time": "2026-06-14 21:00:00",
+  "current_clusters": [
+    {
+      "rank": 1,
+      "medal": "🥇",
+      "sector": "有色金属",
+      "amount": 93.95,
+      "unit": "亿",
+      "direction": "流入"
+    },
+    {
+      "rank": 2,
+      "medal": "🥈",
+      "sector": "电力设备",
+      "amount": 20,
+      "unit": "亿",
+      "direction": "流入"
+    },
+    {
+      "rank": 3,
+      "medal": "🥉",
+      "sector": "国防军工",
+      "amount": 20,
+      "unit": "亿",
+      "direction": "流入"
+    },
+    {
+      "rank": 4,
+      "medal": "",
+      "sector": "证券",
+      "amount": 3.5,
+      "unit": "%",
+      "direction": ""
+    }
+  ],
+  "high_prob": [
+    {
+      "tag": "机构共识",
+      "sector": "券商 / 非银金融",
+      "desc": "Q1净利+20%但板块年内跌14%，PB仅1.1倍（五年最低位），多家首席集体喊多",
+      "strength": "强共识"
+    },
+    {
+      "tag": "事件驱动",
+      "sector": "鸿蒙 / AI算力",
+      "desc": "华为HDC大会催化，华为「韬定律」发布+新麒麟秋季面世",
+      "strength": "事件驱动"
+    },
+    {
+      "tag": "蓄力中",
+      "sector": "基础化工",
+      "desc": "逆势获主力净流入，资金锁仓迹象明显",
+      "strength": "蓄力中"
+    },
+    {
+      "tag": "分歧蓄力",
+      "sector": "通信 / 光模块",
+      "desc": "单日大幅流入后剧烈分歧，筹码大换手后关注二次发力",
+      "strength": "分歧蓄力"
+    }
+  ],
+  "cautious": [
+    {
+      "sector": "华为算力",
+      "reason": "大会临近尾声，利好可能已充分定价"
+    }
+  ],
+  "catalysts": [
+    {
+      "date": "6.18",
+      "event": "美联储FOMC · 沃什首秀",
+      "type": "重磅"
+    },
+    {
+      "date": "6.12-14",
+      "event": "华为HDC开发者大会",
+      "type": "进行中"
+    },
+    {
+      "date": "6.12起",
+      "event": "A股宽基指数集中调样",
+      "type": "政策"
+    },
+    {
+      "date": "6月下旬",
+      "event": "中报业绩预告窗口",
+      "type": "持续"
+    }
+  ]
+}

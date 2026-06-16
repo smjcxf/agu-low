@@ -1,0 +1,36 @@
+# 双机同步数据目录
+# 需要跨机共享的 JSON 文件会自动被 git 追踪
+# 以下文件不追踪：
+
+# 临时/缓存文件
+audit_summary.json
+scan_progress*.json
+scan_progress-*
+*.tmp
+*.bak
+*.log
+
+# 大型静态数据（本地生成，无需同步）
+stock_list.json
+stock_names.json
+concept_ranking.json
+sector_fund_flow.json
+sector_fund_flow_history.json
+market_alerts.json
+margin_data.json
+etf_subscription.json
+sh_sz_history.json
+calendar_2027_generated.json
+important_calendar.json
+industry_map.json
+gold_pool.json
+guanlan_reports.json
+guanlan_watchlist.json
+signal_backtest.json
+signal_log.json
+signal_log.txt
+recommend.json
+
+# 大型扫描结果（每日生成，冲突风险高）
+scan_result.json
+watch_result.json

@@ -1,0 +1,78 @@
+{
+  "current": {
+    "index": 4049.29,
+    "change_pct": 1.56,
+    "change_points": 62.28,
+    "days_down": 22,
+    "total_pct": -4.56,
+    "total_points": -193.28,
+    "avg_pct": 0.21,
+    "peak_date": "2026-05-13",
+    "peak_close": 4242.57,
+    "date": "2026-06-12",
+    "mode": "震荡整理",
+    "f21_date": "2026-06-12"
+  },
+  "windows": [
+    {
+      "name": "F(3)",
+      "date": "2026-05-19",
+      "status": "pass",
+      "desc": "小反弹窗口",
+      "days_left": 0
+    },
+    {
+      "name": "F(5)",
+      "date": "2026-05-21",
+      "status": "pass",
+      "desc": "短期变盘",
+      "days_left": 0
+    },
+    {
+      "name": "F(8)",
+      "date": "2026-05-26",
+      "status": "pass",
+      "desc": "8日变盘",
+      "days_left": 0
+    },
+    {
+      "name": "F(13)",
+      "date": "2026-06-02",
+      "status": "pass",
+      "desc": "13日重要窗口",
+      "days_left": 0
+    },
+    {
+      "name": "F(21)",
+      "date": "2026-06-12",
+      "status": "active",
+      "desc": "21日大窗口 · SpaceX IPO日",
+      "days_left": 0
+    },
+    {
+      "name": "F(34)",
+      "date": "2026-07-02",
+      "status": "future",
+      "desc": "34日中期窗口",
+      "days_left": 0
+    },
+    {
+      "name": "F(55)",
+      "date": "2026-07-31",
+      "status": "future",
+      "desc": "55日长期窗口",
+      "days_left": 0
+    }
+  ],
+  "judgement": {
+    "summary": "当前已从<strong>2026-05-13高点4242.57点</strong>下跌<strong>22个交易日</strong>（-4.56%，-193.28点），属<strong>震荡整理</strong>，日均跌幅0.21%。",
+    "key_window": "🎯 关键窗口：F21（2026-06-12）",
+    "details": [
+      "日线MACD绿柱缩短但未金叉，属于'空头放缓'而非'多头启动'",
+      "F13窗口（6/2）出现探底回升但未形成底分型，缠论上属于'中继'而非'转折'",
+      "F21窗口（2026-06-12）若配合底分型+MACD金叉，则形成'时间+结构'双重共振"
+    ],
+    "observation": "💡 简单说：最快2026-06-12前后见底，最晚7月初。2026-06-12 SpaceX IPO叠加斐波那契21日窗口是个有意思的时间共振点。"
+  },
+  "update_time": "2026-06-12 12:45"
+}

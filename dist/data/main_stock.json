@@ -1,0 +1,42 @@
+{
+  "update_time": "2026-06-14 22:50",
+  "top_main_in": [
+    {
+      "code": "000725",
+      "name": "京东方A",
+      "net_in": 5.8,
+      "unit": "亿",
+      "day_count": 3
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "net_in": 4.2,
+      "unit": "亿",
+      "day_count": 5
+    },
+    {
+      "code": "002594",
+      "name": "比亚迪",
+      "net_in": 3.9,
+      "unit": "亿",
+      "day_count": 2
+    }
+  ],
+  "top_main_out": [
+    {
+      "code": "000858",
+      "name": "五粮液",
+      "net_out": 6.1,
+      "unit": "亿",
+      "day_count": 4
+    },
+    {
+      "code": "603019",
+      "name": "中科曙光",
+      "net_out": 3.5,
+      "unit": "亿",
+      "day_count": 3
+    }
+  ]
+}

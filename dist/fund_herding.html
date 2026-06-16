@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资金抱团预判 | 九宝量化 v6.0</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0d1117; color:#c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; line-height:1.7; padding:20px; }
+  .container { max-width:900px; margin:0 auto; }
+
+  .header { text-align:center; padding:30px 0 20px; border-bottom:1px solid #21262d; margin-bottom:24px; }
+  .header h1 { font-size:24px; color:#f0f6fc; margin-bottom:8px; }
+  .header .meta { font-size:13px; color:#8b949e; }
+
+  .card { background:#161b22; border:1px solid #21262d; border-radius:8px; padding:20px; margin-bottom:16px; }
+
+  .section-title { font-size:16px; font-weight:700; color:#f0f6fc; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  .section-title .icon { font-size:18px; }
+
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:600; margin-right:6px; }
+  .tag-red { background:rgba(201,42,42,0.15); color:#f85149; }
+  .tag-green { background:rgba(46,160,67,0.15); color:#3fb950; }
+  .tag-purple { background:rgba(163,113,247,0.15); color:#a371f7; }
+  .tag-orange { background:rgba(219,109,40,0.15); color:#d29922; }
+  .tag-blue { background:rgba(88,166,255,0.15); color:#58a6ff; }
+
+  .signal-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #21262d; }
+  .signal-row:last-child { border-bottom:none; }
+  .signal-name { font-weight:600; font-size:14px; }
+  .signal-detail { font-size:13px; color:#8b949e; margin-top:2px; }
+  .signal-strength { text-align:right; min-width:80px; }
+
+  .strength-bar { display:inline-block; height:6px; border-radius:3px; margin-right:6px; vertical-align:middle; }
+  .strength-high { width:60px; background:#3fb950; }
+  .strength-mid { width:40px; background:#d29922; }
+  .strength-low { width:20px; background:#f85149; }
+
+  .danger-zone { border-color:#f8514920; background:rgba(248,81,73,0.04); }
+  .danger-zone .section-title { color:#f85149; }
+
+  .event-item { padding:10px 0; border-bottom:1px solid #21262d; }
+  .event-item:last-child { border-bottom:none; }
+  .event-date { font-size:12px; color:#8b949e; }
+  .event-name { font-weight:600; font-size:14px; margin:2px 0; }
+  .event-desc { font-size:13px; color:#8b949e; }
+
+  .rank-num { display:inline-block; width:22px; height:22px; line-height:22px; text-align:center; border-radius:4px; font-size:12px; font-weight:700; margin-right:8px; }
+  .rank-1 { background:rgba(218,54,51,0.2); color:#da3633; }
+  .rank-2 { background:rgba(219,109,40,0.2); color:#d29922; }
+  .rank-3 { background:rgba(163,113,247,0.2); color:#a371f7; }
+  .rank-n { background:rgba(139,148,158,0.15); color:#8b949e; }
+
+  .highlight { color:#f0f6fc; font-weight:600; }
+  .up { color:#da3633; }
+  .down { color:#3fb950; }
+  .nl { color:#da3633; }
+  .ns { color:#3fb950; }
+  .warn { color:#f85149; font-weight:600; }
+
+  .footer { text-align:center; padding:30px 0; color:#484f58; font-size:12px; }
+  .footer a { color:#58a6ff; text-decoration:none; }
+
+  .catalyst-tag { display:inline-block; padding:1px 6px; border-radius:3px; font-size:11px; margin-right:4px; }
+  .catalyst-hot { background:rgba(218,54,51,0.15); color:#da3633; }
+  .catalyst-event { background:rgba(163,113,247,0.15); color:#a371f7; }
+  .catalyst-policy { background:rgba(88,166,255,0.15); color:#58a6ff; }
+
+  .flow-badge { font-size:13px; font-weight:700; }
+  .flow-in { color:#da3633; }
+  .flow-out { color:#3fb950; }
+
+  @media (max-width:600px) {
+    .container { padding:0 8px; }
+    .card { padding:14px; }
+    .signal-row { flex-direction:column; align-items:flex-start; }
+    .signal-strength { margin-top:4px; text-align:left; }
+  }
+</style>
+<script src="https://beacon.cdn.qq.com/sdk/4.5.9/beacon_web.min.js"></script>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'1dd6ace336754c919891537f13ecc2e7'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🔮 资金抱团预判</h1>
+  <div class="meta">基于 2026.06.09 - 06.12 数据 | 九宝量化 v6.0 | 生成时间：2026-06-14 21:00</div>
+</div>
+
+<!-- ====== 当前已有抱团 ====== -->
+<div class="card">
+  <div class="section-title"><span class="icon">📊</span> 当前已有抱团（强者恒强）</div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-1">1</span>有色金属 / 贵金属 / 工业金属</div>
+      <div class="signal-detail">铜陵有色涨停、盛屯矿业+9.89%、豫光金铅涨停</div>
+    </div>
+    <div class="signal-strength">
+      <span class="flow-badge flow-in">▲93.95亿</span>
+      <div style="font-size:11px;color:#8b949e;">6.12 主力净流入</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-2">2</span>电力设备</div>
+      <div class="signal-detail">宁德时代获主力净流入19.74亿，储能BMS新股N高特+624%</div>
+    </div>
+    <div class="signal-strength">
+      <span class="flow-badge flow-in">▲20亿+</span>
+      <div style="font-size:11px;color:#8b949e;">6.12 主力净流入</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-3">3</span>国防军工 / 航空装备</div>
+      <div class="signal-detail">晨曦航空+19.96%、军工板块+4.10%，印巴冲突催化</div>
+    </div>
+    <div class="signal-strength">
+      <span class="flow-badge flow-in">▲20亿+</span>
+      <div style="font-size:11px;color:#8b949e;">6.12 主力净流入</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-n">4</span>证券</div>
+      <div class="signal-detail">财达证券涨停、中银证券涨停，板块+3.50%</div>
+    </div>
+    <div class="signal-strength">
+      <span class="flow-badge flow-in">▲5亿+</span>
+      <div style="font-size:11px;color:#8b949e;">6.12 主力净流入</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 高概率接力方向 ====== -->
+<div class="card">
+  <div class="section-title"><span class="icon">🎯</span> 高概率接力方向</div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-1">1</span>券商 / 非银金融 <span class="tag tag-red">机构共识最强</span></div>
+      <div class="signal-detail">
+        Q1净利润同比+20%，但板块年内跌13.77%<br>
+        <span class="highlight">PB仅1.12倍</span>（近五年11.7%分位）— 业绩与估值严重背离<br>
+        中信建投、国金、方正、国泰海通 <span class="highlight">四家首席集体喊多</span><br>
+        东方财富："无论海外如何动荡，<span class="highlight">看好A股指数，布局非银金融</span>"<br>
+        催化剂：日均成交3万亿+、6.18美联储议息、中报预告
+      </div>
+    </div>
+    <div class="signal-strength">
+      <span class="strength-bar strength-high"></span>
+      <div style="font-size:13px;color:#3fb950;font-weight:700;">强共识</div>
+      <div style="font-size:11px;color:#8b949e;">机构覆盖密集</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-2">2</span>鸿蒙 / AI算力 <span class="tag tag-purple">事件驱动</span></div>
+      <div class="signal-detail">
+        <span class="highlight">华为开发者大会（6.12-6.14）正在进行</span>，催化尚未结束<br>
+        华为发表"韬(τ)定律" + 秋季新麒麟芯片<br>
+        拓维信息涨停（鸿蒙+算力双主线），宏景科技净流入9.32亿<br>
+        6.10 拓维信息、雅克科技涨停，主力抢筹均超7亿
+      </div>
+    </div>
+    <div class="signal-strength">
+      <span class="strength-bar strength-mid"></span>
+      <div style="font-size:13px;color:#d29922;font-weight:700;">事件驱动</div>
+      <div style="font-size:11px;color:#8b949e;">短线博弈</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-3">3</span>基础化工</div>
+      <div class="signal-detail">
+        6.10 市场大跌日逆势获主力净流入 <span class="highlight">9.55亿</span>（当日唯一大幅流入行业）<br>
+        近5日无大幅流出，资金锁仓迹象明显<br>
+        机构覆盖较少，但筹码稳定性好 — 黑马潜质
+      </div>
+    </div>
+    <div class="signal-strength">
+      <span class="strength-bar strength-mid"></span>
+      <div style="font-size:13px;color:#d29922;font-weight:700;">蓄力中</div>
+      <div style="font-size:11px;color:#8b949e;">低调吸筹</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name"><span class="rank-num rank-n">4</span>通信 / 光模块</div>
+      <div class="signal-detail">
+        6.9 主力净流入44亿+，新易盛获21.93亿（单日龙头）<br>
+        6.12 却净流出83.8亿 — <span class="highlight">剧烈分歧</span>意味着筹码大换手<br>
+        调整充分后（新易盛从高位回吐），二次发力概率大
+      </div>
+    </div>
+    <div class="signal-strength">
+      <span class="strength-bar strength-mid"></span>
+      <div style="font-size:13px;color:#d29922;font-weight:700;">分歧蓄力</div>
+      <div style="font-size:11px;color:#8b949e;">调整后关注</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 谨慎方向 ====== -->
+<div class="card danger-zone">
+  <div class="section-title"><span class="icon">⚠️</span> 谨慎方向</div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name">🛡️ 军工 <span class="tag tag-orange">单日反弹</span></div>
+      <div class="signal-detail">近10日主力持续净流出 <span class="warn">约57亿</span>，6.12流入23亿属单日事件<br>印巴冲突催化不确定性强，持续性存疑</div>
+    </div>
+    <div class="signal-strength">
+      <span class="strength-bar strength-low"></span>
+      <div style="font-size:13px;color:#f85149;font-weight:700;">追高风险</div>
+    </div>
+  </div>
+
+  <div class="signal-row">
+    <div>
+      <div class="signal-name">🔌 华为算力 <span class="tag tag-orange">利好兑现</span></div>
+      <div class="signal-detail">华为开发者大会6.14结束，<span class="warn">利好可能已充分定价</span><br>近5日主力净流出占主导，大会闭幕后面临获利了结压力</div>
+    </div>
+    <div class="signal-strength">
+      <span class="strength-bar strength-low"></span>
+      <div style="font-size:13px;color:#f85149;font-weight:700;">利好兑现</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 下周催化剂 ====== -->
+<div class="card">
+  <div class="section-title"><span class="icon">📅</span> 下周关键催化剂</div>
+
+  <div class="event-item">
+    <div class="event-date"><span class="catalyst-tag catalyst-hot">重磅</span> 6月18日（周四）</div>
+    <div class="event-name">美联储FOMC利率决议 · 沃什首秀</div>
+    <div class="event-desc">市场对年内加息预期升温，本次会议信号直接决定全球风险偏好。若偏鸽 → 利好科技/券商；若偏鹰 → 利好防御性板块</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date"><span class="catalyst-tag catalyst-event">进行中</span> 6月12-14日</div>
+    <div class="event-name">华为开发者大会 HDC 2026</div>
+    <div class="event-desc">鸿蒙生态全新"1+3+N"方案发布，3200+品牌接入。会后利好兑现需观察资金是否切换方向</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date"><span class="catalyst-tag catalyst-policy">政策</span> 6月12日生效</div>
+    <div class="event-name">A股宽基指数集中调样</div>
+    <div class="event-desc">沪深300/中证500/中证1000等十余只指数调样，"含科量"提升，信息技术、通信服务权重上升，引导长期资金流向科技</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date"><span class="catalyst-tag catalyst-event">持续</span> 6月下旬</div>
+    <div class="event-name">中报业绩预告窗口</div>
+    <div class="event-desc">Q2季报预告密集发布，业绩超预期的细分龙头将获得资金集中关注</div>
+  </div>
+
+  <div class="event-item">
+    <div class="event-date"><span class="catalyst-tag catalyst-hot">持续</span> 日均3万亿+</div>
+    <div class="event-name">A股成交额持续高位</div>
+    <div class="event-desc">年初至今日均股基成交额3.20万亿（同比+98.4%），两融余额25000亿+，持续高成交直接利好券商</div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>⚠️ 以上分析基于公开市场数据，仅为概率判断，不构成投资建议</p>
+  <p>九宝量化 v6.0</p>
+</div>
+
+</div>
+</body>
+</html>

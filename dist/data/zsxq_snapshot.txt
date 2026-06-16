@@ -1,0 +1,95 @@
+- generic
+  - generic
+    - generic
+      - generic
+        - generic
+          - StaticText "笔记"
+        - generic [ref=e2] clickable [cursor:pointer]
+          - StaticText "榜单"
+      - main
+        - link "全部" [ref=e3]
+        - StaticText "投行研报"
+        - heading "投行研报" [level=3, ref=e4]
+        - generic
+          - StaticText "最近更新时间:2小时前；成员数 57"
+        - generic
+          - StaticText "星球已运营1 年零 98 天，更新了 8200+ 篇内容"
+        - StaticText "￥888"
+        - generic [ref=e5] clickable [cursor:pointer]
+          - StaticText "加入星球"
+        - StaticText "本期低至 ¥2.43 /天"
+        - StaticText "加入星球72小时内无条件退款"
+        - StaticText "有效期: 一 年"
+        - StaticText "人间无事人"
+        - StaticText "星主"
+        - StaticText "今天活跃过"
+        - StaticText "星主暂无介绍"
+        - StaticText "西湖西子西窗烛"
+        - StaticText "合伙人"
+        - StaticText "今天活跃过"
+        - generic [ref=e6] clickable [cursor:pointer]
+          - StaticText "展开剩余2位"
+        - StaticText "星球介绍"
+        - StaticText " 我们不生产水，我们只是大自然的搬运工\n\n星球内涉及一切内容仅供分享参考，接收人不因阅读星球内容而被视为我方客户，也不构成向任何人发出出售或购买证券或其他投资标的的邀请，更不构成交易依据。市场有风险，投资需谨慎，本星球内所有信息及观点均不构成任何投资建议;过往业绩不代表未来表现，投资者应依据自身风险承受能力进行审慎评估、独立决策并自行承担全部责任。任何情况下，我方均不对因使用本星球内容而产生的任何损失承担责任。相关数据可能存在滞后或误差，我方不对对信息的完整性及准确性承担法律责任。 "
+        - StaticText "精选主题预览"
+        - generic [ref=e7] clickable [cursor:pointer]
+          - StaticText "西湖西子西窗烛"
+          - StaticText "2026/5/16 20:02"
+          - StaticText "高盛\n\n中芯国际 (0981.HK)：AI 推动需求上升；看好产能利用率及\n平均售价；买入\n\n中芯国际 2026 年第一季度毛利率超出我们的预期（报告链接）。我们预计 2026 年该公司的增长动力将来自于：(1) AI 趋势带动配套模拟/逻辑芯片需求上升；(2) 随着海外同行将重点转向高端 AI 芯片，对主流产品的需求增加；(3) 产能持续扩张；(4) 出于供应安全考虑，国内客户需求上升；(5) 随着高利润产品（如存储器、BCD）需求增速超过传统产品，产品结构不断改善。在 2..."
+          - StaticText "0"
+          - StaticText "0"
+          - StaticText "查看详情"
+          - link [ref=e15]
+        - generic [ref=e8] clickable [cursor:pointer]
+          - StaticText "西湖西子西窗烛"
+          - StaticText "2026/5/12 22:21"
+          - StaticText "花旗\n\n江苏恒瑞医药 (1276.HK)\n与 BMS 达成战略合作；全球化进程再添硕果\n\n花旗观点\n恒瑞与 BMS 的交易在去年与 GSK 的交易之后，标志着恒瑞在全球化努力中取得的又一重大成就。该交易进一步展示了恒瑞发现平台和临床开发的能力，旨在加速创新药物的开发。恒瑞有权选择共同开发选定的项目，以最大化产品的价值。管理层指出，首付款最早将在 2026 年第四季度入账，具体的入账金额将取决于合作资产的进展。恒瑞的 BD 收入是经常性的；目前我们预计 2026 财年的 BD ..."
+          - StaticText "0"
+          - StaticText "0"
+          - StaticText "查看详情"
+          - link [ref=e16]
+        - generic [ref=e9] clickable [cursor:pointer]
+          - StaticText "西湖西子西窗烛"
+          - StaticText "2026/5/6 20:09"
+          - StaticText "花旗\n\n中国巨石 (600176.SS)\n上调目标价至人民币 43.4 元/股；重申买入评级\n花旗观点\n我们在公司发布 2026 年一季度业绩后更新了模型，并鉴于年初至今电子布的多轮提价以及节后潜在的进一步涨价（参见《中国材料：玻璃纤维周报 - 20260430》），上调了盈利预测和目标价。截至 4 月底，无碱纱价格年初至今已上涨人民币 2500 元/吨至 11,850 元/吨，同比上涨 49%；电子布价格上涨约人民币 1.8 元/米至 6.2 元/米，同比上涨 51%。我们..."
+          - StaticText "0"
+          - StaticText "0"
+          - StaticText "查看详情"
+          - link [ref=e17]
+        - generic [ref=e10] clickable [cursor:pointer]
+          - StaticText "西湖西子西窗烛"
+          - StaticText "3 小时前"
+          - StaticText "高盛\n\n生益科技 (600183.SS)：CCL 价格上涨趋势持续；目标价上调至\n146.3 元人民币；买入\n\n随着对 AI 相关 M7+ 覆铜板（CCL）的持续需求以及产能挤出效应，我们观察到主流 CCL 和 AI CCL 产品的价格持续上涨。同行在过去三个月内已三次上调价格，我们预计生益科技的定价也将保持稳健的上涨趋势。即将推出的新一代 AI 服务器机架将配备更高端的规格，这将使生益科技从单机价值量（dollar content）的提升和利润率的扩张中受益。我们将目标价上..."
+          - StaticText "1"
+          - StaticText "0"
+        - generic [ref=e11] clickable [cursor:pointer]
+          - StaticText "西湖西子西窗烛"
+          - StaticText "3 小时前"
+          - StaticText "高盛\n\n壁仞科技 (6082.HK)：产品结构升级带动平均售价上涨；维持买入评级，目标价上调至 70.7 港元\n\n壁仞科技的壁砺 166 在中国信息安全测评中心和国家保密科技测评中心发布的《安全可靠测评结果公告》（链接）中获得了安全可靠 1 级评级。得益于本地市场 AI 终端应用的兴起，壁仞的 AI 计算板卡已兼容包括 DeepSeek、商汤日日新、智谱等在内的多种本土大模型。我们预计壁仞的增长将由以下因素驱动：(1) 产品向具有更高算力、能效和平均售价（ASP）的 AI 芯..."
+          - StaticText "0"
+          - StaticText "0"
+        - generic [ref=e12] clickable [cursor:pointer]
+          - StaticText "西湖西子西窗烛"
+          - StaticText "3 小时前"
+          - StaticText "高盛\n\n罗博特科 (300757.SZ)：硅光/CPO/OCS 设备订单持续增长；光子后端制造的关键推动者；买入\n\n罗博特科为光子制造的组装/测试过程提供全覆盖的投资组合。随着光模块光子组件供应持续紧张，以及数据中心在扩展（scale up）、外扩（scale out）和跨连接（scale across）方面对光子产品需求的日益增长，我们预计未来订单将强劲增长。尽管第一季度因光伏板块疲软（详见更多）导致短期业绩未达预期，但我们预计公司将保持其在硅光（SiPh）/ CPO / ..."
+          - StaticText "1"
+          - StaticText "0"
+        - StaticText "加入星球后可查看全部 8k+ 主题"
+        - generic
+          - StaticText "他们也在 (1)"
+        - StaticText "小九"
+        - StaticText "嘉宾"
+        - StaticText "付费须知"
+        - generic
+          - StaticText "付费后，你可以使用当前付款的微信帐号在有效期内通过「知识星球」公众号、 小程序、App 端、Web 端查看内容、参与互动，向星主、合伙人或嘉宾提问。"
+          - LineBreak "\n"
+          - StaticText "有效期：1 年"
+        - generic
+          - StaticText "加入星球后，72小时内可申请退款。如有争议，参⻅《 "
+          - link "知识星球用户协议" [ref=e13]
+          - StaticText " 》和《"
+          - link "付款及退款规则" [ref=e14]
+          - StaticText "》。"
+        - StaticText "本星球由星主自行创建，加入前请确认⻛险，知识星球平台不提供相关保证。 若发现违反法律法规的星球，请勿加入，并投诉。"
+    - textbox [ref=e1]: zsxq
+      - StaticText "zsxq"

@@ -1,0 +1,132 @@
+{
+  "current": {
+    "index": 4091.8917,
+    "change_pct": -0.11,
+    "change_points": -4.58,
+    "days_down": 23,
+    "total_pct": -3.55,
+    "total_points": -150.68,
+    "avg_pct": 0.15,
+    "peak_date": "2026-05-13",
+    "peak_close": 4242.57,
+    "date": "2026-06-16",
+    "mode": "阴跌磨底",
+    "f21_date": "2026-06-12"
+  },
+  "windows": [
+    {
+      "name": "F(3)",
+      "date": "2026-05-19",
+      "status": "pass",
+      "desc": "小反弹窗口",
+      "days_left": 0
+    },
+    {
+      "name": "F(5)",
+      "date": "2026-05-21",
+      "status": "pass",
+      "desc": "短期变盘",
+      "days_left": 0
+    },
+    {
+      "name": "F(8)",
+      "date": "2026-05-26",
+      "status": "pass",
+      "desc": "8日变盘",
+      "days_left": 0
+    },
+    {
+      "name": "F(13)",
+      "date": "2026-06-02",
+      "status": "missed",
+      "desc": "13日重要窗口 · 探底回升未形成底分型",
+      "days_left": 0,
+      "observation": {
+        "index": 3962.12,
+        "change_pct": -0.52,
+        "volume_yi": 34.1,
+        "reversal": "none",
+        "note": "中继非转折，探底回升但未形成底分型"
+      }
+    },
+    {
+      "name": "F(21)",
+      "date": "2026-06-12",
+      "status": "triggered",
+      "desc": "21日大窗口 · SpaceX IPO日",
+      "days_left": 0,
+      "observation": {
+        "index": 4025.31,
+        "change_pct": 2.14,
+        "volume_yi": 46.9,
+        "reversal": "confirmed",
+        "verified": true,
+        "rebound_pct": 4.3,
+        "note": "反弹4.3%，反转确认",
+        "note_full": "6月12日F21窗口后连续反弹，上证指数从3962低点反弹至4049（+4.3%），成交量持续放大叠加MACD金叉，时间窗口+结构双重共振确认。"
+      }
+    },
+    {
+      "name": "F(34)",
+      "date": "2026-07-02",
+      "status": "future",
+      "desc": "34日中期窗口",
+      "days_left": 16
+    },
+    {
+      "name": "F(55)",
+      "date": "2026-07-31",
+      "status": "future",
+      "desc": "55日长期窗口",
+      "days_left": 45
+    }
+  ],
+  "next_cycle": [
+    {
+      "name": "F(3)",
+      "date": "2026-06-18",
+      "desc": "下轮3日 · 短期确认"
+    },
+    {
+      "name": "F(5)",
+      "date": "2026-06-23",
+      "desc": "下轮5日"
+    },
+    {
+      "name": "F(8)",
+      "date": "2026-06-26",
+      "desc": "下轮8日 · 变盘点"
+    },
+    {
+      "name": "F(13)",
+      "date": "2026-07-03",
+      "desc": "下轮13日 · 重要观察"
+    },
+    {
+      "name": "F(21)",
+      "date": "2026-07-15",
+      "desc": "下轮21日 · 下个大窗口"
+    },
+    {
+      "name": "F(34)",
+      "date": "2026-08-04",
+      "desc": "下轮34日 · 中期趋势确认"
+    },
+    {
+      "name": "F(55)",
+      "date": "2026-09-04",
+      "desc": "下轮55日 · 长期信号"
+    }
+  ],
+  "judgement": {
+    "summary": "当前已从<strong>2026-05-13高点4242.57点</strong>下跌<strong>23个交易日</strong>（-3.55%，-150.68点），<strong>F21窗口已反转确认</strong>，进入新周期。",
+    "key_window": "⚡ F(21)窗口(2026-06-12)反转确认，下轮周期已推算",
+    "details": [
+      "6月12日F21窗口后连续放量反弹，底分型+MACD金叉形成双重共振",
+      "从窗口低点3962反弹至4049，累计+4.3%，确认趋势反转",
+      "下一轮斐波那契周期已自动推算，F(3)→F(5)→F(8)→F(13)→F(21)"
+    ],
+    "observation": "💡 简单说：F21窗口已于6月12日成功触发反转，目前进入新斐波那契周期。短期目标看F(5)窗口6月23日附近，中期关注F(13) 7月3日和F(21) 7月15日两大变盘点。"
+  },
+  "update_time": "2026-06-16 16:39"
+}

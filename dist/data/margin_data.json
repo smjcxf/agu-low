@@ -1,0 +1,494 @@
+{
+  "sh": [
+    {
+      "date": "3/16",
+      "date_raw": "20260316",
+      "rz_balance": 13402,
+      "rz_buy": 1093,
+      "rq_balance_amt": 124,
+      "total": 13527
+    },
+    {
+      "date": "3/17",
+      "date_raw": "20260317",
+      "rz_balance": 13364,
+      "rz_buy": 938,
+      "rq_balance_amt": 121,
+      "total": 13485
+    },
+    {
+      "date": "3/18",
+      "date_raw": "20260318",
+      "rz_balance": 13378,
+      "rz_buy": 902,
+      "rq_balance_amt": 121,
+      "total": 13499
+    },
+    {
+      "date": "3/19",
+      "date_raw": "20260319",
+      "rz_balance": 13368,
+      "rz_buy": 915,
+      "rq_balance_amt": 120,
+      "total": 13488
+    },
+    {
+      "date": "3/20",
+      "date_raw": "20260320",
+      "rz_balance": 13287,
+      "rz_buy": 939,
+      "rq_balance_amt": 117,
+      "total": 13404
+    },
+    {
+      "date": "3/23",
+      "date_raw": "20260323",
+      "rz_balance": 13238,
+      "rz_buy": 1043,
+      "rq_balance_amt": 112,
+      "total": 13350
+    },
+    {
+      "date": "3/24",
+      "date_raw": "20260324",
+      "rz_balance": 13219,
+      "rz_buy": 891,
+      "rq_balance_amt": 114,
+      "total": 13333
+    },
+    {
+      "date": "3/25",
+      "date_raw": "20260325",
+      "rz_balance": 13218,
+      "rz_buy": 974,
+      "rq_balance_amt": 119,
+      "total": 13336
+    },
+    {
+      "date": "3/26",
+      "date_raw": "20260326",
+      "rz_balance": 13214,
+      "rz_buy": 825,
+      "rq_balance_amt": 118,
+      "total": 13332
+    },
+    {
+      "date": "3/27",
+      "date_raw": "20260327",
+      "rz_balance": 13157,
+      "rz_buy": 773,
+      "rq_balance_amt": 119,
+      "total": 13276
+    },
+    {
+      "date": "3/30",
+      "date_raw": "20260330",
+      "rz_balance": 13195,
+      "rz_buy": 825,
+      "rq_balance_amt": 122,
+      "total": 13316
+    },
+    {
+      "date": "3/31",
+      "date_raw": "20260331",
+      "rz_balance": 13166,
+      "rz_buy": 910,
+      "rq_balance_amt": 121,
+      "total": 13287
+    },
+    {
+      "date": "4/1",
+      "date_raw": "20260401",
+      "rz_balance": 13164,
+      "rz_buy": 935,
+      "rq_balance_amt": 124,
+      "total": 13288
+    },
+    {
+      "date": "4/2",
+      "date_raw": "20260402",
+      "rz_balance": 13111,
+      "rz_buy": 829,
+      "rq_balance_amt": 124,
+      "total": 13235
+    },
+    {
+      "date": "4/3",
+      "date_raw": "20260403",
+      "rz_balance": 13028,
+      "rz_buy": 738,
+      "rq_balance_amt": 121,
+      "total": 13149
+    },
+    {
+      "date": "4/7",
+      "date_raw": "20260407",
+      "rz_balance": 13034,
+      "rz_buy": 715,
+      "rq_balance_amt": 123,
+      "total": 13157
+    },
+    {
+      "date": "4/8",
+      "date_raw": "20260408",
+      "rz_balance": 13100,
+      "rz_buy": 1163,
+      "rq_balance_amt": 124,
+      "total": 13224
+    },
+    {
+      "date": "4/9",
+      "date_raw": "20260409",
+      "rz_balance": 13130,
+      "rz_buy": 933,
+      "rq_balance_amt": 122,
+      "total": 13252
+    },
+    {
+      "date": "4/10",
+      "date_raw": "20260410",
+      "rz_balance": 13157,
+      "rz_buy": 1047,
+      "rq_balance_amt": 124,
+      "total": 13281
+    },
+    {
+      "date": "4/13",
+      "date_raw": "20260413",
+      "rz_balance": 13236,
+      "rz_buy": 956,
+      "rq_balance_amt": 126,
+      "total": 13361
+    },
+    {
+      "date": "4/14",
+      "date_raw": "20260414",
+      "rz_balance": 13312,
+      "rz_buy": 1113,
+      "rq_balance_amt": 130,
+      "total": 13442
+    },
+    {
+      "date": "4/15",
+      "date_raw": "20260415",
+      "rz_balance": 13360,
+      "rz_buy": 1142,
+      "rq_balance_amt": 129,
+      "total": 13489
+    },
+    {
+      "date": "4/16",
+      "date_raw": "20260416",
+      "rz_balance": 13408,
+      "rz_buy": 1068,
+      "rq_balance_amt": 130,
+      "total": 13538
+    },
+    {
+      "date": "4/17",
+      "date_raw": "20260417",
+      "rz_balance": 13414,
+      "rz_buy": 1093,
+      "rq_balance_amt": 129,
+      "total": 13544
+    },
+    {
+      "date": "4/20",
+      "date_raw": "20260420",
+      "rz_balance": 13556,
+      "rz_buy": 1220,
+      "rq_balance_amt": 130,
+      "total": 13687
+    },
+    {
+      "date": "4/21",
+      "date_raw": "20260421",
+      "rz_balance": 13589,
+      "rz_buy": 1067,
+      "rq_balance_amt": 130,
+      "total": 13719
+    },
+    {
+      "date": "4/22",
+      "date_raw": "20260422",
+      "rz_balance": 13666,
+      "rz_buy": 1210,
+      "rq_balance_amt": 132,
+      "total": 13798
+    },
+    {
+      "date": "4/23",
+      "date_raw": "20260423",
+      "rz_balance": 13676,
+      "rz_buy": 1322,
+      "rq_balance_amt": 132,
+      "total": 13808
+    },
+    {
+      "date": "4/24",
+      "date_raw": "20260424",
+      "rz_balance": 13645,
+      "rz_buy": 1206,
+      "rq_balance_amt": 130,
+      "total": 13775
+    },
+    {
+      "date": "4/27",
+      "date_raw": "20260427",
+      "rz_balance": 13739,
+      "rz_buy": 1254,
+      "rq_balance_amt": 131,
+      "total": 13869
+    },
+    {
+      "date": "4/28",
+      "date_raw": "20260428",
+      "rz_balance": 13734,
+      "rz_buy": 1206,
+      "rq_balance_amt": 129,
+      "total": 13864
+    },
+    {
+      "date": "4/29",
+      "date_raw": "20260429",
+      "rz_balance": 13785,
+      "rz_buy": 1296,
+      "rq_balance_amt": 130,
+      "total": 13914
+    },
+    {
+      "date": "4/30",
+      "date_raw": "20260430",
+      "rz_balance": 13709,
+      "rz_buy": 1358,
+      "rq_balance_amt": 129,
+      "total": 13838
+    },
+    {
+      "date": "5/6",
+      "date_raw": "20260506",
+      "rz_balance": 13935,
+      "rz_buy": 1751,
+      "rq_balance_amt": 131,
+      "total": 14066
+    },
+    {
+      "date": "5/7",
+      "date_raw": "20260507",
+      "rz_balance": 14092,
+      "rz_buy": 1579,
+      "rq_balance_amt": 132,
+      "total": 14224
+    },
+    {
+      "date": "5/8",
+      "date_raw": "20260508",
+      "rz_balance": 14167,
+      "rz_buy": 1442,
+      "rq_balance_amt": 132,
+      "total": 14299
+    },
+    {
+      "date": "5/11",
+      "date_raw": "20260511",
+      "rz_balance": 14326,
+      "rz_buy": 1795,
+      "rq_balance_amt": 136,
+      "total": 14462
+    },
+    {
+      "date": "5/12",
+      "date_raw": "20260512",
+      "rz_balance": 14408,
+      "rz_buy": 1586,
+      "rq_balance_amt": 137,
+      "total": 14544
+    },
+    {
+      "date": "5/13",
+      "date_raw": "20260513",
+      "rz_balance": 14524,
+      "rz_buy": 1628,
+      "rq_balance_amt": 138,
+      "total": 14661
+    },
+    {
+      "date": "5/14",
+      "date_raw": "20260514",
+      "rz_balance": 14562,
+      "rz_buy": 1656,
+      "rq_balance_amt": 136,
+      "total": 14698
+    },
+    {
+      "date": "5/15",
+      "date_raw": "20260515",
+      "rz_balance": 14523,
+      "rz_buy": 1612,
+      "rq_balance_amt": 132,
+      "total": 14656
+    },
+    {
+      "date": "5/18",
+      "date_raw": "20260518",
+      "rz_balance": 14623,
+      "rz_buy": 1409,
+      "rq_balance_amt": 133,
+      "total": 14756
+    },
+    {
+      "date": "5/19",
+      "date_raw": "20260519",
+      "rz_balance": 14653,
+      "rz_buy": 1388,
+      "rq_balance_amt": 136,
+      "total": 14789
+    },
+    {
+      "date": "5/20",
+      "date_raw": "20260520",
+      "rz_balance": 14703,
+      "rz_buy": 1464,
+      "rq_balance_amt": 140,
+      "total": 14843
+    },
+    {
+      "date": "5/21",
+      "date_raw": "20260521",
+      "rz_balance": 14675,
+      "rz_buy": 1725,
+      "rq_balance_amt": 137,
+      "total": 14812
+    },
+    {
+      "date": "5/22",
+      "date_raw": "20260522",
+      "rz_balance": 14688,
+      "rz_buy": 1387,
+      "rq_balance_amt": 137,
+      "total": 14825
+    },
+    {
+      "date": "5/25",
+      "date_raw": "20260525",
+      "rz_balance": 14809,
+      "rz_buy": 1694,
+      "rq_balance_amt": 141,
+      "total": 14950
+    },
+    {
+      "date": "5/26",
+      "date_raw": "20260526",
+      "rz_balance": 14847,
+      "rz_buy": 1603,
+      "rq_balance_amt": 142,
+      "total": 14989
+    },
+    {
+      "date": "5/27",
+      "date_raw": "20260527",
+      "rz_balance": 14860,
+      "rz_buy": 1590,
+      "rq_balance_amt": 141,
+      "total": 15001
+    },
+    {
+      "date": "5/28",
+      "date_raw": "20260528",
+      "rz_balance": 14896,
+      "rz_buy": 1449,
+      "rq_balance_amt": 141,
+      "total": 15037
+    },
+    {
+      "date": "5/29",
+      "date_raw": "20260529",
+      "rz_balance": 14722,
+      "rz_buy": 1513,
+      "rq_balance_amt": 140,
+      "total": 14862
+    },
+    {
+      "date": "6/1",
+      "date_raw": "20260601",
+      "rz_balance": 14682,
+      "rz_buy": 1288,
+      "rq_balance_amt": 135,
+      "total": 14817
+    },
+    {
+      "date": "6/2",
+      "date_raw": "20260602",
+      "rz_balance": 14690,
+      "rz_buy": 1285,
+      "rq_balance_amt": 135,
+      "total": 14825
+    },
+    {
+      "date": "6/3",
+      "date_raw": "20260603",
+      "rz_balance": 14742,
+      "rz_buy": 1546,
+      "rq_balance_amt": 137,
+      "total": 14879
+    },
+    {
+      "date": "6/4",
+      "date_raw": "20260604",
+      "rz_balance": 14767,
+      "rz_buy": 1362,
+      "rq_balance_amt": 136,
+      "total": 14903
+    },
+    {
+      "date": "6/5",
+      "date_raw": "20260605",
+      "rz_balance": 14654,
+      "rz_buy": 1361,
+      "rq_balance_amt": 136,
+      "total": 14791
+    },
+    {
+      "date": "6/8",
+      "date_raw": "20260608",
+      "rz_balance": 14537,
+      "rz_buy": 1196,
+      "rq_balance_amt": 133,
+      "total": 14670
+    },
+    {
+      "date": "6/9",
+      "date_raw": "20260609",
+      "rz_balance": 14522,
+      "rz_buy": 1177,
+      "rq_balance_amt": 138,
+      "total": 14660
+    },
+    {
+      "date": "6/10",
+      "date_raw": "20260610",
+      "rz_balance": 14479,
+      "rz_buy": 1190,
+      "rq_balance_amt": 138,
+      "total": 14617
+    },
+    {
+      "date": "6/11",
+      "date_raw": "20260611",
+      "rz_balance": 14482,
+      "rz_buy": 1172,
+      "rq_balance_amt": 137,
+      "total": 14619
+    },
+    {
+      "date": "6/12",
+      "date_raw": "20260612",
+      "rz_balance": 14489,
+      "rz_buy": 1481,
+      "rq_balance_amt": 139,
+      "total": 14628
+    }
+  ],
+  "sz": [],
+  "update_time": "2026-06-14 13:01"
+}

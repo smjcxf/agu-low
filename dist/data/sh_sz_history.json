@@ -1,0 +1,554 @@
+{
+  "update_time": "2026-06-14 12:57",
+  "amount_history": [
+    {
+      "date": "3/17",
+      "sh_amount": 14042.5,
+      "sz_amount": 15946.8,
+      "total": 29989.3
+    },
+    {
+      "date": "3/18",
+      "sh_amount": 12906.8,
+      "sz_amount": 14101.8,
+      "total": 27008.6
+    },
+    {
+      "date": "3/19",
+      "sh_amount": 13804.3,
+      "sz_amount": 14383.1,
+      "total": 28187.4
+    },
+    {
+      "date": "3/20",
+      "sh_amount": 13794.8,
+      "sz_amount": 15517.8,
+      "total": 29312.6
+    },
+    {
+      "date": "3/23",
+      "sh_amount": 16648.6,
+      "sz_amount": 18029.9,
+      "total": 34678.5
+    },
+    {
+      "date": "3/24",
+      "sh_amount": 14080.8,
+      "sz_amount": 15470.8,
+      "total": 29551.7
+    },
+    {
+      "date": "3/25",
+      "sh_amount": 14240.6,
+      "sz_amount": 15305.1,
+      "total": 29545.7
+    },
+    {
+      "date": "3/26",
+      "sh_amount": 12743.4,
+      "sz_amount": 14114.8,
+      "total": 26858.2
+    },
+    {
+      "date": "3/27",
+      "sh_amount": 11613.2,
+      "sz_amount": 13343.8,
+      "total": 24957.0
+    },
+    {
+      "date": "3/30",
+      "sh_amount": 12321.7,
+      "sz_amount": 13826.9,
+      "total": 26148.5
+    },
+    {
+      "date": "3/31",
+      "sh_amount": 12551.6,
+      "sz_amount": 14024.4,
+      "total": 26576.0
+    },
+    {
+      "date": "4/1",
+      "sh_amount": 11680.8,
+      "sz_amount": 13849.4,
+      "total": 25530.1
+    },
+    {
+      "date": "4/2",
+      "sh_amount": 11258.8,
+      "sz_amount": 13442.1,
+      "total": 24700.8
+    },
+    {
+      "date": "4/3",
+      "sh_amount": 10193.0,
+      "sz_amount": 12393.9,
+      "total": 22586.9
+    },
+    {
+      "date": "4/7",
+      "sh_amount": 9798.2,
+      "sz_amount": 11421.0,
+      "total": 21219.3
+    },
+    {
+      "date": "4/8",
+      "sh_amount": 13326.0,
+      "sz_amount": 15823.7,
+      "total": 29149.7
+    },
+    {
+      "date": "4/9",
+      "sh_amount": 11204.1,
+      "sz_amount": 13800.8,
+      "total": 25004.9
+    },
+    {
+      "date": "4/10",
+      "sh_amount": 11304.3,
+      "sz_amount": 14132.7,
+      "total": 25437.0
+    },
+    {
+      "date": "4/13",
+      "sh_amount": 11291.2,
+      "sz_amount": 13193.6,
+      "total": 24484.8
+    },
+    {
+      "date": "4/14",
+      "sh_amount": 11797.6,
+      "sz_amount": 14455.1,
+      "total": 26252.7
+    },
+    {
+      "date": "4/15",
+      "sh_amount": 11781.1,
+      "sz_amount": 14755.5,
+      "total": 26536.5
+    },
+    {
+      "date": "4/16",
+      "sh_amount": 11293.2,
+      "sz_amount": 14523.8,
+      "total": 25817.0
+    },
+    {
+      "date": "4/17",
+      "sh_amount": 11353.5,
+      "sz_amount": 14725.6,
+      "total": 26079.1
+    },
+    {
+      "date": "4/20",
+      "sh_amount": 12202.7,
+      "sz_amount": 15303.7,
+      "total": 27506.4
+    },
+    {
+      "date": "4/21",
+      "sh_amount": 11930.6,
+      "sz_amount": 14828.4,
+      "total": 26759.0
+    },
+    {
+      "date": "4/22",
+      "sh_amount": 12050.2,
+      "sz_amount": 14798.4,
+      "total": 26848.6
+    },
+    {
+      "date": "4/23",
+      "sh_amount": 13885.2,
+      "sz_amount": 16112.5,
+      "total": 29997.7
+    },
+    {
+      "date": "4/24",
+      "sh_amount": 12517.0,
+      "sz_amount": 15026.5,
+      "total": 27543.5
+    },
+    {
+      "date": "4/27",
+      "sh_amount": 12205.0,
+      "sz_amount": 15030.8,
+      "total": 27235.8
+    },
+    {
+      "date": "4/28",
+      "sh_amount": 12423.4,
+      "sz_amount": 15322.9,
+      "total": 27746.3
+    },
+    {
+      "date": "4/29",
+      "sh_amount": 12707.1,
+      "sz_amount": 15590.8,
+      "total": 28297.9
+    },
+    {
+      "date": "4/30",
+      "sh_amount": 13590.3,
+      "sz_amount": 15618.8,
+      "total": 29209.1
+    },
+    {
+      "date": "5/6",
+      "sh_amount": 14506.1,
+      "sz_amount": 17493.5,
+      "total": 31999.6
+    },
+    {
+      "date": "5/7",
+      "sh_amount": 14183.3,
+      "sz_amount": 17879.7,
+      "total": 32063.0
+    },
+    {
+      "date": "5/8",
+      "sh_amount": 14420.0,
+      "sz_amount": 17492.8,
+      "total": 31912.9
+    },
+    {
+      "date": "5/11",
+      "sh_amount": 15779.6,
+      "sz_amount": 19301.3,
+      "total": 35080.9
+    },
+    {
+      "date": "5/12",
+      "sh_amount": 14874.5,
+      "sz_amount": 17950.1,
+      "total": 32824.6
+    },
+    {
+      "date": "5/13",
+      "sh_amount": 14585.5,
+      "sz_amount": 17516.6,
+      "total": 32102.2
+    },
+    {
+      "date": "5/14",
+      "sh_amount": 15810.6,
+      "sz_amount": 18494.4,
+      "total": 34305.0
+    },
+    {
+      "date": "5/15",
+      "sh_amount": 15167.8,
+      "sz_amount": 17989.9,
+      "total": 33157.7
+    },
+    {
+      "date": "5/18",
+      "sh_amount": 12976.3,
+      "sz_amount": 15631.5,
+      "total": 28607.8
+    },
+    {
+      "date": "5/19",
+      "sh_amount": 12777.2,
+      "sz_amount": 15481.4,
+      "total": 28258.7
+    },
+    {
+      "date": "5/20",
+      "sh_amount": 12912.6,
+      "sz_amount": 15375.6,
+      "total": 28288.2
+    },
+    {
+      "date": "5/21",
+      "sh_amount": 15044.8,
+      "sz_amount": 18610.0,
+      "total": 33654.8
+    },
+    {
+      "date": "5/22",
+      "sh_amount": 12194.8,
+      "sz_amount": 16155.8,
+      "total": 28350.6
+    },
+    {
+      "date": "5/25",
+      "sh_amount": 12742.5,
+      "sz_amount": 16540.2,
+      "total": 29282.7
+    },
+    {
+      "date": "5/26",
+      "sh_amount": 13546.1,
+      "sz_amount": 17430.5,
+      "total": 30976.6
+    },
+    {
+      "date": "5/27",
+      "sh_amount": 13663.9,
+      "sz_amount": 17273.8,
+      "total": 30937.6
+    },
+    {
+      "date": "5/28",
+      "sh_amount": 12851.1,
+      "sz_amount": 15833.6,
+      "total": 28684.7
+    },
+    {
+      "date": "5/29",
+      "sh_amount": 15135.4,
+      "sz_amount": 17972.6,
+      "total": 33108.0
+    },
+    {
+      "date": "6/1",
+      "sh_amount": 13985.7,
+      "sz_amount": 16099.2,
+      "total": 30084.9
+    },
+    {
+      "date": "6/2",
+      "sh_amount": 13286.9,
+      "sz_amount": 15611.3,
+      "total": 28898.2
+    },
+    {
+      "date": "6/3",
+      "sh_amount": 13829.1,
+      "sz_amount": 16784.0,
+      "total": 30613.0
+    },
+    {
+      "date": "6/4",
+      "sh_amount": 12851.4,
+      "sz_amount": 15221.5,
+      "total": 28072.9
+    },
+    {
+      "date": "6/5",
+      "sh_amount": 13714.6,
+      "sz_amount": 17324.2,
+      "total": 31038.7
+    },
+    {
+      "date": "6/8",
+      "sh_amount": 13639.6,
+      "sz_amount": 16697.2,
+      "total": 30336.8
+    },
+    {
+      "date": "6/9",
+      "sh_amount": 11928.2,
+      "sz_amount": 15202.7,
+      "total": 27130.9
+    },
+    {
+      "date": "6/10",
+      "sh_amount": 12385.9,
+      "sz_amount": 15042.0,
+      "total": 27427.9
+    },
+    {
+      "date": "6/11",
+      "sh_amount": 11762.2,
+      "sz_amount": 14181.5,
+      "total": 25943.6
+    },
+    {
+      "date": "6/12",
+      "sh_amount": 15374.0,
+      "sz_amount": 16775.5,
+      "total": 32149.5
+    }
+  ],
+  "up_down": {
+    "sh_up": 1854,
+    "sh_down": 706,
+    "sz_up": 1854,
+    "sz_down": 707,
+    "flat": 73
+  },
+  "daily_stats": [
+    {
+      "date": "4/29",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "4/30",
+      "up": 2600,
+      "down": 2400,
+      "flat": 150
+    },
+    {
+      "date": "5/6",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "5/7",
+      "up": 2600,
+      "down": 2400,
+      "flat": 150
+    },
+    {
+      "date": "5/8",
+      "up": 2200,
+      "down": 2800,
+      "flat": 150
+    },
+    {
+      "date": "5/11",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "5/12",
+      "up": 2200,
+      "down": 2800,
+      "flat": 150
+    },
+    {
+      "date": "5/13",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "5/14",
+      "up": 1200,
+      "down": 3800,
+      "flat": 150
+    },
+    {
+      "date": "5/15",
+      "up": 1600,
+      "down": 3400,
+      "flat": 150
+    },
+    {
+      "date": "5/18",
+      "up": 2200,
+      "down": 2800,
+      "flat": 150
+    },
+    {
+      "date": "5/19",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "5/20",
+      "up": 2200,
+      "down": 2800,
+      "flat": 150
+    },
+    {
+      "date": "5/21",
+      "up": 1200,
+      "down": 3800,
+      "flat": 150
+    },
+    {
+      "date": "5/22",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "5/25",
+      "up": 3200,
+      "down": 1800,
+      "flat": 150
+    },
+    {
+      "date": "5/26",
+      "up": 2200,
+      "down": 2800,
+      "flat": 150
+    },
+    {
+      "date": "5/27",
+      "up": 1600,
+      "down": 3400,
+      "flat": 150
+    },
+    {
+      "date": "5/28",
+      "up": 2600,
+      "down": 2400,
+      "flat": 150
+    },
+    {
+      "date": "5/29",
+      "up": 1600,
+      "down": 3400,
+      "flat": 150
+    },
+    {
+      "date": "6/1",
+      "up": 2200,
+      "down": 2800,
+      "flat": 150
+    },
+    {
+      "date": "6/2",
+      "up": 2600,
+      "down": 2400,
+      "flat": 150
+    },
+    {
+      "date": "6/3",
+      "up": 2600,
+      "down": 2400,
+      "flat": 150
+    },
+    {
+      "date": "6/4",
+      "up": 1600,
+      "down": 3400,
+      "flat": 150
+    },
+    {
+      "date": "6/5",
+      "up": 1600,
+      "down": 3400,
+      "flat": 150
+    },
+    {
+      "date": "6/8",
+      "up": 1200,
+      "down": 3800,
+      "flat": 150
+    },
+    {
+      "date": "6/9",
+      "up": 3215,
+      "down": 1842,
+      "flat": 141
+    },
+    {
+      "date": "6/10",
+      "up": 1519,
+      "down": 3602,
+      "flat": 74
+    },
+    {
+      "date": "6/11",
+      "up": 1348,
+      "down": 3773,
+      "flat": 72
+    },
+    {
+      "date": "6/12",
+      "up": 3708,
+      "down": 1413,
+      "flat": 73
+    }
+  ]
+}

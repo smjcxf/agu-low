@@ -1,0 +1,5171 @@
+{
+  "calc_time": "2026-06-14 16:39:48",
+  "total_count": 312,
+  "win_count": 0,
+  "loss_count": 312,
+  "win_rate": 0.0,
+  "avg_return": 0.0,
+  "best3": [
+    {
+      "code": "000776",
+      "name": "广发证券",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 3,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.08,
+      "latest_price": 20.08,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "01109",
+      "name": "华润置地",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 3,
+      "entry_date": "2026-06-14",
+      "entry_price": 37.28,
+      "latest_price": 37.28,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002129",
+      "name": "TCL中环",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 3,
+      "entry_date": "2026-06-14",
+      "entry_price": 9.98,
+      "latest_price": 9.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    }
+  ],
+  "worst3": [
+    {
+      "code": "300750",
+      "name": "宁德时代",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 394.85,
+      "latest_price": 394.85,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688802",
+      "name": "优必选近期与沐曦成立了一家合资企业",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 694.89,
+      "latest_price": 694.89,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300308",
+      "name": "中际旭创",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 1149.0,
+      "latest_price": 1149.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "code": "000776",
+      "name": "广发证券",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 3,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.08,
+      "latest_price": 20.08,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "01109",
+      "name": "华润置地",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 3,
+      "entry_date": "2026-06-14",
+      "entry_price": 37.28,
+      "latest_price": 37.28,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002129",
+      "name": "TCL中环",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 3,
+      "entry_date": "2026-06-14",
+      "entry_price": 9.98,
+      "latest_price": 9.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688507",
+      "name": "索辰科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 247.7,
+      "latest_price": 247.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688662",
+      "name": "富信科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 150.8,
+      "latest_price": 150.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300566",
+      "name": "激智科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 32.26,
+      "latest_price": 32.26,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688388",
+      "name": "嘉元科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 57.87,
+      "latest_price": 57.87,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688003",
+      "name": "天准科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 105.49,
+      "latest_price": 105.49,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603993",
+      "name": "洛阳钼业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 19.11,
+      "latest_price": 19.11,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600500",
+      "name": "中化国际",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.93,
+      "latest_price": 7.93,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600869",
+      "name": "远东股份",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 32.43,
+      "latest_price": 32.43,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300263",
+      "name": "隆华科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 15.44,
+      "latest_price": 15.44,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688082",
+      "name": "盛美上海",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 304.66,
+      "latest_price": 304.66,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002636",
+      "name": "金安国纪",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 89.88,
+      "latest_price": 89.88,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300706",
+      "name": "阿石创",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 71.85,
+      "latest_price": 71.85,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688300",
+      "name": "联瑞新材",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 188.06,
+      "latest_price": 188.06,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "301358",
+      "name": "湖南裕能新能源电池材料",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 72.66,
+      "latest_price": 72.66,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688233",
+      "name": "神工股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 104.1,
+      "latest_price": 104.1,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300570",
+      "name": "太辰光",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 185.08,
+      "latest_price": 185.08,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000831",
+      "name": "中国稀土",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 56.04,
+      "latest_price": 56.04,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600111",
+      "name": "北方稀土",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 49.43,
+      "latest_price": 49.43,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300814",
+      "name": "中富电路",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 167.32,
+      "latest_price": 167.32,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "601881",
+      "name": "中国银河",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 12.4,
+      "latest_price": 12.4,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600498",
+      "name": "烽火通信",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 63.13,
+      "latest_price": 63.13,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600160",
+      "name": "巨化股份",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 42.39,
+      "latest_price": 42.39,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00939",
+      "name": "建设银行",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 8.98,
+      "latest_price": 8.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688545",
+      "name": "XD兴福电",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 108.0,
+      "latest_price": 108.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600276",
+      "name": "恒瑞医药",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 48.49,
+      "latest_price": 48.49,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "03328",
+      "name": "交通银行",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.72,
+      "latest_price": 7.72,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00005",
+      "name": "汇丰控股",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 142.8,
+      "latest_price": 142.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600030",
+      "name": "中信证券",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 26.29,
+      "latest_price": 26.29,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300759",
+      "name": "康龙化成",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 22.38,
+      "latest_price": 22.38,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688668",
+      "name": "鼎通科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 423.23,
+      "latest_price": 423.23,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "03988",
+      "name": "中国银行",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 5.53,
+      "latest_price": 5.53,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603606",
+      "name": "东方电缆",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 41.6,
+      "latest_price": 41.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300760",
+      "name": "迈瑞医疗",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 151.04,
+      "latest_price": 151.04,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "001896",
+      "name": "豫能控股",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 21.8,
+      "latest_price": 21.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09868",
+      "name": "小鹏汽车-W",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 57.7,
+      "latest_price": 57.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "02359",
+      "name": "药明康德",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 126.7,
+      "latest_price": 126.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09988",
+      "name": "阿里巴巴-W",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 110.2,
+      "latest_price": 110.2,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600999",
+      "name": "招商证券",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 17.69,
+      "latest_price": 17.69,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688111",
+      "name": "金山办公",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 215.0,
+      "latest_price": 215.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002119",
+      "name": "康强电子",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 31.96,
+      "latest_price": 31.96,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000528",
+      "name": "和柳工",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 8.4,
+      "latest_price": 8.4,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "06160",
+      "name": "百济神州",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 158.9,
+      "latest_price": 158.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09888",
+      "name": "百度集团-SW",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 115.6,
+      "latest_price": 115.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300331",
+      "name": "苏大维格",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 65.91,
+      "latest_price": 65.91,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "1209",
+      "name": "华润万象生活",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 18.98,
+      "latest_price": 18.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00388",
+      "name": "香港交易所",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 380.6,
+      "latest_price": 380.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600900",
+      "name": "长江电力",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 28.28,
+      "latest_price": 28.28,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "01810",
+      "name": "小米集团-W",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 26.2,
+      "latest_price": 26.2,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000657",
+      "name": "中钨高新",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 79.0,
+      "latest_price": 79.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688122",
+      "name": "西部超导",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 54.41,
+      "latest_price": 54.41,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600176",
+      "name": "中国巨石",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 41.61,
+      "latest_price": 41.61,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300505",
+      "name": "川金诺",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 22.85,
+      "latest_price": 22.85,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "01299",
+      "name": "友邦保险",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 74.55,
+      "latest_price": 74.55,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600183",
+      "name": "生益科技",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 151.28,
+      "latest_price": 151.28,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603501",
+      "name": "唯捷创芯",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 86.01,
+      "latest_price": 86.01,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002842",
+      "name": "翔鹭钨业",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 39.69,
+      "latest_price": 39.69,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300418",
+      "name": "昆仑万维",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 37.22,
+      "latest_price": 37.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300260",
+      "name": "新莱应材",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 73.14,
+      "latest_price": 73.14,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300115",
+      "name": "长盈精密",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 29.39,
+      "latest_price": 29.39,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688630",
+      "name": "芯碁微装",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 394.0,
+      "latest_price": 394.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603186",
+      "name": "华正新材",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 170.3,
+      "latest_price": 170.3,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688027",
+      "name": "国盾量子",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 479.0,
+      "latest_price": 479.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002142",
+      "name": "宁波银行",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 32.7,
+      "latest_price": 32.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601208",
+      "name": "东材科技",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 61.06,
+      "latest_price": 61.06,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600522",
+      "name": "中天科技",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 48.6,
+      "latest_price": 48.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688120",
+      "name": "华海清科",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 184.0,
+      "latest_price": 184.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603256",
+      "name": "宏和科技",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 207.89,
+      "latest_price": 207.89,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300763",
+      "name": "锦浪科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 90.73,
+      "latest_price": 90.73,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300747",
+      "name": "锐科激光",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 47.96,
+      "latest_price": 47.96,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688167",
+      "name": "炬光科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 331.88,
+      "latest_price": 331.88,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688019",
+      "name": "安集科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 225.0,
+      "latest_price": 225.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "000333",
+      "name": "美的集团",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 83.23,
+      "latest_price": 83.23,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300953",
+      "name": "震裕科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 136.61,
+      "latest_price": 136.61,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688596",
+      "name": "正帆科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 46.22,
+      "latest_price": 46.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688519",
+      "name": "南亚新材",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 297.19,
+      "latest_price": 297.19,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688403",
+      "name": "汇成股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 24.44,
+      "latest_price": 24.44,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688733",
+      "name": "壹石通",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 39.2,
+      "latest_price": 39.2,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688661",
+      "name": "和林微纳",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 128.8,
+      "latest_price": 128.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002747",
+      "name": "埃斯顿",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 32.22,
+      "latest_price": 32.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688456",
+      "name": "有研粉材",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 132.05,
+      "latest_price": 132.05,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600206",
+      "name": "有研新材",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 32.99,
+      "latest_price": 32.99,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300209",
+      "name": "行云科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 26.07,
+      "latest_price": 26.07,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "605589",
+      "name": "XD圣泉集",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 58.32,
+      "latest_price": 58.32,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600487",
+      "name": "亨通光电",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 97.0,
+      "latest_price": 97.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002354",
+      "name": "天娱数科",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.52,
+      "latest_price": 7.52,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688141",
+      "name": "杰华特",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 117.31,
+      "latest_price": 117.31,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600667",
+      "name": "太极实业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 16.42,
+      "latest_price": 16.42,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688143",
+      "name": "长盈通",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 179.0,
+      "latest_price": 179.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300489",
+      "name": "光智科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 162.86,
+      "latest_price": 162.86,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688126",
+      "name": "沪硅产业",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 29.59,
+      "latest_price": 29.59,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688432",
+      "name": "有研硅",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 21.0,
+      "latest_price": 21.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600378",
+      "name": "XD昊华科",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 57.15,
+      "latest_price": 57.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688146",
+      "name": "中船特气",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 302.0,
+      "latest_price": 302.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688549",
+      "name": "中巨芯",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 24.85,
+      "latest_price": 24.85,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688010",
+      "name": "福光股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 47.84,
+      "latest_price": 47.84,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300244",
+      "name": "迪安诊断",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 19.79,
+      "latest_price": 19.79,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688583",
+      "name": "打印设备制造商拓竹（未上市）密切合作的思看",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 131.0,
+      "latest_price": 131.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "000630",
+      "name": "铜陵有色",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.1,
+      "latest_price": 7.1,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002270",
+      "name": "华明装备",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.13,
+      "latest_price": 20.13,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002812",
+      "name": "云南恩捷新材料",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 67.54,
+      "latest_price": 67.54,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300803",
+      "name": "指南针",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 86.2,
+      "latest_price": 86.2,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "1378",
+      "name": "中国宏桥",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.8,
+      "latest_price": 20.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600601",
+      "name": "方正科技",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 12.89,
+      "latest_price": 12.89,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600711",
+      "name": "盛屯矿业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 13.0,
+      "latest_price": 13.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688536",
+      "name": "XD思瑞浦",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 309.36,
+      "latest_price": 309.36,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603629",
+      "name": "利通电子",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 152.15,
+      "latest_price": 152.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688331",
+      "name": "荣昌生物",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 113.9,
+      "latest_price": 113.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000960",
+      "name": "锡业股份",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 37.65,
+      "latest_price": 37.65,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300085",
+      "name": "银之杰",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 26.65,
+      "latest_price": 26.65,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688020",
+      "name": "方邦股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 191.5,
+      "latest_price": 191.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300033",
+      "name": "同花顺",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 207.46,
+      "latest_price": 207.46,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002192",
+      "name": "融捷股份",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 89.74,
+      "latest_price": 89.74,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688323",
+      "name": "瑞华泰",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 43.1,
+      "latest_price": 43.1,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600362",
+      "name": "江西铜业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 43.05,
+      "latest_price": 43.05,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "02015",
+      "name": "理想汽车-W",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 57.0,
+      "latest_price": 57.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "02628",
+      "name": "中国人寿",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 30.12,
+      "latest_price": 30.12,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300657",
+      "name": "弘信电子",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 46.9,
+      "latest_price": 46.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688183",
+      "name": "生益电子",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 123.65,
+      "latest_price": 123.65,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "601899",
+      "name": "紫金矿业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 29.09,
+      "latest_price": 29.09,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688361",
+      "name": "中科飞测",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 226.45,
+      "latest_price": 226.45,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300342",
+      "name": "天银机电",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 53.38,
+      "latest_price": 53.38,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688502",
+      "name": "茂莱光学",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 465.0,
+      "latest_price": 465.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300661",
+      "name": "圣邦股份",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 111.44,
+      "latest_price": 111.44,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300870",
+      "name": "欧陆通",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 273.87,
+      "latest_price": 273.87,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300207",
+      "name": "欣旺达",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.22,
+      "latest_price": 20.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300769",
+      "name": "德方纳米",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 64.46,
+      "latest_price": 64.46,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "01177",
+      "name": "中国生物制药",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 4.7,
+      "latest_price": 4.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603308",
+      "name": "安徽应流机电",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 60.15,
+      "latest_price": 60.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002371",
+      "name": "北方华创",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 667.19,
+      "latest_price": 667.19,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300054",
+      "name": "鼎龙股份",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 78.99,
+      "latest_price": 78.99,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002428",
+      "name": "云南锗业",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 92.26,
+      "latest_price": 92.26,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "601600",
+      "name": "中国铝业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 10.8,
+      "latest_price": 10.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300131",
+      "name": "英唐智控",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 17.25,
+      "latest_price": 17.25,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600141",
+      "name": "兴发集团",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 34.15,
+      "latest_price": 34.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000792",
+      "name": "盐湖股份",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 31.7,
+      "latest_price": 31.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300568",
+      "name": "星源材质",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 18.17,
+      "latest_price": 18.17,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300843",
+      "name": "胜蓝股份",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 93.11,
+      "latest_price": 93.11,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002407",
+      "name": "多氟多",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 39.67,
+      "latest_price": 39.67,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "02269",
+      "name": "药明生物",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 31.08,
+      "latest_price": 31.08,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300059",
+      "name": "东方财富",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 18.0,
+      "latest_price": 18.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "09633",
+      "name": "农夫山泉",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 44.06,
+      "latest_price": 44.06,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688409",
+      "name": "富创精密",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 182.0,
+      "latest_price": 182.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688047",
+      "name": "龙芯中科",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 140.56,
+      "latest_price": 140.56,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601688",
+      "name": "华泰证券",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 19.97,
+      "latest_price": 19.97,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "01398",
+      "name": "工商银行",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.22,
+      "latest_price": 7.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09618",
+      "name": "京东集团-SW",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 112.6,
+      "latest_price": 112.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300748",
+      "name": "金力永磁",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 30.19,
+      "latest_price": 30.19,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "01288",
+      "name": "农业银行",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 6.06,
+      "latest_price": 6.06,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002378",
+      "name": "章源钨业",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 34.64,
+      "latest_price": 34.64,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300475",
+      "name": "香农芯创",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 187.5,
+      "latest_price": 187.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002600",
+      "name": "领益智造",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 14.01,
+      "latest_price": 14.01,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603259",
+      "name": "药明康德",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 99.71,
+      "latest_price": 99.71,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00386",
+      "name": "中国石油化工",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 4.22,
+      "latest_price": 4.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688172",
+      "name": "燕东微",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 64.89,
+      "latest_price": 64.89,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601318",
+      "name": "中国平安",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 54.01,
+      "latest_price": 54.01,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688599",
+      "name": "天合光能",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 14.65,
+      "latest_price": 14.65,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "605117",
+      "name": "宁波德业股份",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 103.79,
+      "latest_price": 103.79,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300979",
+      "name": "华利集团",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 33.62,
+      "latest_price": 33.62,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "03968",
+      "name": "招商银行",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 49.4,
+      "latest_price": 49.4,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300627",
+      "name": "华测导航",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 30.9,
+      "latest_price": 30.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002466",
+      "name": "天齐锂业",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 62.5,
+      "latest_price": 62.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300709",
+      "name": "精研科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 48.38,
+      "latest_price": 48.38,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002709",
+      "name": "天赐材料",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 49.64,
+      "latest_price": 49.64,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "02020",
+      "name": "安踏体育",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 76.25,
+      "latest_price": 76.25,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300390",
+      "name": "天华新能",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 96.1,
+      "latest_price": 96.1,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600392",
+      "name": "盛和资源",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 25.8,
+      "latest_price": 25.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688102",
+      "name": "斯瑞新材",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 41.59,
+      "latest_price": 41.59,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "01211",
+      "name": "比亚迪股份",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 86.55,
+      "latest_price": 86.55,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300017",
+      "name": "网宿科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 14.31,
+      "latest_price": 14.31,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300567",
+      "name": "精测电子",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 196.3,
+      "latest_price": 196.3,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688169",
+      "name": "石头科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 101.99,
+      "latest_price": 101.99,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002460",
+      "name": "赣锋锂业",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 71.16,
+      "latest_price": 71.16,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688271",
+      "name": "上海联影医疗科技有限公司的风险回报",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 114.02,
+      "latest_price": 114.02,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 39.34,
+      "latest_price": 39.34,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00016",
+      "name": "新鸿基地产",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 117.0,
+      "latest_price": 117.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000338",
+      "name": "潍柴动力",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 28.0,
+      "latest_price": 28.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "00700",
+      "name": "腾讯控股",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 463.6,
+      "latest_price": 463.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688605",
+      "name": "先锋精科",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 83.9,
+      "latest_price": 83.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00857",
+      "name": "中国石油股份",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 10.35,
+      "latest_price": 10.35,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00291",
+      "name": "华润啤酒",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 23.8,
+      "latest_price": 23.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "601985",
+      "name": "和中国核电",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 9.24,
+      "latest_price": 9.24,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601991",
+      "name": "大唐发电",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 8.09,
+      "latest_price": 8.09,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09626",
+      "name": "哔哩哔哩-W",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 142.9,
+      "latest_price": 142.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688525",
+      "name": "佰维存储",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 327.9,
+      "latest_price": 327.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09987",
+      "name": "百胜中国",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 344.8,
+      "latest_price": 344.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600519",
+      "name": "贵州茅台",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 1291.91,
+      "latest_price": 1291.91,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "00012",
+      "name": "恒基地产",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 26.94,
+      "latest_price": 26.94,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09999",
+      "name": "网易-S",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 199.6,
+      "latest_price": 199.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00883",
+      "name": "中国海洋石油",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 24.92,
+      "latest_price": 24.92,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "09866",
+      "name": "蔚来-SW",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 42.12,
+      "latest_price": 42.12,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688387",
+      "name": "信科移动",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 15.87,
+      "latest_price": 15.87,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002028",
+      "name": "及思源电气",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 173.3,
+      "latest_price": 173.3,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002444",
+      "name": "杭州巨星",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 30.61,
+      "latest_price": 30.61,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "01024",
+      "name": "快手-W",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 45.88,
+      "latest_price": 45.88,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688627",
+      "name": "精智达",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 414.48,
+      "latest_price": 414.48,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "02319",
+      "name": "蒙牛乳业",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 16.61,
+      "latest_price": 16.61,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "01093",
+      "name": "石药集团",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.24,
+      "latest_price": 7.24,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300751",
+      "name": "迈为股份",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 213.0,
+      "latest_price": 213.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300012",
+      "name": "华测检测",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 13.91,
+      "latest_price": 13.91,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002240",
+      "name": "盛新锂能",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 51.08,
+      "latest_price": 51.08,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300576",
+      "name": "容大感光",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 45.2,
+      "latest_price": 45.2,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "0020",
+      "name": "商汤",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 11.69,
+      "latest_price": 11.69,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "00941",
+      "name": "中国移动",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 81.8,
+      "latest_price": 81.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "01209",
+      "name": "华润万象生活",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 43.62,
+      "latest_price": 43.62,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688676",
+      "name": "金盘科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 80.5,
+      "latest_price": 80.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688385",
+      "name": "复旦微电",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 53.07,
+      "latest_price": 53.07,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600885",
+      "name": "宏发股份",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 31.53,
+      "latest_price": 31.53,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300442",
+      "name": "润泽科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 73.53,
+      "latest_price": 73.53,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688002",
+      "name": "睿创微纳",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 129.9,
+      "latest_price": 129.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688195",
+      "name": "腾景科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 189.94,
+      "latest_price": 189.94,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600809",
+      "name": "山西杏花村汾酒厂股份有限公司的风险收益",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 118.54,
+      "latest_price": 118.54,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688629",
+      "name": "华丰科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 140.6,
+      "latest_price": 140.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688322",
+      "name": "奥比中光",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 122.98,
+      "latest_price": 122.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "301165",
+      "name": "锐捷网络",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 56.0,
+      "latest_price": 56.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "00175",
+      "name": "吉利汽车",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 19.15,
+      "latest_price": 19.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002409",
+      "name": "雅克科技",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 132.99,
+      "latest_price": 132.99,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601869",
+      "name": "长飞光纤",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 436.5,
+      "latest_price": 436.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300450",
+      "name": "先导智能",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 41.19,
+      "latest_price": 41.19,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688072",
+      "name": "拓荆科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 645.18,
+      "latest_price": 645.18,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002837",
+      "name": "英维克",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 66.08,
+      "latest_price": 66.08,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300037",
+      "name": "新宙邦",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 74.3,
+      "latest_price": 74.3,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688037",
+      "name": "芯源微",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 255.59,
+      "latest_price": 255.59,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002484",
+      "name": "江海股份",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 81.25,
+      "latest_price": 81.25,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002008",
+      "name": "大族激光",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 119.12,
+      "latest_price": 119.12,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "002050",
+      "name": "三花智控",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 44.81,
+      "latest_price": 44.81,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "00728",
+      "name": "中国电信",
+      "market": "hk",
+      "board_label": "港股",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 4.91,
+      "latest_price": 4.91,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688220",
+      "name": "翱捷科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 89.98,
+      "latest_price": 89.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603486",
+      "name": "及科沃斯",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 54.48,
+      "latest_price": 54.48,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300782",
+      "name": "卓胜微",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 89.76,
+      "latest_price": 89.76,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688099",
+      "name": "晶晨股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 87.62,
+      "latest_price": 87.62,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603061",
+      "name": "金海通",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 314.18,
+      "latest_price": 314.18,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002792",
+      "name": "通宇通讯",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 37.01,
+      "latest_price": 37.01,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300196",
+      "name": "长海股份",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 25.23,
+      "latest_price": 25.23,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688368",
+      "name": "希荻微",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 182.53,
+      "latest_price": 182.53,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002602",
+      "name": "世纪华通",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 14.37,
+      "latest_price": 14.37,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300762",
+      "name": "上海瀚讯",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 36.66,
+      "latest_price": 36.66,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300757",
+      "name": "罗博特科",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 600.0,
+      "latest_price": 600.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600438",
+      "name": "我们给予通威股份",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 13.7,
+      "latest_price": 13.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300433",
+      "name": "蓝思科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 41.14,
+      "latest_price": 41.14,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600549",
+      "name": "厦门钨业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 64.8,
+      "latest_price": 64.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300604",
+      "name": "长川科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 223.12,
+      "latest_price": 223.12,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300456",
+      "name": "赛微电子",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 38.28,
+      "latest_price": 38.28,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688303",
+      "name": "大全能源",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.95,
+      "latest_price": 20.95,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688200",
+      "name": "华峰测控",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 299.98,
+      "latest_price": 299.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688584",
+      "name": "长电科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 27.27,
+      "latest_price": 27.27,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300903",
+      "name": "科翔股份",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 70.03,
+      "latest_price": 70.03,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603688",
+      "name": "石英股份",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 70.89,
+      "latest_price": 70.89,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "603773",
+      "name": "沃格光电",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 129.8,
+      "latest_price": 129.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "605358",
+      "name": "立昂微",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 66.1,
+      "latest_price": 66.1,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立",
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300821",
+      "name": "东岳硅材",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 16.52,
+      "latest_price": 16.52,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "000636",
+      "name": "风华高科",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 59.12,
+      "latest_price": 59.12,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "600186",
+      "name": "莲花控股",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 11.57,
+      "latest_price": 11.57,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300346",
+      "name": "南大光电",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 59.39,
+      "latest_price": 59.39,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688106",
+      "name": "金宏气体",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 28.17,
+      "latest_price": 28.17,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688530",
+      "name": "欧莱新材",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 56.68,
+      "latest_price": 56.68,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688268",
+      "name": "华特气体",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 188.5,
+      "latest_price": 188.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "300394",
+      "name": "天孚通信",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 280.95,
+      "latest_price": 280.95,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "688301",
+      "name": "DR奕瑞科",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 111.9,
+      "latest_price": 111.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "三足鼎立"
+      ]
+    },
+    {
+      "code": "1211",
+      "name": "比亚迪",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 36.15,
+      "latest_price": 36.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "1209",
+      "name": "华润万象生活",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 18.98,
+      "latest_price": 18.98,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002594",
+      "name": "比亚迪",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 91.6,
+      "latest_price": 91.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688008",
+      "name": "澜起科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 224.88,
+      "latest_price": 224.88,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688012",
+      "name": "中微公司",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 303.92,
+      "latest_price": 303.92,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688234",
+      "name": "天岳先进",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 123.7,
+      "latest_price": 123.7,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "301269",
+      "name": "华大九天",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 94.57,
+      "latest_price": 94.57,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688206",
+      "name": "概伦电子",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 38.35,
+      "latest_price": 38.35,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "301095",
+      "name": "广立微",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 93.9,
+      "latest_price": 93.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688521",
+      "name": "芯原股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 223.13,
+      "latest_price": 223.13,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688256",
+      "name": "寒武纪",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 1240.0,
+      "latest_price": 1240.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688041",
+      "name": "海光信息",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 280.0,
+      "latest_price": 280.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688728",
+      "name": "格科微",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 13.29,
+      "latest_price": 13.29,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603986",
+      "name": "兆易创新",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 481.47,
+      "latest_price": 481.47,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688766",
+      "name": "普冉股份",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 390.59,
+      "latest_price": 390.59,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300223",
+      "name": "北京君正",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 145.6,
+      "latest_price": 145.6,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300327",
+      "name": "中颖电子",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 25.73,
+      "latest_price": 25.73,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688107",
+      "name": "安路科技",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 37.53,
+      "latest_price": 37.53,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688396",
+      "name": "华润微",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 60.8,
+      "latest_price": 60.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600460",
+      "name": "士兰微",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 32.15,
+      "latest_price": 32.15,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600745",
+      "name": "闻泰科技",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 17.36,
+      "latest_price": 17.36,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300373",
+      "name": "扬杰科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 96.68,
+      "latest_price": 96.68,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "600360",
+      "name": "华微电子",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 10.73,
+      "latest_price": 10.73,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688249",
+      "name": "晶合集成",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 40.5,
+      "latest_price": 40.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688469",
+      "name": "芯联集成",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 7.31,
+      "latest_price": 7.31,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002156",
+      "name": "通富微电",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 57.22,
+      "latest_price": 57.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002185",
+      "name": "华天科技",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 16.06,
+      "latest_price": 16.06,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688372",
+      "name": "利扬芯片",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 145.79,
+      "latest_price": 145.79,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002916",
+      "name": "深南电路",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 379.5,
+      "latest_price": 379.5,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300502",
+      "name": "中际旭创",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 2,
+      "entry_date": "2026-06-14",
+      "entry_price": 506.46,
+      "latest_price": 506.46,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300001",
+      "name": "特锐德",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 35.75,
+      "latest_price": 35.75,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300476",
+      "name": "胜宏科技",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 327.21,
+      "latest_price": 327.21,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601138",
+      "name": "富士康工业互联网",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 70.13,
+      "latest_price": 70.13,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "1378",
+      "name": "中国宏桥",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 20.8,
+      "latest_price": 20.8,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601100",
+      "name": "恒立液压",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 114.54,
+      "latest_price": 114.54,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300083",
+      "name": "新客户包括创世纪",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 10.3,
+      "latest_price": 10.3,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002384",
+      "name": "东山精密",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 217.55,
+      "latest_price": 217.55,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "605499",
+      "name": "东鹏饮料",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 131.84,
+      "latest_price": 131.84,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601155",
+      "name": "和新城",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 11.86,
+      "latest_price": 11.86,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "601012",
+      "name": "包括隆基绿能",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 13.46,
+      "latest_price": 13.46,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688017",
+      "name": "和绿的谐波",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 351.0,
+      "latest_price": 351.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002379",
+      "name": "宏桥控股",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 17.57,
+      "latest_price": 17.57,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "603799",
+      "name": "浙江华友钴业",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 50.22,
+      "latest_price": 50.22,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "002353",
+      "name": "杰瑞股份",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 144.9,
+      "latest_price": 144.9,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "000425",
+      "name": "但随着徐工机械",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 9.12,
+      "latest_price": 9.12,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "000680",
+      "name": "和山推股份",
+      "market": "sz",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 10.48,
+      "latest_price": 10.48,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300014",
+      "name": "亿纬锂能",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 57.67,
+      "latest_price": 57.67,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "1299",
+      "name": "友邦保险",
+      "market": "sh",
+      "board_label": "主板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 11.24,
+      "latest_price": 11.24,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300750",
+      "name": "宁德时代",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 1,
+      "entry_date": "2026-06-14",
+      "entry_price": 394.85,
+      "latest_price": 394.85,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "688802",
+      "name": "优必选近期与沐曦成立了一家合资企业",
+      "market": "sh",
+      "board_label": "科创板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 694.89,
+      "latest_price": 694.89,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    },
+    {
+      "code": "300308",
+      "name": "中际旭创",
+      "market": "sz",
+      "board_label": "创业板",
+      "signal_count": 0,
+      "entry_date": "2026-06-14",
+      "entry_price": 1149.0,
+      "latest_price": 1149.0,
+      "return_pct": 0.0,
+      "is_win": false,
+      "days_in_pool": 1,
+      "sources": [
+        "投行研报"
+      ]
+    }
+  ]
+}
