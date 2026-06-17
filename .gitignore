@@ -28,3 +28,4 @@ workbuddy/
 node_modules/
 *.log
 .env
+pwd.yaml
