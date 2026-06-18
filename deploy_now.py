@@ -46,7 +46,7 @@ def pre_deploy_audit():
         log("   WARN deploy_audit.py not found, skipping audit")
         return True
 
-    python_exe = r"C:\Users\HH20210606\.workbuddy\binaries\python\versions\3.13.12\python.exe"
+    python_exe = sys.executable
     result = subprocess.run([python_exe, audit_py],
                            capture_output=True, text=True, timeout=120, cwd=PROJECT_ROOT)
     log(result.stdout.strip())
@@ -152,7 +152,7 @@ def sync_remote_data():
         log("   OK data already latest, no sync needed")
     else:
         log(f"   OK synced {synced} files, re-embedding data...")
-        python_exe = r"C:\Users\HH20210606\.workbuddy\binaries\python\versions\3.13.12\python.exe"
+        python_exe = sys.executable
         updater = os.path.join(PROJECT_ROOT, "update_data_v2.py")
         r = subprocess.run([python_exe, updater, "--fast"],
                           capture_output=True, text=True, timeout=120, cwd=PROJECT_ROOT)
@@ -229,6 +229,21 @@ def main():
                     with open(fpath, 'w', encoding='utf-8') as f:
                         f.write(c)
     log(f"   Build stamp: {now_stamp}")
+
+    # 1.6. 注入真实密码（替换源码中的 __PWD__ 占位符）
+    # 优先从环境变量读取，否则使用默认值
+    REAL_PWD = os.environ.get("QB_PWD", "cat999")
+    for fname in ["index.html", "index_master.html"]:
+        fpath = os.path.join(DIST_DIR, fname)
+        if os.path.exists(fpath):
+            with open(fpath, "r", encoding="utf-8") as f:
+                c = f.read()
+            n = c.count("__PWD__")
+            if n > 0:
+                c = c.replace("__PWD__", REAL_PWD)
+                with open(fpath, "w", encoding="utf-8") as f:
+                    f.write(c)
+                log(f"   ✓ 密码已注入 {fname} ({n} 处)")
 
     # 2. Copy dist/ to temp dir
     log("2. Copying dist/ ...")

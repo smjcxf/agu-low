@@ -30,8 +30,9 @@ except ImportError:
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DIST_DIR = os.path.join(BASE_DIR, "dist")
-MASTER_PATH = os.path.join(DIST_DIR, "index_master.html")
+MASTER_PATH = os.path.join(BASE_DIR, "index_master.html")  # 直接读根目录模板，避免dist/不同步
 OUTPUT_PATH = os.path.join(DIST_DIR, "index.html")
+OUTPUT_PATH_MASTER = os.path.join(DIST_DIR, "index_master.html")  # 双文件输出，保持一致
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
 def load_json(path, default=None):
@@ -437,8 +438,18 @@ def main():
     macro_data   = load_json(os.path.join(DATA_DIR, "macro_data.json"), {"update_time": "", "monetary": {}, "economy": {}, "market_sentiment": {}, "global_macro": {}})
     herding_data = load_json(os.path.join(DATA_DIR, "herding_data.json"), {"update_time": ""})
     lhb_data     = load_json(os.path.join(DATA_DIR, "lhb_result.json"), {"stocks": [], "scan_time": ""})
-    north_fund   = load_json(os.path.join(DATA_DIR, "north_fund.json"), {"update_time": ""})
     main_stock   = load_json(os.path.join(DATA_DIR, "main_stock.json"), {"update_time": ""})
+    mahoro_sig   = load_json(os.path.join(DATA_DIR, "mahoro_signals.json"), {"gold_pool_matches": []})
+    fomc_summary = load_json(os.path.join(DATA_DIR, "fomc_summary.json"), {})
+    # 构建投行覆盖映射: code -> stance
+    mahoro_coverage = {}
+    for m in mahoro_sig.get("gold_pool_matches", []):
+        code = m.get("code", "")
+        stance = m.get("stance", "")
+        if code and stance:
+            mahoro_coverage[code] = stance
+    if mahoro_coverage:
+        print(f"  ▸ 投行覆盖: {len(mahoro_coverage)} 只")
 
     if not fast_mode:
         # 自动采集最新宏观数据
@@ -501,6 +512,7 @@ def main():
     print(f"  ▸ MARGIN_DATA: {len(margin_data.get('sh',[]))} 天两融数据")
     print(f"  ▸ ETF_SUB: {len(etf_subscription.get('sh',[]))} 天ETF数据")
     print(f"  ▸ MACRO_DATA: 更新={macro_data.get('update_time','N/A')}")
+    print(f"  ▸ FOMC: {'有' if fomc_summary.get('meeting_date') else '无'}速览 (会议={fomc_summary.get('meeting_date','N/A')})")
 
     if not fast_mode:
         # 获取三线共振股票概念
@@ -547,14 +559,15 @@ def main():
         ("ETF_SUBSCRIPTION", "const ETF_SUBSCRIPTION = ", "{", "}"),
         ("MACRO_DATA",      "window.MACRO_DATA = ",    "{", "}"),
         ("HERRING_DATA",   "const HERRING_DATA = ",  "{", "}"),
-        ("LHB_DATA",       "const LHB_DATA = ",      "{", "}"),
-        ("NORTH_FUND",     "const NORTH_FUND_DATA = ","{", "}"),
+        ("LHB_DATA",       "window.LHB_DATA = ",      "{", "}"),
         ("MAIN_STOCK",     "const MAIN_STOCK_DATA = ","{", "}"),
+        ("MAHORO_COVERAGE", "const MAHORO_COVERAGE = ","{", "}"),
+        ("FOMC_SUMMARY",   "window.FOMC_SUMMARY = ",  "{", "}"),
     ]
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
                  concept_ranking, market_alerts, margin_data, etf_subscription, macro_data, herding_data,
-                 lhb_data, north_fund, main_stock]
+                 lhb_data, main_stock, mahoro_coverage, fomc_summary]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):
@@ -564,7 +577,7 @@ def main():
             continue
         # 校验数据有效性：如果数据为空（无update_time/scan_time/有效列表），保留旧数据
         is_empty = False
-        if isinstance(data, dict) and name in ("NORTH_FUND", "MAIN_STOCK", "HERRING_DATA", "LHB_DATA"):
+        if isinstance(data, dict) and name in ("MAIN_STOCK", "HERRING_DATA", "LHB_DATA"):
             if not data.get("update_time") and not data.get("scan_time"):
                 is_empty = True
         # 额外检查：即使有update_time，如果核心数据数组全空，也视为无效（防止API空结果覆盖已有数据）
@@ -575,12 +588,6 @@ def main():
                 if len(clusters) == 0 and len(high_prob) == 0:
                     is_empty = True
                     print(f"  ⚠️  {name} 数据全空 (clusters=0, high_prob=0)，跳过替换")
-            elif name == "NORTH_FUND":
-                top_buy = data.get("top_buy") or []
-                consecutive = data.get("consecutive") or []
-                if len(top_buy) == 0 and len(consecutive) == 0:
-                    is_empty = True
-                    print(f"  ⚠️  {name} 数据全空 (top_buy=0, consecutive=0)，跳过替换")
             elif name == "MAIN_STOCK":
                 top_in = data.get("top_main_in") or []
                 top_out = data.get("top_main_out") or []
@@ -646,7 +653,18 @@ def main():
     print('  ✓ 宏观观测表格渲染JS已注入')
 
     # 注入三线共振历史数据到 triple_resonance.html
-    resonance_html_path = os.path.join(DIST_DIR, "triple_resonance.html")
+    # 先自动生成最新历史数据（一劳永逸，不会漏掉）
+    resonance_generator = os.path.join(BASE_DIR, "generate_triple_resonance_history.py")
+    if os.path.exists(resonance_generator):
+        try:
+            subprocess.run([sys.executable, resonance_generator],
+                capture_output=True, encoding='utf-8', errors='replace',
+                timeout=120, cwd=BASE_DIR)
+        except Exception:
+            pass  # 生成失败也不阻塞部署
+
+    resonance_html_path = os.path.join(BASE_DIR, "triple_resonance.html")  # 根目录模板
+    resonance_out_path = os.path.join(DIST_DIR, "triple_resonance.html")   # 输出到 dist
     resonance_json_path = os.path.join(DATA_DIR, "triple_resonance_history.json")
     if os.path.exists(resonance_html_path) and os.path.exists(resonance_json_path):
         try:
@@ -665,17 +683,31 @@ def main():
                 )
             rh = rh.replace('</head>',
                 f'<script>\nvar EMBEDDED_HISTORY_DATA = {embedded};\n</script>\n</head>')
-            with open(resonance_html_path, "w", encoding="utf-8") as f:
+            with open(resonance_out_path, "w", encoding="utf-8") as f:
                 f.write(rh)
             print(f"  ✓ triple_resonance.html 已嵌入历史数据")
             # 不再注入到主页面（历史追踪已恢复为独立页面）
         except Exception as e:
             print(f"  ⚠️ triple_resonance 注入失败: {e}")
 
-    # 保存
+    # 保存（双文件输出：index.html + index_master.html）
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(content)
-    print(f"  ✓ 已保存: {{OUTPUT_PATH}} ({{len(content):,}} 字符)")
+    with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8") as f:
+        f.write(content)
+    print(f"  ✓ 已保存: index.html + index_master.html ({len(content):,} 字符)")
+
+    # 注入真实密码（替换源码 __PWD__ 占位符）
+    REAL_PWD = os.environ.get("QB_PWD", "cat999")
+    for fpath in [OUTPUT_PATH, OUTPUT_PATH_MASTER]:
+        with open(fpath, "r", encoding="utf-8") as f:
+            c = f.read()
+        n = c.count("__PWD__")
+        if n > 0:
+            c = c.replace("__PWD__", REAL_PWD)
+            with open(fpath, "w", encoding="utf-8") as f:
+                f.write(c)
+            print(f"  ✓ 密码已注入 {os.path.basename(fpath)} ({n} 处)")
 
     if not fast_mode:
         # 验证 JS 语法
@@ -689,20 +721,28 @@ def main():
     else:
         print("\n  ▸ 快速模式：跳过JS语法验证")
 
-    # 保存
+    # 保存（双文件输出）
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(content)
-    print(f"\n  ✓ 已保存: {OUTPUT_PATH} ({len(content):,} 字符)")
+    with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8") as f:
+        f.write(content)
+    print(f"\n  ✓ 已保存: index.html + index_master.html ({len(content):,} 字符)")
 
     # 同步 data/*.json → dist/data/（保证 JSON 文件与 HTML 内嵌数据一致）
     import shutil
     dist_data = os.path.join(os.path.dirname(OUTPUT_PATH), "data")
     os.makedirs(dist_data, exist_ok=True)
+    SKIP_FILES = {"zsxq_token.json", ".mahoro_cookies.txt", "mahoro_signals.json"}  # 凭据或隐藏数据不同步
     for fname in os.listdir(DATA_DIR):
-        if fname.endswith(".json"):
+        if fname.endswith(".json") and fname not in SKIP_FILES:
             src = os.path.join(DATA_DIR, fname)
             dst = os.path.join(dist_data, fname)
             shutil.copy2(src, dst)
+    # 清理 dist/data 中的凭据文件
+    for sf in SKIP_FILES:
+        sf_path = os.path.join(dist_data, sf)
+        if os.path.exists(sf_path):
+            os.remove(sf_path)
     print(f"  ✓ 已同步 data/*.json → dist/data/")
 
     print(f"\n✅ 数据块更新成功！")
