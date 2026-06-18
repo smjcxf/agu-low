@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260617205532 -->
+<!-- build: 20260618230647 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -162075,10 +162075,262 @@ function renderStaleNotice(container) {
 }
 
 // ===== 资金抱团预判 =====
-var HERRING_DATA = window.HERRING_DATA || {};
-var NORTH_FUND_DATA = window.NORTH_FUND_DATA || {};
-var MAIN_STOCK_DATA = window.MAIN_STOCK_DATA || {};
-var LHB_DATA = window.LHB_DATA || {};
+var HERRING_DATA = window.HERRING_DATA = {
+"update_time": "2026-06-17 19:34:22",
+"current_clusters": [
+{
+"rank": 1,
+"medal": "🥇",
+"sector": "半导体",
+"amount": 153.335489,
+"unit": "亿",
+"direction": "流入"
+},
+{
+"rank": 2,
+"medal": "🥈",
+"sector": "电池",
+"amount": 47.77518,
+"unit": "亿",
+"direction": "流出"
+},
+{
+"rank": 3,
+"medal": "🥉",
+"sector": "元件",
+"amount": 23.815348,
+"unit": "亿",
+"direction": "流入"
+}
+],
+"high_prob": [
+{
+"tag": "机构共识",
+"sector": "券商 / 非银金融",
+"desc": "Q1净利+20%但板块年内跌14%，PB仅1.1倍（五年最低位），多家首席集体喊多",
+"strength": "强共识"
+},
+{
+"tag": "事件驱动",
+"sector": "鸿蒙 / AI算力",
+"desc": "华为HDC大会催化，华为「韬定律」发布+新麒麟秋季面世",
+"strength": "事件驱动"
+},
+{
+"tag": "蓄力中",
+"sector": "基础化工",
+"desc": "逆势获主力净流入，资金锁仓迹象明显",
+"strength": "蓄力中"
+},
+{
+"tag": "分歧蓄力",
+"sector": "通信 / 光模块",
+"desc": "单日大幅流入后剧烈分歧，筹码大换手后关注二次发力",
+"strength": "分歧蓄力"
+}
+],
+"cautious": [],
+"catalysts": [
+{
+"date": "6.18",
+"event": "美联储FOMC · 沃什首秀",
+"type": "重磅"
+},
+{
+"date": "6.12起",
+"event": "A股宽基指数集中调样",
+"type": "政策"
+},
+{
+"date": "6月下旬",
+"event": "中报业绩预告窗口",
+"type": "持续"
+}
+],
+"broker_views": [
+"降费“红包”要来了，“牛市旗手”抢跑入局",
+"A股市场回顾：创业板指跌3.22%，十大券商策略解析与后市展望",
+"PB达1.61倍，大通证券17.03亿股寻买家，43亿元起拍能否顺利易主？"
+]
+};var NORTH_FUND_DATA = window.NORTH_FUND_DATA = {
+"update_time": "2026-06-14 22:50",
+"top_buy": [
+{
+"code": "300750",
+"name": "宁德时代",
+"net_buy": 19.7,
+"unit": "亿",
+"ratio": 1.2
+},
+{
+"code": "600036",
+"name": "招商银行",
+"net_buy": 8.5,
+"unit": "亿",
+"ratio": 0.8
+},
+{
+"code": "000858",
+"name": "五粮液",
+"net_buy": 6.2,
+"unit": "亿",
+"ratio": 1.5
+},
+{
+"code": "603259",
+"name": "药明康德",
+"net_buy": 4.1,
+"unit": "亿",
+"ratio": 2.1
+}
+],
+"consecutive": [
+{
+"code": "601138",
+"name": "工业富联",
+"days": 3,
+"total": 5.2,
+"unit": "亿"
+},
+{
+"code": "600519",
+"name": "贵州茅台",
+"days": 3,
+"total": 12.1,
+"unit": "亿"
+},
+{
+"code": "002475",
+"name": "立讯精密",
+"days": 3,
+"total": 3.8,
+"unit": "亿"
+}
+],
+"net_flow": {
+"total": 36.1,
+"unit": "亿",
+"direction": "流入"
+}
+};var MAIN_STOCK_DATA = window.MAIN_STOCK_DATA = {
+"update_time": "2026-06-18 19:33",
+"top_main_in": [
+{
+"code": "300308",
+"name": "中际旭创",
+"net_in": 24.1,
+"unit": "亿",
+"day_count": 2
+},
+{
+"code": "300502",
+"name": "新易盛",
+"net_in": 14.6,
+"unit": "亿",
+"day_count": 1
+},
+{
+"code": "688041",
+"name": "海光信息",
+"net_in": 13.0,
+"unit": "亿",
+"day_count": 2
+},
+{
+"code": "002475",
+"name": "立讯精密",
+"net_in": 7.9,
+"unit": "亿",
+"day_count": 1
+},
+{
+"code": "688981",
+"name": "中芯国际",
+"net_in": 7.8,
+"unit": "亿",
+"day_count": 2
+},
+{
+"code": "603259",
+"name": "药明康德",
+"net_in": 5.4,
+"unit": "亿",
+"day_count": 1
+},
+{
+"code": "600276",
+"name": "恒瑞医药",
+"net_in": 4.4,
+"unit": "亿",
+"day_count": 1
+},
+{
+"code": "688256",
+"name": "寒武纪",
+"net_in": 1.8,
+"unit": "亿",
+"day_count": 15
+}
+],
+"top_main_out": [
+{
+"code": "000725",
+"name": "京东方A",
+"net_out": 34.1,
+"unit": "亿",
+"day_count": 1
+},
+{
+"code": "601318",
+"name": "中国平安",
+"net_out": 20.3,
+"unit": "亿",
+"day_count": 3
+},
+{
+"code": "300750",
+"name": "宁德时代",
+"net_out": 12.3,
+"unit": "亿",
+"day_count": 2
+},
+{
+"code": "601899",
+"name": "紫金矿业",
+"net_out": 12.2,
+"unit": "亿",
+"day_count": 1
+},
+{
+"code": "300274",
+"name": "阳光电源",
+"net_out": 11.9,
+"unit": "亿",
+"day_count": 2
+},
+{
+"code": "600519",
+"name": "贵州茅台",
+"net_out": 9.0,
+"unit": "亿",
+"day_count": 4
+},
+{
+"code": "600030",
+"name": "中信证券",
+"net_out": 6.6,
+"unit": "亿",
+"day_count": 3
+},
+{
+"code": "000858",
+"name": "五粮液",
+"net_out": 6.0,
+"unit": "亿",
+"day_count": 14
+}
+]
+};var LHB_DATA = window.LHB_DATA || {};
 var MAHORO_COVERAGE = window.MAHORO_COVERAGE = {
 "03306": "bullish",
 "01378": "bullish",

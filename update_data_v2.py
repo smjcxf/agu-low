@@ -102,19 +102,19 @@ def find_block_end(content, marker_start, open_ch, close_ch):
 def verify_data(content):
     """用 Node.js 验证数据块 JS 语法"""
     import tempfile, subprocess
-    js_code = '''
+    js_code = r'''
 const fs = require("fs");
 const c = fs.readFileSync(process.argv[1], "utf8");
 const r = s => { try { new Function("return " + s); return "OK"; } catch(e) { return "ERR: " + e.message; } };
-const m1 = c.match(/const SCAN_DATA = ({[\\s\\S]*?};)/);
-const m2 = c.match(/const WATCH_DATA = ({[\\s\\S]*?};)/);
-const m3 = c.match(/const GOLD_POOL = ({[\\s\\S]*?};)/);
-const m4 = c.match(/window\\.STOCK_LIST = (\\[[\\s\\S]*?\\];)/);
+const m1 = c.match(/window\.SCAN_DATA = ({[\s\S]*?};)/);
+const m2 = c.match(/window\.WATCH_DATA = ({[\s\S]*?};)/);
+const m3 = c.match(/window\.GOLD_POOL = ({[\s\S]*?};)/);
+const m4 = c.match(/window\.STOCK_LIST = (\[[\s\S]*?\];)/);
 console.log("SCAN_DATA:", m1 ? r(m1[1]) : "NOT FOUND");
 console.log("WATCH_DATA:", m2 ? r(m2[1]) : "NOT FOUND");
 console.log("GOLD_POOL:", m3 ? r(m3[1]) : "NOT FOUND");
 console.log("STOCK_LIST:", m4 ? r(m4[1]) : "NOT FOUND");
-const m5 = c.match(/window\\.NT_DATA = ({[\\s\\S]*?};)/);console.log("NT_DATA:", m5 ? r(m5[1]) : "NOT FOUND");'''
+const m5 = c.match(/window\.NT_DATA = ({[\s\S]*?};)/);console.log("NT_DATA:", m5 ? r(m5[1]) : "NOT FOUND");'''
     with tempfile.NamedTemporaryFile(mode='w', suffix='.js', delete=False) as f:
         f.write(js_code)
         tmp_path = f.name
@@ -439,6 +439,7 @@ def main():
     herding_data = load_json(os.path.join(DATA_DIR, "herding_data.json"), {"update_time": ""})
     lhb_data     = load_json(os.path.join(DATA_DIR, "lhb_result.json"), {"stocks": [], "scan_time": ""})
     main_stock   = load_json(os.path.join(DATA_DIR, "main_stock.json"), {"update_time": ""})
+    north_fund   = load_json(os.path.join(DATA_DIR, "north_fund.json"), {"update_time": ""})
     mahoro_sig   = load_json(os.path.join(DATA_DIR, "mahoro_signals.json"), {"gold_pool_matches": []})
     fomc_summary = load_json(os.path.join(DATA_DIR, "fomc_summary.json"), {})
     # 构建投行覆盖映射: code -> stance
@@ -543,31 +544,32 @@ def main():
 
     # 查找并替换数据块（13个块）
     markers = [
-        ("SCAN_DATA",      "const SCAN_DATA = ",      "{", "}"),
-        ("WATCH_DATA",     "const WATCH_DATA = ",     "{", "}"),
-        ("GOLD_POOL",      "const GOLD_POOL = ",      "{", "}"),
+        ("SCAN_DATA",      "window.SCAN_DATA = ",      "{", "}"),
+        ("WATCH_DATA",     "window.WATCH_DATA = ",     "{", "}"),
+        ("GOLD_POOL",      "window.GOLD_POOL = ",      "{", "}"),
         ("STOCK_LIST",     "window.STOCK_LIST = ",    "[", "]"),
-        ("RECOMMEND",      "const RECOMMEND = ",      "[", "]"),
-        ("SH_FIB",         "const SH_FIB = ",         "{", "}"),
-        ("SZ_FIB",         "const SZ_FIB = ",         "{", "}"),
-        ("SECTOR_FUND_FLOW", "const SECTOR_FUND_FLOW = ", "{", "}"),
-        ("SH_SZ_HISTORY",  "const SH_SZ_HISTORY = ",  "{", "}"),
+        ("RECOMMEND",      "var RECOMMEND = window.RECOMMEND = ",      "[", "]"),
+        ("SH_FIB",         "var SH_FIB = window.SH_FIB = ",         "{", "}"),
+        ("SZ_FIB",         "var SZ_FIB = window.SZ_FIB = ",         "{", "}"),
+        ("SECTOR_FUND_FLOW", "window.SECTOR_FUND_FLOW = ", "{", "}"),
+        ("SH_SZ_HISTORY",  "var SH_SZ_HISTORY = window.SH_SZ_HISTORY = ",  "{", "}"),
         ("NT_DATA",        "window.NT_DATA = ",        "{", "}"),
-        ("CONCEPT_RANKING", "const CONCEPT_RANKING = ", "{", "}"),
-        ("MARKET_ALERTS",  "const MARKET_ALERTS = ",  "{", "}"),
-        ("MARGIN_DATA",     "const MARGIN_DATA = ",     "{", "}"),
-        ("ETF_SUBSCRIPTION", "const ETF_SUBSCRIPTION = ", "{", "}"),
+        ("CONCEPT_RANKING", "var CONCEPT_RANKING = window.CONCEPT_RANKING = ", "{", "}"),
+        ("MARKET_ALERTS",  "var MARKET_ALERTS = window.MARKET_ALERTS = ",  "{", "}"),
+        ("MARGIN_DATA",     "var MARGIN_DATA = window.MARGIN_DATA = ",     "{", "}"),
+        ("ETF_SUBSCRIPTION", "var ETF_SUBSCRIPTION = window.ETF_SUBSCRIPTION = ", "{", "}"),
         ("MACRO_DATA",      "window.MACRO_DATA = ",    "{", "}"),
-        ("HERRING_DATA",   "const HERRING_DATA = ",  "{", "}"),
+        ("HERRING_DATA",   "window.HERRING_DATA = ",  "{", "}"),
         ("LHB_DATA",       "window.LHB_DATA = ",      "{", "}"),
-        ("MAIN_STOCK",     "const MAIN_STOCK_DATA = ","{", "}"),
-        ("MAHORO_COVERAGE", "const MAHORO_COVERAGE = ","{", "}"),
+        ("MAIN_STOCK",     "var MAIN_STOCK_DATA = window.MAIN_STOCK_DATA = ","{", "}"),
+        ("NORTH_FUND",     "window.NORTH_FUND_DATA = ",  "{", "}"),
+        ("MAHORO_COVERAGE", "var MAHORO_COVERAGE = window.MAHORO_COVERAGE = ","{", "}"),
         ("FOMC_SUMMARY",   "window.FOMC_SUMMARY = ",  "{", "}"),
     ]
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
-                 concept_ranking, market_alerts, margin_data, etf_subscription, macro_data, herding_data,
-                 lhb_data, main_stock, mahoro_coverage, fomc_summary]
+                 concept_ranking, market_alerts, margin_data, etf_subscription, macro_data,                  herding_data,
+                 lhb_data, main_stock, north_fund, mahoro_coverage, fomc_summary]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):
@@ -691,23 +693,28 @@ def main():
             print(f"  ⚠️ triple_resonance 注入失败: {e}")
 
     # 保存（双文件输出：index.html + index_master.html）
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
-    with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8") as f:
+    with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
     print(f"  ✓ 已保存: index.html + index_master.html ({len(content):,} 字符)")
 
-    # 注入真实密码（替换源码 __PWD__ 占位符）
+    # 注入真实密码（替换源码 __PWD__ / __GUEST_PWD__ 占位符）
     REAL_PWD = os.environ.get("QB_PWD", "cat999")
+    REAL_GUEST_PWD = os.environ.get("QB_GUEST_PWD", "hjd666")
     for fpath in [OUTPUT_PATH, OUTPUT_PATH_MASTER]:
         with open(fpath, "r", encoding="utf-8") as f:
             c = f.read()
         n = c.count("__PWD__")
+        m = c.count("__GUEST_PWD__")
         if n > 0:
             c = c.replace("__PWD__", REAL_PWD)
+        if m > 0:
+            c = c.replace("__GUEST_PWD__", REAL_GUEST_PWD)
+        if n > 0 or m > 0:
             with open(fpath, "w", encoding="utf-8") as f:
                 f.write(c)
-            print(f"  ✓ 密码已注入 {os.path.basename(fpath)} ({n} 处)")
+            print(f"  ✓ 密码已注入 {os.path.basename(fpath)} (admin:{n} 处, guest:{m} 处)")
 
     if not fast_mode:
         # 验证 JS 语法
@@ -722,9 +729,9 @@ def main():
         print("\n  ▸ 快速模式：跳过JS语法验证")
 
     # 保存（双文件输出）
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
-    with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8") as f:
+    with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)
     print(f"\n  ✓ 已保存: index.html + index_master.html ({len(content):,} 字符)")
 
