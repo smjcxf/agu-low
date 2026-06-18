@@ -94,7 +94,7 @@
         "watch"
       ]
     },
-    "days_in_resonance": 2
+    "days_in_resonance": 3
   },
   {
     "code": "300292",
@@ -191,35 +191,36 @@
         "watch"
       ]
     },
-    "days_in_resonance": 2
+    "days_in_resonance": 3
   },
   {
-    "code": "688661",
-    "name": "和林微纳",
+    "code": "688396",
+    "name": "华润微",
     "board": "科创板",
     "fund_type": "混合",
-    "score": 9,
+    "score": 11.0,
     "sig_count": 3,
     "max_sig": 3,
     "action": "BUY",
-    "stop_loss": 117.72,
-    "target": 156.96,
-    "close": 130.8,
-    "pct_chg": 1.55,
+    "stop_loss": 66.4,
+    "target": 88.54,
+    "close": 73.78,
+    "pct_chg": 2.83,
     "volume_str": "-",
     "开盘_标签": "—",
     "reasons": [],
     "sources": [
+      "投行研报",
       "三足鼎立"
     ],
     "days_in_pool": 1,
     "pct20": 0,
     "涨停延迟": false,
     "_raw": {
-      "code": "688661",
-      "name": "和林微纳",
-      "close": 130.8,
-      "pct_chg": 1.55,
+      "code": "688396",
+      "name": "华润微",
+      "close": 73.78,
+      "pct_chg": 2.83,
       "pct_chg_20d": 0,
       "signal_count": 3,
       "signal_score": 9,
@@ -229,14 +230,15 @@
       "volume_str": "-",
       "开盘_标签": "—",
       "sources": [
+        "投行研报",
         "三足鼎立"
       ],
       "max_signal": 3,
-      "days_in_resonance": 1,
+      "days_in_resonance": 2,
       "_sources": [
         "gold_pool"
       ]
     },
-    "days_in_resonance": 1
+    "days_in_resonance": 2
   }
 ]

@@ -183,15 +183,45 @@ def generate_calendar():
                     return d
             d -= timedelta(days=1)
 
+    # 手动假期日期集合（2026-2027）
+    _holiday_set = set()
+    # 2026
+    for dd in [19,20,21]: _holiday_set.add(f"2026-06-{dd:02d}")  # 端午
+    for dd in range(15,24): _holiday_set.add(f"2026-02-{dd:02d}")  # 春节
+    for dd in [25,26,27]: _holiday_set.add(f"2026-09-{dd:02d}")  # 中秋
+    for dd in range(1,8): _holiday_set.add(f"2026-10-{dd:02d}")  # 国庆
+    _holiday_set.add("2026-01-01")  # 元旦
+    # 2027
+    for dd in [8,9,10]: _holiday_set.add(f"2027-06-{dd:02d}")  # 端午
+    for dd in range(14,21): _holiday_set.add(f"2027-02-{dd:02d}")  # 春节
+    for dd in [15,16,17]: _holiday_set.add(f"2027-09-{dd:02d}")  # 中秋
+    for dd in range(1,8): _holiday_set.add(f"2027-10-{dd:02d}")  # 国庆
+    _holiday_set.add("2027-01-01")  # 元旦
+
+    # 辅助：顺延到下一个交易日（遇节假日/周末自动跳过）
+    def to_workday(d):
+        """如果当天是节假日或周末，顺延到下一个交易日"""
+        for _ in range(60):
+            if HAS_CH_CAL:
+                if is_workday(d) and not is_holiday(d):
+                    return d
+            else:
+                ds = d.strftime("%Y-%m-%d")
+                if d.weekday() < 5 and ds not in _holiday_set:
+                    return d
+            d += timedelta(days=1)
+        return d
+
     y, m = today.year, 1  # 从当年1月开始迭代，确保全年节假日都能生成
     while (y, m) <= (end_date.year, end_date.month):
         ym_str = f"{y}-{m:02d}"
 
         # ── 中国宏观经济数据 ──
 
-        # CPI/PPI：通常每月9-10日
+        # CPI/PPI：通常每月9-10日（遇节假日顺延）
+        cpi_day = to_workday(datetime(y, m, 9))
         calendar_events.append({
-            "date": f"{y}-{m:02d}-09",
+            "date": cpi_day.strftime("%Y-%m-%d"),
             "title": "CPI/PPI",
             "type": "data"
         })
@@ -204,16 +234,19 @@ def generate_calendar():
             "type": "data"
         })
 
-        # 中国出口数据：每月7-8日
+        # 中国出口数据：每月7-8日（遇节假日顺延）
+        exp_day = to_workday(datetime(y, m, 7))
         calendar_events.append({
-            "date": f"{y}-{m:02d}-07",
+            "date": exp_day.strftime("%Y-%m-%d"),
             "title": "中国出口",
             "type": "data"
         })
 
-        # 中国社会消费品零售：每月15日
+        # 中国社会消费品零售：每月15日（遇节假日顺延）
+        # 中国社会消费品零售：每月15日（遇节假日顺延）
+        retail_day = to_workday(datetime(y, m, 15))
         calendar_events.append({
-            "date": f"{y}-{m:02d}-15",
+            "date": retail_day.strftime("%Y-%m-%d"),
             "title": "社会消费品零售",
             "type": "data"
         })
@@ -221,8 +254,9 @@ def generate_calendar():
         # 中国GDP：每季度16日（1月、4月、7月、10月）
         if m in [1, 4, 7, 10]:
             gdp_day = 16 if m == 1 else 15
+            gdp_dt = to_workday(datetime(y, m, gdp_day))
             calendar_events.append({
-                "date": f"{y}-{m:02d}-{gdp_day:02d}",
+                "date": gdp_dt.strftime("%Y-%m-%d"),
                 "title": "GDP",
                 "type": "data"
             })
@@ -246,24 +280,27 @@ def generate_calendar():
 
         # ── 交割日 ──
 
-        # 期权交割：每月第四个周三
+        # 期权交割：每月第四个周三（遇节假日顺延）
         opt_day = nth_weekday(y, m, 4, 2)  # 周三=2
+        opt_day = to_workday(opt_day)
         calendar_events.append({
             "date": opt_day.strftime("%Y-%m-%d"),
             "title": "期权交割",
             "type": "option"
         })
 
-        # 股指期货交割：每月第三个周五
+        # 股指期货交割：每月第三个周五（遇节假日顺延）
         fut_day = nth_weekday(y, m, 3, 4)  # 周五=4
+        fut_day = to_workday(fut_day)
         calendar_events.append({
             "date": fut_day.strftime("%Y-%m-%d"),
             "title": "股指期货交割",
             "type": "futures"
         })
 
-        # A50交割：每月倒数第二个交易日
+        # A50交割：每月倒数第二个交易日（遇节假日顺延）
         a50_day = nth_last_workday(y, m, 2)
+        a50_day = to_workday(a50_day)
         calendar_events.append({
             "date": a50_day.strftime("%Y-%m-%d"),
             "title": "A50交割",
@@ -272,34 +309,38 @@ def generate_calendar():
 
         # ── 央行操作 ──
 
-        # MLF操作：每月15日
+        # MLF操作：每月15日（遇节假日顺延）
+        mlf_day = to_workday(datetime(y, m, 15))
         calendar_events.append({
-            "date": f"{y}-{m:02d}-15",
+            "date": mlf_day.strftime("%Y-%m-%d"),
             "title": "MLF操作",
             "type": "central_bank"
         })
 
-        # LPR报价：每月20日
+        # LPR报价：每月20日（遇节假日顺延）
+        lpr_day = to_workday(datetime(y, m, 20))
         calendar_events.append({
-            "date": f"{y}-{m:02d}-20",
+            "date": lpr_day.strftime("%Y-%m-%d"),
             "title": "LPR报价",
             "type": "central_bank"
         })
 
         # ── 特殊事件 ──
 
-        # 两会（每年3月5日开幕）
+        # 两会（每年3月5日开幕，遇节假日顺延）
         if m == 3:
+            lianghui = to_workday(datetime(y, m, 5))
             calendar_events.append({
-                "date": f"{y}-{m:02d}-05",
+                "date": lianghui.strftime("%Y-%m-%d"),
                 "title": "两会开幕",
                 "type": "policy"
             })
 
-        # 中央经济工作会议（每年12月中旬）
+        # 中央经济工作会议（每年12月中旬，遇节假日顺延）
         if m == 12:
+            jjy = to_workday(datetime(y, m, 15))
             calendar_events.append({
-                "date": f"{y}-{m:02d}-15",
+                "date": jjy.strftime("%Y-%m-%d"),
                 "title": "中央经济工作会议",
                 "type": "policy"
             })

@@ -1,7 +1,7 @@
 {
   "version": "2.0",
-  "updated": "2026-06-16 19:30:22",
-  "total": 232,
+  "updated": "2026-06-18 09:07:17",
+  "total": 241,
   "stocks": {
     "SH600183": {
       "name": "生益科技",
@@ -9,18 +9,8 @@
       "full_code": "SH600183",
       "market": "A股",
       "first_seen": "2026-05-30",
-      "last_seen": "2026-06-11",
+      "last_seen": "2026/6/11",
       "recommendations": [
-        {
-          "institution": "花旗",
-          "rating": "买入",
-          "date": "2026-06-11"
-        },
-        {
-          "institution": "高盛",
-          "rating": "买入",
-          "date": ""
-        },
         {
           "institution": "高盛",
           "rating": "买入",
@@ -160,14 +150,24 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-11"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026/6/11"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026/6/11"
         }
       ],
-      "rec_count": 64,
+      "rec_count": 66,
       "institutions": [
         "高盛",
         "花旗"
       ],
-      "latest_rating": "买入",
+      "latest_rating": "未评级",
       "status": "active"
     },
     "HK.06082": {
@@ -678,9 +678,24 @@
           "institution": "花旗",
           "rating": "未评级",
           "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
         }
       ],
-      "rec_count": 23,
+      "rec_count": 26,
       "institutions": [
         "花旗",
         "摩根士丹利"
@@ -748,11 +763,6 @@
       "last_seen": "2026-06-12",
       "recommendations": [
         {
-          "institution": "摩根士丹利",
-          "rating": "未评级",
-          "date": "2026-06-02"
-        },
-        {
           "institution": "花旗",
           "rating": "未评级",
           "date": "2026-06-09"
@@ -871,6 +881,11 @@
           "institution": "花旗",
           "rating": "未评级",
           "date": "2026-06-09"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-12"
         },
         {
           "institution": "摩根士丹利",
@@ -898,7 +913,7 @@
           "date": "2026-06-12"
         }
       ],
-      "rec_count": 52,
+      "rec_count": 53,
       "institutions": [
         "花旗",
         "摩根士丹利"
@@ -1996,7 +2011,7 @@
       "full_code": "SZ002371",
       "market": "A股",
       "first_seen": "2026-05-25",
-      "last_seen": "2026-05-13",
+      "last_seen": "2026-06-17",
       "recommendations": [
         {
           "institution": "瑞银",
@@ -2017,9 +2032,29 @@
           "institution": "花旗",
           "rating": "未评级",
           "date": "2026-05-13"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-17"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-17"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-17"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-17"
         }
       ],
-      "rec_count": 4,
+      "rec_count": 8,
       "institutions": [
         "瑞银",
         "摩根士丹利",
@@ -3907,11 +3942,6 @@
         {
           "institution": "摩根士丹利",
           "rating": "未评级",
-          "date": "2026-06-02"
-        },
-        {
-          "institution": "摩根士丹利",
-          "rating": "未评级",
           "date": "2026-06-01"
         },
         {
@@ -3953,6 +3983,11 @@
           "institution": "摩根士丹利",
           "rating": "未评级",
           "date": "2026-06-02"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-12"
         },
         {
           "institution": "摩根士丹利",
@@ -4055,7 +4090,7 @@
           "date": "2026-06-12"
         }
       ],
-      "rec_count": 35,
+      "rec_count": 36,
       "institutions": [
         "摩根士丹利"
       ],
@@ -4248,9 +4283,19 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-14"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-14"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-14"
         }
       ],
-      "rec_count": 17,
+      "rec_count": 19,
       "institutions": [
         "花旗"
       ],
@@ -4551,9 +4596,19 @@
           "institution": "花旗",
           "rating": "未评级",
           "date": "2026-06-14"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-14"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-14"
         }
       ],
-      "rec_count": 7,
+      "rec_count": 9,
       "institutions": [
         "摩根士丹利",
         "花旗"
@@ -4911,9 +4966,24 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-15"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-15"
         }
       ],
-      "rec_count": 7,
+      "rec_count": 10,
       "institutions": [
         "花旗"
       ],
@@ -5328,9 +5398,14 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-13"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-13"
         }
       ],
-      "rec_count": 24,
+      "rec_count": 25,
       "institutions": [
         "花旗"
       ],
@@ -5526,17 +5601,38 @@
       "full_code": "SZ002384",
       "market": "A股",
       "first_seen": "2026-05-19",
-      "last_seen": "2026-05-19",
+      "last_seen": "2026-06-17",
       "recommendations": [
         {
           "institution": "高盛",
           "rating": "未评级",
           "date": "2026-05-19"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-17"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-17"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-17"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-17"
         }
       ],
-      "rec_count": 1,
+      "rec_count": 5,
       "institutions": [
-        "高盛"
+        "高盛",
+        "花旗"
       ],
       "latest_rating": "未评级",
       "status": "active"
@@ -5710,9 +5806,19 @@
           "institution": "高盛",
           "rating": "买入",
           "date": "2026-06-14"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-14"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-14"
         }
       ],
-      "rec_count": 6,
+      "rec_count": 8,
       "institutions": [
         "摩根士丹利",
         "高盛"
@@ -6175,19 +6281,25 @@
       "full_code": "SZ002028",
       "market": "A股",
       "first_seen": "2026-05-14",
-      "last_seen": "2026-05-14",
+      "last_seen": "2026-06-17",
       "recommendations": [
         {
           "institution": "摩根士丹利",
           "rating": "推荐",
           "date": "2026-05-14"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-17"
         }
       ],
-      "rec_count": 1,
+      "rec_count": 2,
       "institutions": [
-        "摩根士丹利"
+        "摩根士丹利",
+        "高盛"
       ],
-      "latest_rating": "推荐",
+      "latest_rating": "买入",
       "status": "active"
     },
     "HK.09903": {
@@ -7711,9 +7823,24 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-15"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-15"
         }
       ],
-      "rec_count": 16,
+      "rec_count": 19,
       "institutions": [
         "花旗"
       ],
@@ -8166,9 +8293,14 @@
           "institution": "高盛",
           "rating": "买入",
           "date": "2026-06-12"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-12"
         }
       ],
-      "rec_count": 20,
+      "rec_count": 21,
       "institutions": [
         "高盛"
       ],
@@ -8302,7 +8434,7 @@
       "full_code": "SH603606",
       "market": "A股",
       "first_seen": "2026-06-11",
-      "last_seen": "2026-06-11",
+      "last_seen": "2026/6/11 ",
       "recommendations": [
         {
           "institution": "花旗",
@@ -8393,9 +8525,19 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-11"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026/6/11 "
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026/6/11 "
         }
       ],
-      "rec_count": 18,
+      "rec_count": 20,
       "institutions": [
         "花旗"
       ],
@@ -9561,9 +9703,24 @@
           "institution": "摩根士丹利",
           "rating": "未评级",
           "date": "2026-06-15"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-15"
         }
       ],
-      "rec_count": 6,
+      "rec_count": 9,
       "institutions": [
         "摩根士丹利"
       ],
@@ -9607,9 +9764,24 @@
           "institution": "摩根士丹利",
           "rating": "未评级",
           "date": "2026-06-15"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-15"
         }
       ],
-      "rec_count": 6,
+      "rec_count": 9,
       "institutions": [
         "摩根士丹利"
       ],
@@ -9678,9 +9850,29 @@
           "institution": "高盛",
           "rating": "买入",
           "date": "2026-06-14"
+        },
+        {
+          "institution": "高盛",
+          "rating": "未评级",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-14"
+        },
+        {
+          "institution": "高盛",
+          "rating": "未评级",
+          "date": "2026-06-15"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-14"
         }
       ],
-      "rec_count": 11,
+      "rec_count": 15,
       "institutions": [
         "高盛"
       ],
@@ -9704,6 +9896,330 @@
       "rec_count": 1,
       "institutions": [
         "花旗"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "SZ002008": {
+      "name": "大族激光",
+      "code": "002008",
+      "full_code": "SZ002008",
+      "market": "A股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 7,
+      "institutions": [
+        "花旗"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "SH688097": {
+      "name": "自动化设备制造商博众精工",
+      "code": "688097",
+      "full_code": "SH688097",
+      "market": "A股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 7,
+      "institutions": [
+        "花旗"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "SH603259": {
+      "name": "药明康德",
+      "code": "603259",
+      "full_code": "SH603259",
+      "market": "A股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 4,
+      "institutions": [
+        "花旗"
+      ],
+      "latest_rating": "未评级",
+      "status": "active"
+    },
+    "HK.02252": {
+      "name": "微创机器人",
+      "code": "02252",
+      "full_code": "HK.02252",
+      "market": "港股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 4,
+      "institutions": [
+        "花旗"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "HK.02015": {
+      "name": "理想汽车",
+      "code": "02015",
+      "full_code": "HK.02015",
+      "market": "港股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "未评级",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 4,
+      "institutions": [
+        "摩根士丹利"
+      ],
+      "latest_rating": "未评级",
+      "status": "active"
+    },
+    "SH603268": {
+      "name": "我们",
+      "code": "603268",
+      "full_code": "SH603268",
+      "market": "A股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 4,
+      "institutions": [
+        "高盛"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "HK.09863": {
+      "name": "浙江零跑",
+      "code": "09863",
+      "full_code": "HK.09863",
+      "market": "港股",
+      "first_seen": "2026-06-16",
+      "last_seen": "2026-06-16",
+      "recommendations": [
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        },
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-16"
+        }
+      ],
+      "rec_count": 4,
+      "institutions": [
+        "高盛"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "HK.03306": {
+      "name": "江南布衣",
+      "code": "03306",
+      "full_code": "HK.03306",
+      "market": "港股",
+      "first_seen": "2026-06-18",
+      "last_seen": "2026-06-18",
+      "recommendations": [
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-18"
+        }
+      ],
+      "rec_count": 1,
+      "institutions": [
+        "花旗"
+      ],
+      "latest_rating": "买入",
+      "status": "active"
+    },
+    "HK.01686": {
+      "name": "新意网",
+      "code": "01686",
+      "full_code": "HK.01686",
+      "market": "港股",
+      "first_seen": "2026-06-17",
+      "last_seen": "2026-06-17",
+      "recommendations": [
+        {
+          "institution": "高盛",
+          "rating": "买入",
+          "date": "2026-06-17"
+        }
+      ],
+      "rec_count": 1,
+      "institutions": [
+        "高盛"
       ],
       "latest_rating": "买入",
       "status": "active"

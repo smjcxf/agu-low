@@ -50,7 +50,7 @@ def run_westock(cmd_args):
     try:
         result = subprocess.run(
             [NODE_PATH, WESTOCK_SCRIPT] + cmd_args,
-            capture_output=True, text=True, timeout=60,
+            capture_output=True, encoding='utf-8', errors='replace', timeout=60,
             cwd=BASE_DIR
         )
         if result.returncode == 0:

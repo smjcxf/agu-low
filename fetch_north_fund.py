@@ -81,7 +81,7 @@ def main():
         if old_data:
             print("  WARN API无数据，保留最近一次有效数据")
             result = old_data
-            result["update_time"] = now_str  # 更新时间
+            # 保留原始更新时间（不篡改为now_str，前端才能正确识别数据时效）
         else:
             print("  WARN API无数据且无旧数据可回退")
 

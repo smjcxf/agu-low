@@ -5,7 +5,7 @@
 用法: python fetch_herding_data.py
 输出: data/herding_data.json
 """
-import os, sys, json, datetime, subprocess
+import os, sys, json, datetime, subprocess, re
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -22,8 +22,8 @@ def query_neodata(query):
     """调用 NeoData 接口查询"""
     try:
         result = subprocess.run(
-            ["python", QUERY_SCRIPT, "--query", query],
-            capture_output=True, text=True, timeout=30,
+            [sys.executable, QUERY_SCRIPT, "--query", query],
+            capture_output=True, encoding='utf-8', errors='replace', timeout=30,
             cwd=BASE_DIR
         )
         if result.returncode == 0 and result.stdout.strip():
@@ -51,11 +51,12 @@ def extract_sector_flows(data):
                 continue
             if header_found and "|" in line and "pt" in line:
                 parts = [p.strip() for p in line.split("|")]
-                if len(parts) >= 12:
+                if len(parts) >= 13:
                     try:
-                        name = parts[4].strip() if len(parts) > 4 else ""
-                        net_in = float(parts[10].strip()) if len(parts) > 10 else 0
-                        flows.append({"name": name, "net_in": net_in})
+                        name = parts[5].strip() if len(parts) > 5 else ""
+                        net_in = float(parts[12].strip()) if len(parts) > 12 else 0
+                        if name and name != "板块名称":
+                            flows.append({"name": name, "net_in": net_in})
                     except (ValueError, IndexError):
                         continue
     return flows
@@ -79,6 +80,101 @@ def extract_doc_insights(data, keyword=""):
 
 
 def load_old_data():
+    """加载旧数据，用于盘后空数据回退"""
+    if os.path.exists(OUTPUT_FILE):
+        try:
+            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                old = json.load(f)
+            if old.get("current_clusters") or old.get("broker_views"):
+                return old
+        except:
+            pass
+    return None
+
+def parse_catalyst_dates(date_str):
+    """解析催化剂日期字符串，返回 (start_date, end_date) 元组。
+    格式支持: '6.18', '6.12-14', '6.12起', '6月下旬', '6月中旬'
+    日期均为当月，若月份缺失则用当前月。
+    返回 None 表示无法解析。
+    """
+    today = datetime.date.today()
+    current_month = today.month
+    current_year = today.year
+
+    # 清理空格
+    date_str = date_str.strip()
+
+    # 格式: "6.12-14" (日-日范围)
+    m = re.match(r'(\d{1,2})\.(\d{1,2})-(\d{1,2})$', date_str)
+    if m:
+        month, start_day, end_day = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        return (datetime.date(current_year, month, start_day),
+                datetime.date(current_year, month, end_day))
+
+    # 格式: "6.18" (单日)
+    m = re.match(r'(\d{1,2})\.(\d{1,2})$', date_str)
+    if m:
+        month, day = int(m.group(1)), int(m.group(2))
+        d = datetime.date(current_year, month, day)
+        return (d, d)
+
+    # 格式: "6.12起" (开始于某日，持续中)
+    m = re.match(r'(\d{1,2})\.(\d{1,2})起', date_str)
+    if m:
+        month, day = int(m.group(1)), int(m.group(2))
+        start = datetime.date(current_year, month, day)
+        return (start, None)  # None 表示无截止日
+
+    # 格式: "6月下旬" / "6月中旬" / "6月上旬"
+    m = re.match(r'(\d{1,2})月(上|中|下)旬', date_str)
+    if m:
+        month, period = int(m.group(1)), m.group(2)
+        if period == '上':
+            return (datetime.date(current_year, month, 1),
+                    datetime.date(current_year, month, 10))
+        elif period == '中':
+            return (datetime.date(current_year, month, 11),
+                    datetime.date(current_year, month, 20))
+        else:
+            return (datetime.date(current_year, month, 21),
+                    datetime.date(current_year, month, 30))
+
+    return None
+
+
+def filter_expired(items, is_catalyst=True):
+    """过滤已过期的事件/催化剂。
+    is_catalyst=True: items 有 date 字段
+    is_catalyst=False: items 有 sector/reason 字段（谨慎方向），根据上下文判断
+    """
+    today = datetime.date.today()
+    filtered = []
+
+    if is_catalyst:
+        for item in items:
+            dates = parse_catalyst_dates(item.get('date', ''))
+            if dates is None:
+                # 无法解析日期的，保留（可能是"本月"等模糊描述）
+                filtered.append(item)
+                continue
+            start, end = dates
+            if end is None:
+                # 无截止日（如"6.12起"），始终保留
+                filtered.append(item)
+            elif end >= today:
+                # 已结束但还没结束（或者正在进行），保留
+                filtered.append(item)
+            # else: end < today → 已过期，跳过
+    else:
+        # 谨慎方向：根据关键词判断是否已过时
+        stale_keywords = ['大会临近尾声', '已充分定价', '利好兑现', '会议结束', '已过']
+        for item in items:
+            reason = item.get('reason', '')
+            if any(kw in reason for kw in stale_keywords):
+                continue  # 跳过已过时的谨慎方向
+            filtered.append(item)
+
+    return filtered
     """加载旧数据，用于盘后空数据回退"""
     if os.path.exists(OUTPUT_FILE):
         try:
@@ -134,7 +230,7 @@ def analyze_and_generate():
         "high_prob": [],
         "cautious": [],
         "catalysts": [],
-        "broker_views": broker_views[:3] if broker_views else [],
+        "broker_views": list(dict.fromkeys(broker_views[:3])) if broker_views else [],
     }
 
     # 分析当前抱团
@@ -161,6 +257,10 @@ def analyze_and_generate():
         for key in ["high_prob", "cautious", "catalysts"]:
             if not result[key] and old_data.get(key):
                 result[key] = old_data[key]
+
+    # ===== 过滤已过期事件 =====
+    result["catalysts"] = filter_expired(result.get("catalysts", []), is_catalyst=True)
+    result["cautious"] = filter_expired(result.get("cautious", []), is_catalyst=False)
 
     # 保存
     os.makedirs(DATA_DIR, exist_ok=True)

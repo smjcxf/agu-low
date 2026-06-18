@@ -1,37 +1,29 @@
 {
-  "update_time": "2026-06-14 21:00:00",
+  "update_time": "2026-06-17 19:34:22",
   "current_clusters": [
     {
       "rank": 1,
       "medal": "🥇",
-      "sector": "有色金属",
-      "amount": 93.95,
+      "sector": "半导体",
+      "amount": 153.335489,
       "unit": "亿",
       "direction": "流入"
     },
     {
       "rank": 2,
       "medal": "🥈",
-      "sector": "电力设备",
-      "amount": 20,
+      "sector": "电池",
+      "amount": 47.77518,
       "unit": "亿",
-      "direction": "流入"
+      "direction": "流出"
     },
     {
       "rank": 3,
       "medal": "🥉",
-      "sector": "国防军工",
-      "amount": 20,
+      "sector": "元件",
+      "amount": 23.815348,
       "unit": "亿",
       "direction": "流入"
-    },
-    {
-      "rank": 4,
-      "medal": "",
-      "sector": "证券",
-      "amount": 3.5,
-      "unit": "%",
-      "direction": ""
     }
   ],
   "high_prob": [
@@ -60,22 +52,12 @@
       "strength": "分歧蓄力"
     }
   ],
-  "cautious": [
-    {
-      "sector": "华为算力",
-      "reason": "大会临近尾声，利好可能已充分定价"
-    }
-  ],
+  "cautious": [],
   "catalysts": [
     {
       "date": "6.18",
       "event": "美联储FOMC · 沃什首秀",
       "type": "重磅"
-    },
-    {
-      "date": "6.12-14",
-      "event": "华为HDC开发者大会",
-      "type": "进行中"
     },
     {
       "date": "6.12起",
@@ -87,5 +69,10 @@
       "event": "中报业绩预告窗口",
       "type": "持续"
     }
+  ],
+  "broker_views": [
+    "降费“红包”要来了，“牛市旗手”抢跑入局",
+    "A股市场回顾：创业板指跌3.22%，十大券商策略解析与后市展望",
+    "PB达1.61倍，大通证券17.03亿股寻买家，43亿元起拍能否顺利易主？"
   ]
 }

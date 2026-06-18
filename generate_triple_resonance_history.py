@@ -88,36 +88,34 @@ def generate_snapshots(gold_pool):
         if current.weekday() < 5:  # 只处理交易日
             daily_stocks = []
             
-            for code, data in stocks.items():
-                use_data = None
-                
-                if date_str in stock_daily.get(code, {}):
-                    # 历史数据
-                    use_data = stock_daily[code][date_str]
-                elif date_str == today:
-                    # 今天：用最新history + 顶层字段
-                    signals, signal_count = get_latest_signals(data)
-                    if signal_count >= 3:
-                        latest = data.get('history', [])
-                        latest_item = latest[-1] if latest else {}
-                        use_data = {
-                            'signals': signals,
-                            'signal_count': signal_count,
-                            'close': latest_item.get('close', data.get('close', 0)),
-                            'pct_chg': latest_item.get('pct_chg', data.get('pct_chg', 0))
-                        }
-                
-                if use_data and use_data['signal_count'] >= 3:
-                    # 计算连续共振天数
-                    consecutive = 0
-                    for d in reversed(sorted(stock_daily.get(code, {}).keys())):
-                        if d <= date_str:
-                            if stock_daily[code][d]['signal_count'] >= 3:
-                                consecutive += 1
-                            else:
-                                break
-                    daily_stocks.append({
-                        'code': code,
+            # 当日数据不读历史，统一由WATCH_DATA+SCAN_DATA补充（避免GOLD_POOL历史残留假数据）
+            if date_str != today:
+                for code, data in stocks.items():
+                    use_data = None
+                    
+                    if date_str in stock_daily.get(code, {}):
+                        # 历史数据
+                        use_data = stock_daily[code][date_str]
+                    else:
+                        # 最近的历史: 在股票的历史数据中找到信号最强的entries
+                        candidate_dates = sorted(
+                            [d for d in stock_daily.get(code, {}).keys() if d <= date_str],
+                            reverse=True
+                        )
+                        if candidate_dates:
+                            use_data = stock_daily[code][candidate_dates[0]]
+                    
+                    if use_data and use_data['signal_count'] >= 3:
+                        # 计算连续共振天数
+                        consecutive = 0
+                        for d in reversed(sorted(stock_daily.get(code, {}).keys())):
+                            if d <= date_str:
+                                if stock_daily[code][d]['signal_count'] >= 3:
+                                    consecutive += 1
+                                else:
+                                    break
+                        daily_stocks.append({
+                            'code': code,
                         'name': data.get('name', ''),
                         'close': use_data['close'],
                         'pct_chg': use_data['pct_chg'],
@@ -160,21 +158,22 @@ def main():
 
     snapshots = generate_snapshots(gold_pool)
 
-    # 补充：将watch_data中的三线共振股也并入当天快照（覆盖金池遗漏）
-    if watch_data and watch_data.get('triple_signals'):
+    # 补充：将watch_data + scan_data中的三线共振股并入当天快照（当日唯一权威来源）
+    def merge_triple_signals(source, source_name):
+        if not source or not source.get('triple_signals'):
+            return
         today = datetime.now()
-        # 周末/非交易日不补充（跳过后台生成，避免周日假数据）
         if today.weekday() < 5:
             today_str = today.strftime('%Y-%m-%d')
             if today_str not in snapshots:
                 snapshots[today_str] = []
             existing_codes = {s['code'].replace('sh_','').replace('sz_','').replace('hk_','') for s in snapshots[today_str]}
-            for ts in watch_data['triple_signals']:
+            added = 0
+            for ts in source['triple_signals']:
                 code = ts.get('code', '')
                 code_normalized = code.replace('sh_','').replace('sz_','').replace('hk_','')
                 if code_normalized in existing_codes:
                     continue
-                # 用watch_data的字段构建记录（与gold_pool格式一致）
                 snapshots[today_str].append({
                     'code': code,
                     'name': ts.get('name', ''),
@@ -191,7 +190,20 @@ def main():
                     'duration_days': 0
                 })
                 existing_codes.add(code_normalized)
-            print(f"  {today_str}: 补充后 {len(snapshots[today_str])}只")
+                added += 1
+            if added:
+                print(f"  {today_str}: {source_name}补充 {added}只 → 共{len(snapshots[today_str])}只")
+
+    merge_triple_signals(watch_data, 'WATCH')
+    
+    # 加载SCAN_DATA补充
+    scan_file = os.path.join(os.path.dirname(GOLD_POOL_FILE), 'scan_result.json')
+    scan_data = None
+    if os.path.exists(scan_file):
+        with open(scan_file, 'r', encoding='utf-8') as f:
+            scan_data = json.load(f)
+        print(f"SCAN_DATA三线共振: {len(scan_data.get('triple_signals', []))}只")
+    merge_triple_signals(scan_data, 'SCAN')
     
     # 合并已有数据：已有文件中的非空数据优先保留（新生成的空数组不覆盖旧数据）
     if os.path.exists(OUTPUT_FILE):

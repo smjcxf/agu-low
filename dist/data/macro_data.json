@@ -1,16 +1,16 @@
 {
-  "update_time": "2026-06-16 23:56:40",
+  "update_time": "2026-06-18 09:53:31",
   "monetary": {
     "cn_bond_10y": {
-      "value": 1.7324,
-      "date": "2026-06-16"
+      "value": 1.727,
+      "date": "2026-06-17"
     },
     "us_bond_10y": {
-      "value": 4.47,
-      "date": "2026-06-15"
+      "value": 4.49,
+      "date": "2026-06-17"
     },
     "cn_us_spread": {
-      "value": -2.74
+      "value": -2.76
     },
     "lpr": {
       "lpr_1y": 3.0,
@@ -18,11 +18,11 @@
       "date": "2026-05-20"
     },
     "shibor": {
-      "on": 1.423,
-      "w1": 1.488,
-      "m1": 1.415,
-      "m3": 1.428,
-      "date": "2026-06-16"
+      "on": 1.415,
+      "w1": 1.464,
+      "m1": 1.4185,
+      "m3": 1.429,
+      "date": "2026-06-17"
     },
     "m2_yoy": {
       "value": null,
@@ -30,7 +30,7 @@
     },
     "open_market_operation": {
       "net_inflow": null,
-      "date": "2026-06-16"
+      "date": "2026-06-18"
     }
   },
   "economy": {
@@ -51,8 +51,8 @@
       "date": "2025-09-10"
     },
     "social_financing": {
-      "value": 2769,
-      "change_pct": -10.4,
+      "value": 2781,
+      "change_pct": -10.3,
       "date": "2026-05-01"
     },
     "export_yoy": {
@@ -63,25 +63,25 @@
     "ipo": {
       "count": 10,
       "amount": 0,
-      "date": "2026-06-16"
+      "date": "2026-06-18"
     }
   },
   "market_sentiment": {
     "new_investors": {
       "value": 99.59,
       "change": 0.09,
-      "date": "2026-06-16"
+      "date": "2026-06-18"
     }
   },
   "global_macro": {
     "vix": {
-      "value": 18.35,
-      "date": "2026-06-16"
+      "value": 18.7,
+      "date": "2026-06-18"
     },
     "usdcnh": {
-      "price": 6.7582,
-      "prev_close": 6.7555,
-      "date": "2026-06-16",
+      "price": 6.7759,
+      "prev_close": 6.7667,
+      "date": "2026-06-18",
       "source": "Sina实时"
     },
     "dxy": {
@@ -91,27 +91,27 @@
   },
   "indicator_status": {
     "lpr": {
-      "last_updated": "2026-06-16",
-      "is_fresh": false,
+      "last_updated": "2026-06-18",
+      "is_fresh": true,
       "name": "LPR利率"
     },
     "pmi": {
-      "last_updated": "2026-06-16",
+      "last_updated": "2026-06-18",
       "is_fresh": false,
       "name": "制造业PMI"
     },
     "social_financing": {
-      "last_updated": "2026-06-16",
+      "last_updated": "2026-06-18",
       "is_fresh": true,
       "name": "社融规模"
     },
     "export_yoy": {
-      "last_updated": "2026-06-16",
+      "last_updated": "2026-06-18",
       "is_fresh": false,
       "name": "出口增速"
     },
     "new_investors": {
-      "last_updated": "2026-06-16",
+      "last_updated": "2026-06-18",
       "is_fresh": true,
       "name": "新增投资者"
     }

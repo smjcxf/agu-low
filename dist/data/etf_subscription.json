@@ -1,22 +1,10 @@
 {
   "sh": [
     {
-      "date": "3/25",
-      "date_raw": "2026-03-25",
-      "total_shares_bil": 20312.03,
-      "net_subscribe_bil": 0.0
-    },
-    {
-      "date": "3/26",
-      "date_raw": "2026-03-26",
-      "total_shares_bil": 20358.36,
-      "net_subscribe_bil": 46.32
-    },
-    {
       "date": "3/27",
       "date_raw": "2026-03-27",
       "total_shares_bil": 20332.35,
-      "net_subscribe_bil": -26.01
+      "net_subscribe_bil": 0.0
     },
     {
       "date": "3/30",
@@ -329,7 +317,19 @@
       "date_raw": "2026-06-15",
       "total_shares_bil": 18379.63,
       "net_subscribe_bil": -1.31
+    },
+    {
+      "date": "6/16",
+      "date_raw": "2026-06-16",
+      "total_shares_bil": 18353.55,
+      "net_subscribe_bil": -26.08
+    },
+    {
+      "date": "6/17",
+      "date_raw": "2026-06-17",
+      "total_shares_bil": 18267.24,
+      "net_subscribe_bil": -86.32
     }
   ],
-  "update_time": "2026-06-16 16:54"
+  "update_time": "2026-06-18 10:12"
 }

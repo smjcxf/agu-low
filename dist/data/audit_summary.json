@@ -1,10 +1,21 @@
 {
-  "timestamp": "2026-06-16T23:44:24.443313",
+  "timestamp": "2026-06-18T10:04:49.297305",
   "errors": 0,
-  "warnings": 0,
-  "ok": 44,
+  "warnings": 2,
+  "ok": 47,
   "details": {
     "errors": [],
-    "warnings": []
+    "warnings": [
+      {
+        "dashboard": "部署",
+        "check": "dist/data完整性",
+        "message": "data/ 有但 dist/data/ 缺少: mahoro_signals.json"
+      },
+      {
+        "dashboard": "部署",
+        "check": "dist/data完整性",
+        "message": "data/ 有但 dist/data/ 缺少: zsxq_token.json"
+      }
+    ]
   }
 }

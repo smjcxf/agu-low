@@ -514,87 +514,192 @@
       "duration_days": 0
     }
   ],
-  "2026-06-14": [
+  "2026-06-15": [
     {
-      "code": "000776",
+      "code": "sz_000776",
       "name": "广发证券",
       "close": 20.08,
       "pct_chg": 4.86,
-      "signal_count": 3,
       "缠论买_日K": true,
       "金钻_起涨": false,
       "四量图_机构变红": true,
       "上涨趋势": true,
+      "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 1
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
     {
-      "code": "01109",
+      "code": "hk_01109",
       "name": "华润置地",
       "close": 37.28,
       "pct_chg": 1.08,
-      "signal_count": 3,
       "缠论买_日K": true,
       "金钻_起涨": false,
       "四量图_机构变红": true,
       "上涨趋势": true,
+      "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 1
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
     {
-      "code": "002129",
+      "code": "sz_002129",
       "name": "TCL中环",
       "close": 9.98,
       "pct_chg": -1.48,
-      "signal_count": 3,
       "缠论买_日K": true,
       "金钻_起涨": false,
       "四量图_机构变红": true,
       "上涨趋势": true,
+      "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 1
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     }
   ],
-  "2026-06-15": [],
   "2026-06-16": [
     {
-      "code": "688661",
+      "code": "sh_688661",
       "name": "和林微纳",
       "close": 130.8,
       "pct_chg": 1.55,
-      "signal_count": 3,
       "缠论买_日K": true,
       "金钻_起涨": false,
       "四量图_机构变红": true,
       "上涨趋势": true,
+      "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 1
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
+    {
+      "code": "sz_300292",
+      "name": "吴通控股",
+      "close": 6.28,
+      "pct_chg": 14.39,
+      "缠论买_日K": true,
+      "金钻_起涨": false,
+      "四量图_机构变红": true,
+      "上涨趋势": true,
+      "signal_count": 3,
+      "score": 9,
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
+    },
+    {
+      "code": "sh_688603",
+      "name": "天承科技",
+      "close": 195.26,
+      "pct_chg": 5.36,
+      "缠论买_日K": true,
+      "金钻_起涨": false,
+      "四量图_机构变红": true,
+      "上涨趋势": true,
+      "signal_count": 3,
+      "score": 9,
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
+    }
+  ],
+  "2026-06-17": [
+    {
+      "code": "sh_688396",
+      "name": "华润微",
+      "close": 73.78,
+      "pct_chg": 2.83,
+      "缠论买_日K": true,
+      "金钻_起涨": false,
+      "四量图_机构变红": true,
+      "上涨趋势": true,
+      "signal_count": 3,
+      "score": 9,
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
+    },
+    {
+      "code": "sz_300292",
+      "name": "吴通控股",
+      "close": 6.28,
+      "pct_chg": 14.39,
+      "缠论买_日K": true,
+      "金钻_起涨": false,
+      "四量图_机构变红": true,
+      "上涨趋势": true,
+      "signal_count": 3,
+      "score": 9,
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
+    },
+    {
+      "code": "sh_688603",
+      "name": "天承科技",
+      "close": 196.12,
+      "pct_chg": 0.44,
+      "缠论买_日K": true,
+      "金钻_起涨": false,
+      "四量图_机构变红": true,
+      "上涨趋势": true,
+      "signal_count": 3,
+      "score": 9,
+      "days_in_resonance": 2,
+      "enter_date": "",
+      "duration_days": 0
+    }
+  ],
+  "2026-06-18": [
     {
       "code": "300292",
       "name": "吴通控股",
       "close": 6.36,
       "pct_chg": 1.27,
-      "signal_count": 3,
       "缠论买_日K": true,
       "金钻_起涨": false,
       "四量图_机构变红": true,
       "上涨趋势": true,
+      "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 1
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "688603",
       "name": "天承科技",
       "close": 195.76,
       "pct_chg": 5.63,
-      "signal_count": 3,
       "缠论买_日K": true,
       "金钻_起涨": false,
       "四量图_机构变红": true,
       "上涨趋势": true,
+      "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 1
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
+    },
+    {
+      "code": "300088",
+      "name": "长信科技",
+      "close": 10.57,
+      "pct_chg": 19.98,
+      "缠论买_日K": true,
+      "金钻_起涨": false,
+      "四量图_机构变红": true,
+      "上涨趋势": true,
+      "signal_count": 3,
+      "score": 9,
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     }
   ]
 }
