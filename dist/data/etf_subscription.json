@@ -1,16 +1,10 @@
 {
   "sh": [
     {
-      "date": "3/27",
-      "date_raw": "2026-03-27",
-      "total_shares_bil": 20332.35,
-      "net_subscribe_bil": 0.0
-    },
-    {
       "date": "3/30",
       "date_raw": "2026-03-30",
       "total_shares_bil": 20297.85,
-      "net_subscribe_bil": -34.49
+      "net_subscribe_bil": 0.0
     },
     {
       "date": "3/31",
@@ -329,7 +323,13 @@
       "date_raw": "2026-06-17",
       "total_shares_bil": 18267.24,
       "net_subscribe_bil": -86.32
+    },
+    {
+      "date": "6/18",
+      "date_raw": "2026-06-18",
+      "total_shares_bil": 18197.15,
+      "net_subscribe_bil": -70.09
     }
   ],
-  "update_time": "2026-06-18 14:39"
+  "update_time": "2026-06-19 09:28"
 }

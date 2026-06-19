@@ -1,29 +1,35 @@
 {
-  "update_time": "2026-06-18 20:51",
+  "update_time": "2026-06-19 11:49",
   "alerts": [
     {
       "type": "summary",
-      "severity": "low",
+      "severity": "medium",
       "message": "ETF监测中，11涨1跌",
-      "time": "20:51"
+      "time": "11:49"
     },
     {
       "type": "etf",
-      "severity": "medium",
+      "severity": "high",
       "message": "华夏科创50ETF 大涨 4.02%",
-      "time": "20:52"
+      "time": "11:49"
     },
     {
       "type": "etf",
       "severity": "medium",
+      "message": "酒ETF 大跌 2.18%",
+      "time": "11:49"
+    },
+    {
+      "type": "etf",
+      "severity": "high",
       "message": "5G通信ETF 大涨 3.75%",
-      "time": "20:52"
+      "time": "11:49"
     },
     {
       "type": "etf",
-      "severity": "medium",
+      "severity": "high",
       "message": "芯片ETF 大涨 4.68%",
-      "time": "20:52"
+      "time": "11:49"
     }
   ],
   "etfFlow": {
@@ -154,7 +160,7 @@
       "valid": 12,
       "up": 11,
       "down": 1,
-      "alerts_count": 3
+      "alerts_count": 4
     }
   },
   "calendar": [
