@@ -207,12 +207,48 @@ var currentTab = 'list';
 var historyData = {};
 var currentDate = '';
 
+// A股休市日（周末自动排除，这里只列调休假期）
+var HOLIDAYS_2026 = [
+  '2026-01-01','2026-01-02',  // 元旦
+  '2026-01-28','2026-01-29','2026-01-30','2026-02-03','2026-02-04',  // 春节
+  '2026-04-06',  // 清明
+  '2026-05-01','2026-05-04','2026-05-05',  // 劳动节
+  '2026-06-19','2026-06-20','2026-06-21','2026-06-22',  // 端午
+  '2026-10-01','2026-10-02','2026-10-03','2026-10-06','2026-10-07',  // 国庆
+];
+var HOLIDAY_SET = {};
+HOLIDAYS_2026.forEach(function(d) { HOLIDAY_SET[d] = true; });
+
+function isTradingDay(dateStr) {
+  if (!dateStr) return false;
+  if (HOLIDAY_SET[dateStr]) return false;
+  var d = new Date(dateStr + 'T00:00:00');
+  var day = d.getDay();
+  return day !== 0 && day !== 6;  // 排除周六(6)、周日(0)
+}
+
+function getTradingDates(allDates) {
+  return allDates.filter(function(d) { return isTradingDay(d); });
+}
+
+// 找到最近的交易日（往前找）
+function findLastTradingDay(dateStr) {
+  var d = new Date(dateStr + 'T00:00:00');
+  for (var i = 0; i < 15; i++) {
+    var s = d.toISOString().split('T')[0];
+    if (isTradingDay(s)) return s;
+    d.setDate(d.getDate() - 1);
+  }
+  return dateStr;
+}
+
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('dateSelector').max = today;
-  document.getElementById('dateSelector').value = today;
-  currentDate = today;
+  var lastTrading = findLastTradingDay(today);
+  document.getElementById('dateSelector').value = lastTrading;
+  currentDate = lastTrading;
 
   // 优先使用嵌入数据，如果为null则从json文件加载
   if (EMBEDDED_HISTORY_DATA && Object.keys(EMBEDDED_HISTORY_DATA).length > 0) {
@@ -332,7 +368,7 @@ function renderTimeline() {
   var timelineContent = document.getElementById('timelineContent');
   var emptyState = document.getElementById('emptyTimeline');
 
-  var allDates = Object.keys(historyData).sort().slice(-31);
+  var allDates = getTradingDates(Object.keys(historyData).sort()).slice(-31);
   var todayStr = new Date().toISOString().split('T')[0];
 
   if (allDates.length === 0) {
@@ -419,7 +455,7 @@ function renderCalendar() {
   var container = document.getElementById('calendarContent');
   var emptyState = document.getElementById('emptyCalendar');
 
-  var dates = Object.keys(historyData).sort();
+  var dates = getTradingDates(Object.keys(historyData).sort());
 
   if (dates.length === 0) {
     container.innerHTML = '';
@@ -487,7 +523,7 @@ function renderCalendar() {
 // 更新统计栏
 function updateStats() {
   var data = historyData[currentDate] || [];
-  var dates = Object.keys(historyData).sort();
+  var dates = getTradingDates(Object.keys(historyData).sort());
   var currentIndex = dates.indexOf(currentDate);
 
   document.getElementById('statCount').textContent = data.length;
@@ -534,11 +570,16 @@ function switchTab(tab, e) {
 // 跳转日期
 function jumpToDate(days) {
   var current = new Date(currentDate);
-  current.setDate(current.getDate() + days);
-
-  var newDate = current.toISOString().split('T')[0];
-  var minDate = '2026-06-01';
   var maxDate = new Date().toISOString().split('T')[0];
+  var minDate = '2026-06-01';
+
+  // 逐日跳过休市日
+  for (var i = 0; i < 20; i++) {
+    current.setDate(current.getDate() + days);
+    var newDate = current.toISOString().split('T')[0];
+    if (isTradingDay(newDate)) break;
+    // 非交易日继续同方向跳
+  }
 
   if (newDate >= minDate && newDate <= maxDate) {
     document.getElementById('dateSelector').value = newDate;
@@ -546,10 +587,11 @@ function jumpToDate(days) {
   }
 }
 
-// 跳转到今天
+// 跳转到今天（或最近交易日）
 function jumpToToday() {
   var today = new Date().toISOString().split('T')[0];
-  document.getElementById('dateSelector').value = today;
+  var target = findLastTradingDay(today);
+  document.getElementById('dateSelector').value = target;
   loadData();
 }
 </script>
