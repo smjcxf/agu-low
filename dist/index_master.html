@@ -179930,8 +179930,7 @@ function renderHerding() {
   if (timeEl) {
     var ft = fmtDataTime(d.update_time);
     timeEl.textContent = '更新于 ' + ft.text + '（盘后更新）';
-    if (ft.stale) timeEl.className = 'card-time stale';
-    else timeEl.className = 'card-time';
+    timeEl.className = 'card-time';
   }
   var h = '';
 
@@ -180147,8 +180146,7 @@ function renderPredictSummary() {
     var ft = fmtDataTime(latestTime);
     var isFresh = !ft.stale;
     timeEl.textContent = '更新于 ' + ft.text + '（盘后更新）';
-    if (ft.stale) timeEl.className = 'card-time stale';
-    else timeEl.className = 'card-time';
+    timeEl.className = 'card-time';
   }
 
   // 收集关键信号
