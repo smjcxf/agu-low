@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-06-17 19:34:22",
+  "update_time": "2026-06-19 13:33:27",
   "current_clusters": [
     {
       "rank": 1,
@@ -57,12 +57,44 @@
     {
       "date": "6.12起",
       "event": "A股宽基指数集中调样",
-      "type": "政策"
+      "type": "政策",
+      "status": "持续中"
     },
     {
       "date": "6月下旬",
       "event": "中报业绩预告窗口",
-      "type": "持续"
+      "type": "持续",
+      "status": "即将"
+    },
+    {
+      "date": "6.19-21",
+      "event": "华为HDC开发者大会·鸿蒙生态",
+      "type": "科技",
+      "status": "进行中"
+    },
+    {
+      "date": "6.19",
+      "event": "苹果WWDC 2026 AI战略发布",
+      "type": "科技",
+      "status": "进行中"
+    },
+    {
+      "date": "6.18",
+      "event": "FOMC利率决议（维持不变）",
+      "type": "宏观",
+      "status": "已落地"
+    },
+    {
+      "date": "6.22",
+      "event": "端午假期后首个交易日",
+      "type": "市场",
+      "status": "即将"
+    },
+    {
+      "date": "6下旬",
+      "event": "中报业绩预告窗口开启",
+      "type": "财报",
+      "status": "即将"
     }
   ],
   "broker_views": [
