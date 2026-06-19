@@ -30,3 +30,7 @@ node_modules/
 .env
 pwd.yaml
 backups/2026-06-18/
+*.bak
+*.bak.*
+dist/data/.enhance_log.txt
+dist/data/zsxq_selenium_snapshot.txt
