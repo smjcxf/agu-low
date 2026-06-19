@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620003135 -->
+<!-- build: 20260620063448 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -176136,8 +176136,8 @@ function render() {
       h += '</div></div>';
       // 右栏：中长线确认
       h += '<div style="width:25%;border:2px solid #42a5f5;border-radius:10px;padding:12px;background:#e3f2fd;text-align:center;display:flex;flex-direction:column;justify-content:center;">';
-      h += '<div style="font-size:13px;color:#1565c0;font-weight:600;">📈 中长线确认</div>';
-      h += '<div style="font-size:36px;font-weight:700;color:#1565c0;margin:8px 0;">' + trendCount + '</div>';
+      h += '<div style="font-size:13px;color:#42a5f5;font-weight:600;">📈 中长线确认</div>';
+      h += '<div style="font-size:36px;font-weight:700;color:#42a5f5;margin:8px 0;">' + trendCount + '</div>';
       h += '<div style="font-size:11px;color:#888;">机构+上涨趋势</div></div>';
       h += '</div>';
 
@@ -176528,7 +176528,7 @@ function renderSignalCards(stocks, type) {
 
       // 三线共振中长线加持：同时满足机构变红+上涨趋势
       if (!isSanzu && s['四量图_机构变红'] && s['上涨趋势']) {
-        html += '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;color:#fff;background:#d8bfd8;margin-top:4px;">📈中长线确认</span>';
+        html += '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;color:#fff;background:#42a5f5;margin-top:4px;">📈中长线确认</span>';
       }
     }
 
@@ -179553,11 +179553,9 @@ render();
     }
   };
   function applyGuestMode() {
-    // 访客模式：隐藏核心算法/Tab/选股逻辑详解等
+    // 访客模式：隐藏核心算法/选股逻辑详解等（预判信号Tab可看）
     var hideSelectors = [
-      '.tab[data-tab="predict"]',   // 预判信号Tab
       '.tab[data-tab="guide"]',     // 逻辑详解Tab
-      '#panel-predict',             // 预判信号面板
       '#panel-guide',               // 逻辑详解面板
     ];
     hideSelectors.forEach(function(sel) {
