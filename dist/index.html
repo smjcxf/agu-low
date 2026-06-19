@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620002258 -->
+<!-- build: 20260620003135 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -542,7 +542,7 @@ tr:hover td { background: #fafbfc; }
 <div class="tabs">
   <div class="tab active" data-tab="overview">总览</div>
   <div class="tab" data-tab="shmonitor">数据监控</div>
-  <div class="tab" data-tab="predict">🔮 预判信号</div>
+  <div class="tab" data-tab="predict">预判信号</div>
   <div class="tab" data-tab="gold">金股观测</div>
   <div class="tab" data-tab="query">个股查询</div>
   <div class="tab" data-tab="guide">逻辑详解</div>
@@ -1089,7 +1089,6 @@ tr:hover td { background: #fafbfc; }
 
       <!-- 扫描与风险提示 -->
       <div style="padding:10px 14px;background:#fff3e0;border-radius:8px;font-size:12px;color:#666;line-height:1.6;border-left:4px solid #ff9800;">
-        <b>📋 扫描范围</b>：盘后扫描创业板/科创板/主板各Top100 + 港股Top50（按成交量排序）；盘中精监仅扫描金股池。<br>
         <b>⚠️ 风险提示</b>：信号含XMA未来函数（金钻信号），盘中可能漂移，仅供研究参考，不构成投资建议。
       </div>
 
@@ -176196,7 +176195,7 @@ function render() {
       '<div style="font-size:15px;font-weight:700;color:#333;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">🏆 股池构成 ' +
       '<span style="font-size:12px;font-weight:600;color:#e94560;background:#fff0f0;padding:2px 10px;border-radius:12px;margin-left:4px;">' + gpStocks.length + ' 只</span>' +
       ' <span style="font-size:11px;color:#888;font-weight:400;">（按成交额排序取Top）</span>' +
-      '<span style="font-size:11px;color:#888;font-weight:400;margin-left:auto;" id="boardSummaryTime"></span></div>' +
+      '<span style="font-size:11px;color:#888;font-weight:400;margin-left:6px;" id="boardSummaryTime"></span></div>' +
       '<div style="display:flex;gap:6px;">' +
       '<div style="flex:1;min-width:0;border:1.5px solid #0288d1;border-radius:8px;padding:8px 10px;text-align:center;background:#e0f2fe;">' +
         '<div style="font-size:11px;color:#0288d1;font-weight:700;">创业板</div>' +
@@ -176222,7 +176221,7 @@ function render() {
     if (bs) bs.innerHTML = boardHtml;
     var boardTimeEl = document.getElementById('boardSummaryTime');
     if (boardTimeEl) {
-      var ut = d.update_time || (window.SCAN_DATA && window.SCAN_DATA.scan_time) || '';
+      var ut = d.update_time || d.scan_time || (window.SCAN_DATA && (window.SCAN_DATA.update_time || window.SCAN_DATA.scan_time)) || '';
       if (ut) { var ft = fmtDataTime(ut); boardTimeEl.textContent = '更新于 ' + ft.text; }
     }
 
