@@ -124,7 +124,6 @@ MODES = {
             ("fetch_etf_subscription.py", 120),
             ("fetch_sh_index_fib.py", 60),
             ("fetch_sh_sz_history.py", 120),
-            ("fetch_stock_names.py", 120),
             ("fetch_sector_fund_flow.py", 180),
             ("fetch_main_week.py", 120),
             ("fetch_market_alerts.py", 180),
