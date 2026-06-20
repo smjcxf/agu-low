@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-06-20 14:54:08",
+  "update_time": "2026-06-20 15:33:51",
   "monetary": {
     "cn_bond_10y": {
       "value": 1.7299,
@@ -87,6 +87,28 @@
     "dxy": {
       "value": 97.27,
       "date": "2019-05-07"
+    },
+    "commodities": {
+      "gold": {
+        "value": 4172.2,
+        "unit": "美元/盎司",
+        "date": "2026-06-19"
+      },
+      "silver": {
+        "value": 65.38,
+        "unit": "美元/盎司",
+        "date": "2026-06-19"
+      },
+      "copper": {
+        "value": 6.3995,
+        "unit": "美元/磅",
+        "date": "2026-06-19"
+      },
+      "oil": {
+        "value": 76.53,
+        "unit": "美元/桶",
+        "date": "2026-06-19"
+      }
     }
   },
   "indicator_status": {
