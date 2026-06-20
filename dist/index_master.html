@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620140738 -->
+<!-- build: 20260620140959 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150198,7 +150198,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 14:07:10",
+"update_time": "2026-06-20 14:09:30",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -179075,7 +179075,19 @@ function renderETFFlow() {
     flowDir + flowStr + '</span>。' +
     (inflowItems.length > 0 ? topEtfName + '▲' + (sortedByPct[0].change_pct||0).toFixed(2) + '%领先' : '') +
     (outflowItems.length > 0 ? '，' + bottomEtfName + '▼' + Math.abs(sortedByPct[sortedByPct.length-1].change_pct||0).toFixed(2) + '%垫底' : '') +
-    '。<span style="color:#1565c0;font-weight:700;">' + etfMood + '。</span></p>';
+    '。<span style="color:#1565c0;font-weight:700;">' + etfMood + '。</span>' +
+    // 重点预警合并进第一段
+    (majorItems.length > 0 ?
+      ' <span style="color:#c62828;font-weight:700;">⚠️重点关注：' +
+      (function(){
+        var mList = majorItems.slice().sort(function(a,b){return Math.abs(b.change_pct||0)-Math.abs(a.change_pct||0)});
+        return mList.map(function(e){
+          var dir = (e.change_pct||0)>0?'强势上涨':'大幅回调';
+          return e.name+dir+Math.abs(e.change_pct||0).toFixed(2)+'%';
+        }).join('；');
+      })() + '，大资金持仓异动！</span>'
+      : '') +
+    '</p>';
 
   // 详细数据（直接展示）
   h += '<div style="padding-top:6px;">';
@@ -179089,16 +179101,6 @@ function renderETFFlow() {
     outflowItems.sort((a,b) => (a.change_pct || 0) - (b.change_pct || 0));
     const names = outflowItems.map(e => e.name + '(<span style="color:#2e7d32;">▼' + Math.abs(e.change_pct||0).toFixed(2) + '%</span>)').join('、');
     h += '<p style="margin:0 0 8px 0;">🟢 <b>明显下跌：</b>' + names + '。</p>';
-  }
-  if (majorItems.length > 0) {
-    majorItems.sort((a,b) => Math.abs(b.change_pct || 0) - Math.abs(a.change_pct || 0));
-    const warns = majorItems.map(e => {
-      const dir = (e.change_pct || 0) > 0 ? '强势上涨' : '大幅回调';
-      return e.name + dir + Math.abs(e.change_pct||0).toFixed(2) + '%';
-    });
-    h += '<p style="margin:0;padding:8px 12px;background:#fff3e0;border-left:4px solid #e65100;border-radius:4px;">' +
-      '⚠️ <b style="color:#c62828;">重点预警：</b>' + warns.join('；') +
-      '。<span style="color:#e65100;font-weight:700;"> 大资金持仓异动，请密切关注！</span></p>';
   }
   h += '</div>';
 
