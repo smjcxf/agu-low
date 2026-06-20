@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620230509 -->
+<!-- build: 20260620230727 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150363,7 +150363,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 23:04:34",
+"update_time": "2026-06-20 23:06:57",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -182955,7 +182955,7 @@ function renderHerdingMain() {
       h += '<div style="margin-bottom:5px;padding:6px 8px;background:'+tagBg+';border:1px solid '+borderColor+';border-radius:4px;font-size:12px;">';
       h += '<span style="display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:600;color:#fff;background:'+tagColor+';margin-right:6px;">'+p.tag+'</span>';
       h += '<b>'+p.sector+'</b>';
-      if (p.strength) h += ' <span style="font-size:10px;color:#999;">'+p.strength+'</span>';
+      if (p.strength && p.strength !== p.tag) h += ' <span style="font-size:10px;color:#999;">'+p.strength+'</span>';
       h += ' — ' + p.desc;
       h += '</div>';
     });
