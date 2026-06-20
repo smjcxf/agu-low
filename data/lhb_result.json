@@ -16,7 +16,17 @@
       "yz_sell_万": 68773.2,
       "yz_net_万": 51858.4,
       "consecutive_days": 1,
-      "sector": "小金属"
+      "sector": "小金属",
+      "seats": {
+        "机构": {
+          "buy": 67523.0,
+          "sell": 40068.9
+        },
+        "游资": {
+          "buy": 120631.6,
+          "sell": 68773.2
+        }
+      }
     },
     {
       "code": "002579",
@@ -32,7 +42,17 @@
       "yz_sell_万": 19745.4,
       "yz_net_万": 17293.5,
       "consecutive_days": 1,
-      "sector": "电子元件"
+      "sector": "电子元件",
+      "seats": {
+        "机构": {
+          "buy": 39457.7,
+          "sell": 37301.1
+        },
+        "游资": {
+          "buy": 37038.8,
+          "sell": 19745.4
+        }
+      }
     },
     {
       "code": "300166",
@@ -48,7 +68,17 @@
       "yz_sell_万": 15936.2,
       "yz_net_万": 27589.7,
       "consecutive_days": 1,
-      "sector": "互联网服务"
+      "sector": "互联网服务",
+      "seats": {
+        "机构": {
+          "buy": 20746.1,
+          "sell": 6452.9
+        },
+        "游资": {
+          "buy": 43525.9,
+          "sell": 15936.2
+        }
+      }
     },
     {
       "code": "300861",
@@ -64,7 +94,17 @@
       "yz_sell_万": 17093.0,
       "yz_net_万": 5926.4,
       "consecutive_days": 1,
-      "sector": "非金属材料"
+      "sector": "非金属材料",
+      "seats": {
+        "机构": {
+          "buy": 3168.6,
+          "sell": 2042.8
+        },
+        "游资": {
+          "buy": 23019.5,
+          "sell": 17093.0
+        }
+      }
     },
     {
       "code": "301310",
@@ -80,7 +120,17 @@
       "yz_sell_万": 54689.6,
       "yz_net_万": 3632.2,
       "consecutive_days": 1,
-      "sector": "电网设备"
+      "sector": "电网设备",
+      "seats": {
+        "机构": {
+          "buy": 87546.5,
+          "sell": 68235.5
+        },
+        "游资": {
+          "buy": 58321.8,
+          "sell": 54689.6
+        }
+      }
     },
     {
       "code": "000539",
@@ -95,7 +145,17 @@
       "yz_buy_万": 13247.4,
       "yz_sell_万": 11447.0,
       "yz_net_万": 1800.3,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 3740.7,
+          "sell": 12701.8
+        },
+        "游资": {
+          "buy": 13247.4,
+          "sell": 11447.0
+        }
+      }
     },
     {
       "code": "000679",
@@ -110,7 +170,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 18540.7,
+          "sell": 16735.0
+        }
+      }
     },
     {
       "code": "000691",
@@ -125,7 +191,17 @@
       "yz_buy_万": 0,
       "yz_sell_万": 1323.5,
       "yz_net_万": -1323.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 11339.1,
+          "sell": 6940.2
+        },
+        "游资": {
+          "buy": 0,
+          "sell": 1323.5
+        }
+      }
     },
     {
       "code": "001257",
@@ -140,7 +216,17 @@
       "yz_buy_万": 8837.0,
       "yz_sell_万": 13742.6,
       "yz_net_万": -4905.6,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 127020.6,
+          "sell": 101059.1
+        },
+        "游资": {
+          "buy": 8837.0,
+          "sell": 13742.6
+        }
+      }
     },
     {
       "code": "001282",
@@ -155,7 +241,17 @@
       "yz_buy_万": 1659.1,
       "yz_sell_万": 790.6,
       "yz_net_万": 868.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 22061.3,
+          "sell": 14419.5
+        },
+        "游资": {
+          "buy": 1659.1,
+          "sell": 790.6
+        }
+      }
     },
     {
       "code": "002281",
@@ -170,7 +266,17 @@
       "yz_buy_万": 136770.3,
       "yz_sell_万": 129736.7,
       "yz_net_万": 7033.7,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 59094.0,
+          "sell": 76692.5
+        },
+        "游资": {
+          "buy": 136770.3,
+          "sell": 129736.7
+        }
+      }
     },
     {
       "code": "002297",
@@ -185,7 +291,17 @@
       "yz_buy_万": 30488.1,
       "yz_sell_万": 31253.1,
       "yz_net_万": -765.0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 485030.7,
+          "sell": 242785.9
+        },
+        "游资": {
+          "buy": 30488.1,
+          "sell": 31253.1
+        }
+      }
     },
     {
       "code": "002354",
@@ -200,7 +316,17 @@
       "yz_buy_万": 30037.4,
       "yz_sell_万": 18510.7,
       "yz_net_万": 11526.6,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 47024.0,
+          "sell": 59717.8
+        },
+        "游资": {
+          "buy": 30037.4,
+          "sell": 18510.7
+        }
+      }
     },
     {
       "code": "002404",
@@ -215,7 +341,17 @@
       "yz_buy_万": 1886.8,
       "yz_sell_万": 732.5,
       "yz_net_万": 1154.3,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 2322.2,
+          "sell": 6523.4
+        },
+        "游资": {
+          "buy": 1886.8,
+          "sell": 732.5
+        }
+      }
     },
     {
       "code": "002436",
@@ -230,7 +366,17 @@
       "yz_buy_万": 94836.8,
       "yz_sell_万": 96165.3,
       "yz_net_万": -1328.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 554119.3,
+          "sell": 448175.6
+        },
+        "游资": {
+          "buy": 94836.8,
+          "sell": 96165.3
+        }
+      }
     },
     {
       "code": "002568",
@@ -245,7 +391,17 @@
       "yz_buy_万": 2666.3,
       "yz_sell_万": 1211.6,
       "yz_net_万": 1454.7,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 886.7,
+          "sell": 2462.3
+        },
+        "游资": {
+          "buy": 2666.3,
+          "sell": 1211.6
+        }
+      }
     },
     {
       "code": "002741",
@@ -260,7 +416,17 @@
       "yz_buy_万": 25443.7,
       "yz_sell_万": 68498.9,
       "yz_net_万": -43055.1,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 61431.2,
+          "sell": 41393.8
+        },
+        "游资": {
+          "buy": 25443.7,
+          "sell": 68498.9
+        }
+      }
     },
     {
       "code": "002842",
@@ -275,7 +441,17 @@
       "yz_buy_万": 0,
       "yz_sell_万": 12238.7,
       "yz_net_万": -12238.7,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 461791.8,
+          "sell": 378986.5
+        },
+        "游资": {
+          "buy": 0,
+          "sell": 12238.7
+        }
+      }
     },
     {
       "code": "002910",
@@ -290,7 +466,17 @@
       "yz_buy_万": 13485.7,
       "yz_sell_万": 2815.8,
       "yz_net_万": 10669.9,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 12504.0,
+          "sell": 23887.1
+        },
+        "游资": {
+          "buy": 13485.7,
+          "sell": 2815.8
+        }
+      }
     },
     {
       "code": "002975",
@@ -305,7 +491,17 @@
       "yz_buy_万": 37514.8,
       "yz_sell_万": 47166.8,
       "yz_net_万": -9652.0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 30237.1,
+          "sell": 26992.1
+        },
+        "游资": {
+          "buy": 37514.8,
+          "sell": 47166.8
+        }
+      }
     },
     {
       "code": "300319",
@@ -320,7 +516,17 @@
       "yz_buy_万": 66281.7,
       "yz_sell_万": 35680.3,
       "yz_net_万": 30601.4,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 34866.0,
+          "sell": 42193.5
+        },
+        "游资": {
+          "buy": 66281.7,
+          "sell": 35680.3
+        }
+      }
     },
     {
       "code": "301580",
@@ -335,7 +541,17 @@
       "yz_buy_万": 17073.2,
       "yz_sell_万": 12852.8,
       "yz_net_万": 4220.4,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 2791.2,
+          "sell": 3962.3
+        },
+        "游资": {
+          "buy": 17073.2,
+          "sell": 12852.8
+        }
+      }
     },
     {
       "code": "301669",
@@ -350,7 +566,17 @@
       "yz_buy_万": 2071.7,
       "yz_sell_万": 3544.9,
       "yz_net_万": -1473.2,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 43988.8,
+          "sell": 36730.2
+        },
+        "游资": {
+          "buy": 2071.7,
+          "sell": 3544.9
+        }
+      }
     },
     {
       "code": "301687",
@@ -365,7 +591,17 @@
       "yz_buy_万": 33017.5,
       "yz_sell_万": 13956.7,
       "yz_net_万": 19060.8,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 12995.8,
+          "sell": 14150.7
+        },
+        "游资": {
+          "buy": 33017.5,
+          "sell": 13956.7
+        }
+      }
     },
     {
       "code": "600110",
@@ -380,7 +616,13 @@
       "yz_buy_万": 132700.7,
       "yz_sell_万": 130402.7,
       "yz_net_万": 2298.0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 132700.7,
+          "sell": 130402.7
+        }
+      }
     },
     {
       "code": "600162",
@@ -395,7 +637,13 @@
       "yz_buy_万": 16888.2,
       "yz_sell_万": 8876.9,
       "yz_net_万": 8011.2,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 16888.2,
+          "sell": 8876.9
+        }
+      }
     },
     {
       "code": "600172",
@@ -410,7 +658,13 @@
       "yz_buy_万": 53995.1,
       "yz_sell_万": 37379.5,
       "yz_net_万": 16615.6,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 53995.1,
+          "sell": 37379.5
+        }
+      }
     },
     {
       "code": "600549",
@@ -425,7 +679,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 194355.7,
+          "sell": 83674.2
+        }
+      }
     },
     {
       "code": "600791",
@@ -440,7 +700,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 2233.5,
+          "sell": 0
+        }
+      }
     },
     {
       "code": "603166",
@@ -455,7 +721,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 35875.8,
+          "sell": 0
+        }
+      }
     },
     {
       "code": "603324",
@@ -470,7 +742,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 7140.5,
+          "sell": 0
+        }
+      }
     },
     {
       "code": "603459",
@@ -485,7 +763,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 13407.8,
+          "sell": 2635.0
+        }
+      }
     },
     {
       "code": "603929",
@@ -500,7 +784,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 9061.1,
+          "sell": 0
+        }
+      }
     },
     {
       "code": "000037",
@@ -515,7 +805,17 @@
       "yz_buy_万": 0,
       "yz_sell_万": 410.8,
       "yz_net_万": -410.8,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 8442.2,
+          "sell": 10563.8
+        },
+        "游资": {
+          "buy": 0,
+          "sell": 410.8
+        }
+      }
     },
     {
       "code": "000777",
@@ -530,7 +830,17 @@
       "yz_buy_万": 5449.5,
       "yz_sell_万": 8657.6,
       "yz_net_万": -3208.1,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 3230.2,
+          "sell": 3193.7
+        },
+        "游资": {
+          "buy": 5449.5,
+          "sell": 8657.6
+        }
+      }
     },
     {
       "code": "000955",
@@ -545,7 +855,17 @@
       "yz_buy_万": 978.4,
       "yz_sell_万": 0,
       "yz_net_万": 978.4,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 17454.8,
+          "sell": 16759.2
+        },
+        "游资": {
+          "buy": 978.4,
+          "sell": 0
+        }
+      }
     },
     {
       "code": "001339",
@@ -560,7 +880,17 @@
       "yz_buy_万": 38721.3,
       "yz_sell_万": 38429.7,
       "yz_net_万": 291.6,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 23966.5,
+          "sell": 42927.4
+        },
+        "游资": {
+          "buy": 38721.3,
+          "sell": 38429.7
+        }
+      }
     },
     {
       "code": "002137",
@@ -575,7 +905,17 @@
       "yz_buy_万": 8543.0,
       "yz_sell_万": 8381.7,
       "yz_net_万": 161.3,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 4056.5,
+          "sell": 6104.3
+        },
+        "游资": {
+          "buy": 8543.0,
+          "sell": 8381.7
+        }
+      }
     },
     {
       "code": "002667",
@@ -590,7 +930,17 @@
       "yz_buy_万": 726.5,
       "yz_sell_万": 2721.0,
       "yz_net_万": -1994.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 532.6,
+          "sell": 0
+        },
+        "游资": {
+          "buy": 726.5,
+          "sell": 2721.0
+        }
+      }
     },
     {
       "code": "002856",
@@ -605,7 +955,13 @@
       "yz_buy_万": 3456.3,
       "yz_sell_万": 6033.3,
       "yz_net_万": -2577.0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 3456.3,
+          "sell": 6033.3
+        }
+      }
     },
     {
       "code": "111001",
@@ -620,7 +976,13 @@
       "yz_buy_万": 27707.9,
       "yz_sell_万": 27530.7,
       "yz_net_万": 177.1,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 27707.9,
+          "sell": 27530.7
+        }
+      }
     },
     {
       "code": "123271",
@@ -635,7 +997,13 @@
       "yz_buy_万": 8394.5,
       "yz_sell_万": 13580.4,
       "yz_net_万": -5186.0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 8394.5,
+          "sell": 13580.4
+        }
+      }
     },
     {
       "code": "300029",
@@ -650,7 +1018,13 @@
       "yz_buy_万": 348.0,
       "yz_sell_万": 463.5,
       "yz_net_万": -115.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "游资": {
+          "buy": 348.0,
+          "sell": 463.5
+        }
+      }
     },
     {
       "code": "300411",
@@ -665,7 +1039,17 @@
       "yz_buy_万": 1466.1,
       "yz_sell_万": 4888.7,
       "yz_net_万": -3422.6,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 5067.4,
+          "sell": 11212.5
+        },
+        "游资": {
+          "buy": 1466.1,
+          "sell": 4888.7
+        }
+      }
     },
     {
       "code": "301563",
@@ -680,7 +1064,17 @@
       "yz_buy_万": 7933.1,
       "yz_sell_万": 9608.6,
       "yz_net_万": -1675.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 18033.6,
+          "sell": 32077.5
+        },
+        "游资": {
+          "buy": 7933.1,
+          "sell": 9608.6
+        }
+      }
     },
     {
       "code": "301630",
@@ -695,7 +1089,17 @@
       "yz_buy_万": 9930.3,
       "yz_sell_万": 16913.3,
       "yz_net_万": -6983.0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 30108.0,
+          "sell": 29653.3
+        },
+        "游资": {
+          "buy": 9930.3,
+          "sell": 16913.3
+        }
+      }
     },
     {
       "code": "600193",
@@ -710,7 +1114,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600226",
@@ -725,7 +1130,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600370",
@@ -740,7 +1146,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600392",
@@ -755,7 +1162,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 0,
+          "sell": 30678.4
+        }
+      }
     },
     {
       "code": "600399",
@@ -770,7 +1183,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600421",
@@ -785,7 +1199,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600539",
@@ -800,7 +1215,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600545",
@@ -815,7 +1231,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600599",
@@ -830,7 +1247,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600608",
@@ -845,7 +1263,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600636",
@@ -860,7 +1279,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600667",
@@ -875,7 +1295,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600696",
@@ -890,7 +1311,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "600753",
@@ -905,7 +1327,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603065",
@@ -920,7 +1343,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603082",
@@ -935,7 +1359,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603177",
@@ -950,7 +1375,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603211",
@@ -965,7 +1391,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603212",
@@ -980,7 +1407,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603261",
@@ -995,7 +1423,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603271",
@@ -1010,7 +1439,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 0,
+          "sell": 12145.3
+        }
+      }
     },
     {
       "code": "603313",
@@ -1025,7 +1460,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603335",
@@ -1040,7 +1476,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603517",
@@ -1055,7 +1492,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603567",
@@ -1070,7 +1508,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 0,
+          "sell": 6235.1
+        }
+      }
     },
     {
       "code": "603580",
@@ -1085,7 +1529,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603586",
@@ -1100,7 +1545,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603616",
@@ -1115,7 +1561,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603778",
@@ -1130,7 +1577,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "603986",
@@ -1145,7 +1593,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "605006",
@@ -1160,7 +1609,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "605081",
@@ -1175,7 +1625,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "688333",
@@ -1190,7 +1641,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 7072.2,
+          "sell": 26422.7
+        }
+      }
     },
     {
       "code": "688478",
@@ -1205,7 +1662,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "688485",
@@ -1220,7 +1678,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "688496",
@@ -1235,7 +1694,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "688515",
@@ -1250,7 +1710,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "688598",
@@ -1265,7 +1726,13 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {
+        "机构": {
+          "buy": 0,
+          "sell": 12025.0
+        }
+      }
     },
     {
       "code": "688729",
@@ -1280,7 +1747,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "920009",
@@ -1295,7 +1763,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "920083",
@@ -1310,7 +1779,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "920126",
@@ -1325,7 +1795,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "920161",
@@ -1340,7 +1811,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "920178",
@@ -1355,7 +1827,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     },
     {
       "code": "920206",
@@ -1370,7 +1843,8 @@
       "yz_buy_万": 0,
       "yz_sell_万": 0,
       "yz_net_万": 0,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "seats": {}
     }
   ],
   "summary": {
