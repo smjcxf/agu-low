@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620160259 -->
+<!-- build: 20260620160605 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150260,7 +150260,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 16:02:15",
+"update_time": "2026-06-20 16:05:19",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -178668,7 +178668,7 @@ function renderShMonitor() {
       obsHtml = '<br><span style="font-size:10px;color:#888;">当日 ' + w.observation.index.toFixed(0) + ' ';
       if (w.observation.change_pct >= 0) obsHtml += '<span style="color:#c62828;">+' + w.observation.change_pct + '%</span>';
       else obsHtml += '<span style="color:#2e7d32;">' + w.observation.change_pct + '%</span>';
-      if (w.observation.rebound_pct) obsHtml += ' 反弹' + w.observation.rebound_pct + '%';
+      if (w.observation.rebound_pct) obsHtml += ' 反弹<span style="color:#c62828;">' + w.observation.rebound_pct + '%</span>';
       obsHtml += '</span>';
     }
     
@@ -178706,8 +178706,8 @@ function renderShMonitor() {
       let revLines = '';
       for (const tw of triggered) {
         const obs = tw.observation || {};
-        revLines += '<p style="color:#2e7d32;font-weight:bold;margin:4px 0;">⚡ ' + tw.name + '（' + tw.date + '）反转确认！';
-        if (obs.rebound_pct) revLines += ' 反弹' + obs.rebound_pct + '%';
+        revLines += '<p style="color:#c62828;font-weight:bold;margin:4px 0;">⚡ ' + tw.name + '（' + tw.date + '）反转确认！';
+        if (obs.rebound_pct) revLines += ' 反弹<span style="color:#c62828;">' + obs.rebound_pct + '%</span>';
         revLines += '</p>';
       }
       const w21 = triggered.find(w => w.name === 'F(21)');
