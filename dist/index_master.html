@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620142451 -->
+<!-- build: 20260620142704 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150198,7 +150198,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 14:24:25",
+"update_time": "2026-06-20 14:26:37",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -179077,21 +179077,23 @@ function renderETFFlow() {
   const moodColor = netFlow > 0 ? '#c62828' : '#2e7d32';
   h += '<p style="margin:0 0 10px 0;padding:12px 16px;background:linear-gradient(135deg,#e8f4fc,#e3f2fd);border-left:4px solid #1565c0;border-radius:6px;font-weight:500;">' +
     '监测' + etfs.length + '只主要ETF，' + upCount + '只上涨、' + downCount + '只下跌。估算<span style="color:' + moodColor + ';font-weight:700;">' +
-    flowDir + flowStr + '</span>。' +
-    (inflowItems.length > 0 ? topEtfName + '▲' + (sortedByPct[0].change_pct||0).toFixed(2) + '%领先' : '') +
-    (outflowItems.length > 0 ? '，' + bottomEtfName + '▼' + Math.abs(sortedByPct[sortedByPct.length-1].change_pct||0).toFixed(2) + '%垫底' : '') +
-    '。<span style="color:#1565c0;font-weight:700;">' + etfMood + '。</span>' +
-    // 重点预警合并进第一段
-    (majorItems.length > 0 ?
-      ' <span style="color:#c62828;font-weight:700;">⚠️重点关注：' +
-      (function(){
+    flowDir + flowStr + '</span>，<span style="color:#1565c0;font-weight:700;">' + etfMood + '。</span>' +
+    // 领涨领跌 + 重点预警合并
+    (function(){
+      var parts = [];
+      if (majorItems.length > 0) {
         var mList = majorItems.slice().sort(function(a,b){return Math.abs(b.change_pct||0)-Math.abs(a.change_pct||0)});
-        return mList.map(function(e){
-          var dir = (e.change_pct||0)>0?'强势上涨':'大幅回调';
+        var warns = mList.map(function(e){
+          var dir = (e.change_pct||0)>0?'▲':'▼';
           return e.name+dir+Math.abs(e.change_pct||0).toFixed(2)+'%';
-        }).join('；');
-      })() + '，大资金持仓异动！</span>'
-      : '') +
+        });
+        parts.push(' <span style="color:#c62828;font-weight:700;">⚠️重点关注：'+warns.join('；')+'，大资金持仓异动！</span>');
+      } else {
+        if (inflowItems.length > 0) parts.push(topEtfName+'▲'+(sortedByPct[0].change_pct||0).toFixed(2)+'%领先');
+        if (outflowItems.length > 0) parts.push(bottomEtfName+'▼'+Math.abs(sortedByPct[sortedByPct.length-1].change_pct||0).toFixed(2)+'%垫底');
+      }
+      return parts.join('，');
+    })() +
     '</p>';
 
   // 详细数据（直接展示）
