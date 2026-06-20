@@ -445,6 +445,7 @@ def main():
         print(f"  [WARN] LHB连续天数计算跳过: {e}")
     lhb_data     = load_json(os.path.join(DATA_DIR, "lhb_result.json"), {"stocks": [], "scan_time": ""})
     main_stock   = load_json(os.path.join(DATA_DIR, "main_stock.json"), {"update_time": ""})
+    main_week    = load_json(os.path.join(DATA_DIR, "main_week.json"), {"update_time": "", "buy_top5": [], "sell_top5": []})
     north_fund   = load_json(os.path.join(DATA_DIR, "north_fund.json"), {"update_time": ""})
     mahoro_sig   = load_json(os.path.join(DATA_DIR, "mahoro_signals.json"), {"gold_pool_matches": []})
     fomc_summary = load_json(os.path.join(DATA_DIR, "fomc_summary.json"), {})
@@ -568,6 +569,7 @@ def main():
         ("HERRING_DATA",   "window.HERRING_DATA = ",  "{", "}"),
         ("LHB_DATA",       "window.LHB_DATA = ",      "{", "}"),
         ("MAIN_STOCK",     "var MAIN_STOCK_DATA = window.MAIN_STOCK_DATA = ","{", "}"),
+        ("MAIN_WEEK",      "window.MAIN_WEEK_DATA = ",  "{", "}"),
         ("NORTH_FUND",     "window.NORTH_FUND_DATA = ",  "{", "}"),
         ("MAHORO_COVERAGE", "var MAHORO_COVERAGE = window.MAHORO_COVERAGE = ","{", "}"),
         ("FOMC_SUMMARY",   "window.FOMC_SUMMARY = ",  "{", "}"),
@@ -575,7 +577,7 @@ def main():
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
                  concept_ranking, market_alerts, margin_data, etf_subscription, macro_data,                  herding_data,
-                 lhb_data, main_stock, north_fund, mahoro_coverage, fomc_summary]
+                 lhb_data, main_stock, main_week, north_fund, mahoro_coverage, fomc_summary]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):
