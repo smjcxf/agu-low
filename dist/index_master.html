@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620134142 -->
+<!-- build: 20260620134423 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150193,7 +150193,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 13:41:14",
+"update_time": "2026-06-20 13:43:53",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -181769,7 +181769,7 @@ function renderLhbPredict() {
     timeEl.innerHTML = timeEl.textContent + note;
   }
 
-  // 三分组：机构独买 / 机游共振 / 游资独买
+  // 三分组：机构独买 / 机游共振 / 游资独买（严格互斥）
   var instStocks = stocks.filter(function(s){ return (s.inst_net_万||0) > 8000 && (s.yz_net_万||0) <= 8000; });
   var yzStocks = stocks.filter(function(s){ return (s.yz_net_万||0) > 8000 && (s.inst_net_万||0) <= 8000; });
   var resonance = stocks.filter(function(s){ return s.category === '纯共振'; });
@@ -181779,41 +181779,25 @@ function renderLhbPredict() {
     return '+' + yi.toFixed(2) + '亿';
   }
 
-  function seatBadge(seats, color) {
+  // 只取游资别名标签（红底红字），机构/北向/量化/未识别不显示
+  function yzBadge(seats) {
     if (!seats) return '';
     var badges = [];
-    var styleMap = {
-      '机构': 'background:#e3f2fd;color:#1565c0;',
-      '北向': 'background:#e8f5e9;color:#2e7d32;',
-      '游资': 'background:#fce4ec;color:#c62828;',
-      '量化': 'background:#f3e5f5;color:#7b1fa2;',
-      '未识别': 'background:#f5f5f5;color:#666;',
-    };
-    // 先显示知名游资别名，再显示类型
-    var aliasDone = {};
+    var seen = {};
     Object.keys(seats).forEach(function(t){
       var d = seats[t];
       var aliases = d.aliases || [];
       aliases.forEach(function(a){
-        if (!aliasDone[a]) {
-          aliasDone[a] = true;
-          var s = styleMap['游资'] || 'background:#fce4ec;color:#c62828;';
-          badges.push('<span style="font-size:9px;'+s+'padding:1px 4px;border-radius:2px;margin-left:2px;">'+a+'</span>');
+        if (!seen[a]) {
+          seen[a] = true;
+          badges.push('<span style="font-size:9px;background:#fce4ec;color:#c62828;padding:1px 4px;border-radius:2px;margin-left:2px;">'+a+'</span>');
         }
       });
-    });
-    // 再显示类型标签（机构/北向/量化/未识别，游资别名已显示则跳过）
-    Object.keys(seats).forEach(function(t){
-      var d = seats[t];
-      // 游资类型已有别名显示，不额外显示"游资"标签
-      if (t === '游资' && (d.aliases||[]).length > 0) return;
-      var s = styleMap[t] || '';
-      badges.push('<span style="font-size:9px;'+s+'padding:1px 4px;border-radius:2px;margin-left:2px;">'+t+'</span>');
     });
     return badges.join('');
   }
 
-  function renderBlock(stocks, netFn, title, bg, color, emoji, twoCol) {
+  function renderBlock(stocks, netFn, title, bg, color, emoji, twoCol, showYz) {
     var b = '';
     var maxShow = twoCol ? 16 : 8;
     var sorted = stocks.slice().sort(function(a,b){ return netFn(b) - netFn(a); });
@@ -181828,7 +181812,7 @@ function renderLhbPredict() {
           if (s.consecutive_days && s.consecutive_days >= 2) {
             dayTag = ' <span style="font-size:9px;color:#fff;background:'+color+';padding:0 3px;border-radius:2px;">连'+s.consecutive_days+'日</span>';
           }
-          var sBadge = seatBadge(s.seats, color);
+          var sBadge = showYz ? yzBadge(s.seats) : '';
           b += '<div style="font-size:11px;color:#333;display:flex;justify-content:space-between;align-items:center;padding:1px 0;">';
           b += '<span>' + s.name + sBadge + dayTag + '</span>';
           b += '<b style="font-size:10px;color:'+color+';white-space:nowrap;">' + formatNet(net) + '</b>';
@@ -181842,7 +181826,7 @@ function renderLhbPredict() {
           if (s.consecutive_days && s.consecutive_days >= 2) {
             dayTag = ' <span style="font-size:10px;color:#fff;background:'+color+';padding:0 4px;border-radius:3px;">连'+s.consecutive_days+'日</span>';
           }
-          var sBadge = seatBadge(s.seats, color);
+          var sBadge = showYz ? yzBadge(s.seats) : '';
           b += '<div style="font-size:13px;color:#333;display:flex;justify-content:space-between;align-items:center;">';
           b += '<span>' + s.name + sBadge + dayTag + '</span>';
           b += '<b style="color:'+color+';">' + formatNet(net) + '</b>';
@@ -181864,12 +181848,12 @@ function renderLhbPredict() {
 
   // 三色块
   h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">';
-  // 左：机构净买入
-  h += renderBlock(instStocks, function(s){ return s.inst_net_万; }, '机构净买入', '#e3f2fd', '#1565c0', '🏦', true);
-  // 中：机游共振
-  h += renderBlock(resonance, function(s){ return (s.inst_net_万||0) + (s.yz_net_万||0); }, '机游共振', '#fff8e1', '#f57f17', '⚡');
-  // 右：游资净买入
-  h += renderBlock(yzStocks, function(s){ return s.yz_net_万; }, '游资净买入', '#fce4ec', '#c62828', '🔥', true);
+  // 左：机构净买入（不显示游资标签，标题已说明）
+  h += renderBlock(instStocks, function(s){ return s.inst_net_万; }, '机构净买入', '#e3f2fd', '#1565c0', '🏦', true, false);
+  // 中：机游共振（显示游资别名）
+  h += renderBlock(resonance, function(s){ return (s.inst_net_万||0) + (s.yz_net_万||0); }, '机游共振', '#fff8e1', '#f57f17', '⚡', false, true);
+  // 右：游资净买入（显示游资别名）
+  h += renderBlock(yzStocks, function(s){ return s.yz_net_万; }, '游资净买入', '#fce4ec', '#c62828', '🔥', true, true);
   h += '</div>';
 
   // 底部辅助信息
