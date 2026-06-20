@@ -579,7 +579,7 @@ def main():
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
                  concept_ranking, market_alerts, margin_data, etf_subscription, macro_data,                  herding_data,
-                 lhb_data, main_stock, main_week, north_fund, suspension_alert, mahoro_coverage, fomc_summary]
+                 lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, fomc_summary]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):

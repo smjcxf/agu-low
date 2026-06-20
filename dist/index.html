@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620131330 -->
+<!-- build: 20260620132516 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -609,24 +609,7 @@ tr:hover td { background: #fafbfc; }
 
     </div>
 
-    <!-- ⚠️ 异动停牌观测 -->
-    <div id="suspensionCard" style="display:none;background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <span style="font-size:18px;">⚠️</span>
-        <span style="font-weight:700;font-size:14px;color:#333;">异动停牌观测</span>
-        <span id="suspensionTime" style="font-size:11px;color:#888;"></span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div style="background:#ffebee;border-radius:8px;padding:10px;">
-          <div style="font-size:12px;font-weight:600;color:#c62828;margin-bottom:6px;">🔒 已停牌 <b id="suspCount">0</b>只</div>
-          <div id="suspList" style="font-size:11px;color:#555;line-height:1.6;">暂无</div>
-        </div>
-        <div style="background:#fff3e0;border-radius:8px;padding:10px;">
-          <div style="font-size:12px;font-weight:600;color:#e65100;margin-bottom:6px;">⚡ 近触发 <b id="nearCount">0</b>只</div>
-          <div id="nearList" style="font-size:11px;color:#555;line-height:1.6;">暂无</div>
-        </div>
-      </div>
-    </div>
+    <!-- ⚠️ 异动停牌观测 已移至预判信号Tab -->
 
     <!-- 🧠 AI市场速览 -->
     <div id="aiSummaryCard" style="display:none;background:linear-gradient(135deg,#fff5f5 0%,#fdf0f3 30%,#fce4ec 100%);border:2px solid #d06b82;border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:0 4px 16px rgba(208,107,130,0.18);">
@@ -815,6 +798,25 @@ tr:hover td { background: #fafbfc; }
         </div>
         <div style="padding:16px 18px;font-size:14px;line-height:1.8;color:#555;" id="summaryContent">
           <div style="color:#999;text-align:center;">加载中...</div>
+        </div>
+      </div>
+
+      <!-- ⚠️ 异动停牌观测 -->
+      <div id="suspensionCard" style="display:none;background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:18px;">⚠️</span>
+          <span style="font-weight:700;font-size:14px;color:#333;">异动停牌观测</span>
+          <span id="suspensionTime" style="font-size:11px;color:#888;"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="background:#ffebee;border-radius:8px;padding:10px;">
+            <div style="font-size:12px;font-weight:600;color:#c62828;margin-bottom:6px;">🔒 已停牌 <b id="suspCount">0</b>只</div>
+            <div id="suspList" style="font-size:11px;color:#555;line-height:1.6;">暂无</div>
+          </div>
+          <div style="background:#fff3e0;border-radius:8px;padding:10px;">
+            <div style="font-size:12px;font-weight:600;color:#e65100;margin-bottom:6px;">⚡ 近触发 <b id="nearCount">0</b>只</div>
+            <div id="nearList" style="font-size:11px;color:#555;line-height:1.6;">暂无</div>
+          </div>
         </div>
       </div>
 
@@ -150192,7 +150194,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 13:13:00",
+"update_time": "2026-06-20 13:24:46",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -180889,7 +180891,109 @@ window.HERRING_DATA = {
 "buy_top5": [],
 "sell_top5": [],
 "available": false
-};window.SUSPENSION_ALERT = {};window.NORTH_FUND_DATA = {
+};window.SUSPENSION_ALERT = {
+"update_time": "2026-06-20 13:05:14",
+"suspended": [
+{
+"code": "200706",
+"name": "瓦轴B",
+"days": 110,
+"reason": "刊登重要公告"
+},
+{
+"code": "000004",
+"name": "*ST国华",
+"days": 53,
+"reason": "刊登重要公告"
+},
+{
+"code": "920305",
+"name": "*ST云创",
+"days": 51,
+"reason": "刊登重要公告"
+},
+{
+"code": "688121",
+"name": "卓然股份",
+"days": 45,
+"reason": "未如期刊登定期报告"
+},
+{
+"code": "002898",
+"name": "*ST赛隆",
+"days": 45,
+"reason": "刊登重要公告"
+},
+{
+"code": "002731",
+"name": "ST萃华",
+"days": 45,
+"reason": "未如期刊登定期报告"
+},
+{
+"code": "002808",
+"name": "*ST恒久",
+"days": 45,
+"reason": "刊登重要公告"
+},
+{
+"code": "001331",
+"name": "胜通能源",
+"days": 23,
+"reason": "刊登重要公告"
+}
+],
+"near_trigger": [
+{
+"code": "301580",
+"name": "爱迪特",
+"pct": 20.0,
+"gap": 0
+},
+{
+"code": "688478",
+"name": "晶升股份",
+"pct": 20.0,
+"gap": 0
+},
+{
+"code": "688598",
+"name": "金博股份",
+"pct": 20.0,
+"gap": 0
+},
+{
+"code": "300861",
+"name": "美畅股份",
+"pct": 20.0,
+"gap": 0.0
+},
+{
+"code": "688671",
+"name": "碧兴物联",
+"pct": 20.0,
+"gap": 0
+},
+{
+"code": "300522",
+"name": "世名科技",
+"pct": 20.0,
+"gap": 0.0
+},
+{
+"code": "688515",
+"name": "裕太微-U",
+"pct": 20.0,
+"gap": 0
+},
+{
+"code": "300166",
+"name": "东方国信",
+"pct": 20.0,
+"gap": 0
+}
+]
+};window.NORTH_FUND_DATA = {
 "update_time": "2026-06-14 22:50",
 "top_buy": [
 {
