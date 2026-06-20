@@ -53,8 +53,8 @@ def _classify_seat(seat_name, seats_db):
     for p in seats_db.get("patterns", {}).get("量化", []):
         if p in seat_name:
             return ('量化', '')
-    # 5. 未知席位 → 跳过不统计（只认准知名游资席位）
-    return ('未知', '')
+    # 5. 未知席位 → 归入游资（非机构/北向的席位都参与统计）
+    return ('游资', '')
 
 def get_date_str(target_date=None):
     """返回 YYYYMMDD 格式日期字符串。
@@ -118,7 +118,7 @@ def fetch_inst_map():
     return inst_map
 
 def fetch_yz_map(stocks, date_str, limit=40):
-    """东方财富逐笔席位明细，仅统计知名游资席位买卖金额，单位：万"""
+    """东方财富逐笔席位明细，统计游资席位买卖金额（含知名和未识别席位），单位：万"""
     yz_map = {}
     seats_db = _load_lhb_seats()
     priority = sorted(stocks, key=lambda s: abs(inst_map.get(s['code'], {}).get('buy', 0) - inst_map.get(s['code'], {}).get('sell', 0)), reverse=True) if 'inst_map' in dir() else stocks
