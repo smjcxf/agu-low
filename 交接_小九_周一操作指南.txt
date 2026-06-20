@@ -1,0 +1,51 @@
+小九周一操作指南（2026-06-22）
+
+📦 文件：交接_小九_260620.zip（0.8MB，含33个py脚本+index_master.html+45个data文件+DEPLOY.md）
+
+═══════════════════════════════════════
+⚠️ 第一步：千万不要 git pull！（必读）
+═══════════════════════════════════════
+main 分支的脚本已被主人加密清理，git pull 会删掉你本地全部 .py 文件！
+周一任何操作前先确认你没有用 git pull 更新过。
+
+═══════════════════════════════════════
+第二步：解压完整包
+═══════════════════════════════════════
+把 交接_小九_260620.zip 解压到工作目录（覆盖已有文件）：
+  E:\workspace\stock-scanner\
+
+解压后确认 33 个 .py 文件都在根目录。
+
+═══════════════════════════════════════
+第三步：注入数据 + 部署
+═══════════════════════════════════════
+python update_data_v2.py
+python deploy_now.py --force
+
+──
+⚠️ 铁律：永远先 update_data_v2 再 deploy，
+    跳过 update_data_v2 会导致线上数据回退到 6月13日！
+
+═══════════════════════════════════════
+第四步：正常运营
+═══════════════════════════════════════
+定时任务配置不变：
+  09:15  python batch_update.py pre_market
+  09:45  python batch_update.py morning_scan
+  10:00  python batch_update.py morning_plus
+  10:30  python batch_update.py morning_plus
+  11:45  python batch_update.py morning_report
+  13:30  python batch_update.py afternoon
+  14:30  python batch_update.py afternoon
+  15:30  python batch_update.py afternoon
+  16:30  python batch_update.py afternoon
+  19:30  python batch_update.py close
+  21:00  python batch_update.py backup
+
+═══════════════════════════════════════
+以后代码更新怎么传？
+═══════════════════════════════════════
+以后主人通过新 zip 包传代码，不要走 git pull。
+每次收到新 zip 包 → 解压覆盖 → python update_data_v2.py → python deploy_now.py --force
+
+📞 有问题联系主人。
