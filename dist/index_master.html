@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620200836 -->
+<!-- build: 20260620223313 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -44,6 +44,11 @@ body { font-family: -apple-system, "Microsoft YaHei", "Segoe UI", sans-serif; ba
 .content { padding: 14px; max-width: 1400px; margin: 0 auto; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
+/* 管理员专属Tab/面板：默认隐藏，JS根据登录态显示 */
+.admin-only { display: none; }
+/* 切换账号链接：默认隐藏，访客模式显示 */
+.relogin-link { display: none; cursor: pointer; font-size: 11px; color: #999; text-decoration: underline; margin-left: 12px; white-space: nowrap; }
+.relogin-link:hover { color: #666; }
 
 /* 底部 */
 .global-footer { text-align: center; padding: 16px; font-size: 11px; color: #aaa; margin: 16px auto 0; border-top: 1px solid #e0e0e0; display: block; width: 100%; clear: both; }
@@ -521,6 +526,7 @@ tr:hover td { background: #fafbfc; }
     </div>
   </div>
   <div class="header-right" style="display:flex;flex-direction:row;align-items:center;gap:14px;">
+    <span class="relogin-link" id="reloginLink" onclick="switchAccount()" title="清除登录状态，重新选择身份">🔑 切换</span>
     <div style="display:flex;flex-direction:row;align-items:center;gap:10px;">
       <span id="sanzuBadge" style="font-size:13px;font-weight:700;color:#FFD700;">四喜 0</span>
       <span id="sanxianBadge" style="font-size:13px;font-weight:700;color:#FFB6C1;">三线 0</span>
@@ -544,8 +550,9 @@ tr:hover td { background: #fafbfc; }
   <div class="tab" data-tab="predict">预判信号</div>
   <div class="tab" data-tab="gold">金股观测</div>
   <div class="tab" data-tab="query">个股查询</div>
-  <div class="tab" data-tab="guide">逻辑详解</div>
-  <div class="tab admin-only" data-tab="watchlist">⭐ 自选</div>
+  <div class="tab" data-tab="watchlist">自选</div>
+  <div class="tab admin-only" data-tab="guide">🔒 逻辑详解</div>
+  <div class="tab admin-only" data-tab="stats" onclick="switchTabByName('stats')">🔒 统计</div>
 </div>
 
 
@@ -1172,7 +1179,7 @@ tr:hover td { background: #fafbfc; }
           <!-- 金股池 -->
           <div style="padding:10px 12px;background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
             <div style="font-weight:700;color:#c62828;margin-bottom:4px;">🏅 金股池状态</div>
-            <div style="color:#555;">信号四格条（缠论买/金钻起涨/机构变红/上涨趋势），满足数≥3标<b style="color:#c62828;">三线共振</b>，≥2标<b style="color:#f39c12;">双线</b>，4格全满标<b style="color:#FFD700;">四喜临门</b></div>
+            <div style="color:#555;">信号四格条（缠论买/金钻起涨/机构变红/上涨趋势），4格全满标<b style="color:#FFD700;">四喜临门</b>，满足数≥3标<b style="color:#c62828;">三线共振</b>，≥2标<b style="color:#f39c12;">双线</b></div>
           </div>
           <!-- 龙虎榜 -->
           <div style="padding:10px 12px;background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
@@ -1233,14 +1240,89 @@ tr:hover td { background: #fafbfc; }
   </div>
 </div>
 
-<!-- 自选关注（主人专用） -->
+<!-- 自选关注 -->
 <div class="tab-panel" id="panel-watchlist">
+  <div style="background:#fffde7;border:1px solid #ffe082;border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12px;color:#e65100;display:flex;align-items:center;gap:6px;">
+    <span>💻</span> <span>自选列表仅存于当前浏览器本地，不会上传或与他人共享</span>
+  </div>
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
     <input type="text" id="wlInput" placeholder="输入代码、拼音或名称添加自选" style="flex:1;min-width:200px;padding:8px 14px;border:2px solid #ddd;border-radius:8px;font-size:13px;" onkeydown="if(event.key==='Enter')addToWatchList()">
+    <select id="wlType" style="padding:8px 12px;border:2px solid #ddd;border-radius:8px;font-size:13px;background:#fff;">
+      <option value="watch">观察仓</option>
+      <option value="hold">持仓</option>
+    </select>
     <button class="btn" onclick="addToWatchList()" style="padding:8px 20px;">添加</button>
   </div>
-  <div id="wlList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;"></div>
-  <div id="wlEmpty" style="text-align:center;padding:40px;color:#999;font-size:14px;">暂无自选股票，输入代码或名称添加</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <!-- 持仓 -->
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#e65100;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #ffe0b2;">📦 持仓</div>
+      <div id="wlHold" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <div id="wlHoldEmpty" style="text-align:center;padding:20px;color:#ccc;font-size:12px;">暂无持仓</div>
+    </div>
+    <!-- 观察 -->
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#5c6bc0;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #c5cae9;">🔍 观察仓</div>
+      <div id="wlWatch" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <div id="wlWatchEmpty" style="text-align:center;padding:20px;color:#ccc;font-size:12px;">暂无观察</div>
+    </div>
+  </div>
+  <div id="wlEmpty" style="text-align:center;padding:40px;color:#999;font-size:14px;display:none;">暂无自选股票，输入代码或名称添加</div>
+</div>
+
+<!-- 📊 统计（管理员专属） -->
+<div class="tab-panel" id="panel-stats">
+  <!-- 顶部标题栏 -->
+  <div class="card" style="background:linear-gradient(135deg,#fce4ec,#f3e5f5);border:1.5px solid #e1bee7;margin-bottom:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:15px;font-weight:700;color:#7b1fa2;">📊 站点统计 · 仅你可见</div>
+      <div style="font-size:11px;color:#ab47bc;margin-top:2px;">马卡龙 · 小清新</div>
+    </div>
+    <a href="https://tongji.baidu.com" target="_blank" rel="noopener" style="display:inline-block;padding:7px 16px;background:#fff;color:#7b1fa2;border:1.5px solid #e1bee7;border-radius:20px;text-decoration:none;font-size:12px;font-weight:600;transition:all 0.2s;">百度统计后台 →</a>
+  </div>
+
+  <!-- 核心指标 3卡片 -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
+    <div class="card" style="text-align:center;padding:16px 10px;background:linear-gradient(180deg,#fff,#fafafa);border:1.5px solid #e8eaf6;">
+      <div style="font-size:11px;color:#9e9e9e;margin-bottom:6px;letter-spacing:1px;">浏览量</div>
+      <div style="font-size:34px;font-weight:700;color:#7b1fa2;line-height:1;" id="statPv">--</div>
+      <div style="font-size:11px;color:#b39ddb;margin-top:4px;" id="statPvChange">--</div>
+    </div>
+    <div class="card" style="text-align:center;padding:16px 10px;background:linear-gradient(180deg,#fff,#fafafa);border:1.5px solid #e8eaf6;">
+      <div style="font-size:11px;color:#9e9e9e;margin-bottom:6px;letter-spacing:1px;">访客</div>
+      <div style="font-size:34px;font-weight:700;color:#5c6bc0;line-height:1;" id="statUv">--</div>
+      <div style="font-size:11px;color:#9fa8da;margin-top:4px;" id="statUvChange">--</div>
+    </div>
+    <div class="card" style="text-align:center;padding:16px 10px;background:linear-gradient(180deg,#fff,#fafafa);border:1.5px solid #e8eaf6;">
+      <div style="font-size:11px;color:#9e9e9e;margin-bottom:6px;letter-spacing:1px;">均停留</div>
+      <div style="font-size:34px;font-weight:700;color:#26a69a;line-height:1;" id="statStay">--</div>
+      <div style="font-size:11px;color:#80cbc4;margin-top:4px;">秒/次</div>
+    </div>
+  </div>
+
+  <!-- 今日趋势 -->
+  <div class="card" style="margin-bottom:12px;padding:14px 16px;border:1.5px solid #e8eaf6;">
+    <div style="font-size:13px;font-weight:600;color:#5c6bc0;margin-bottom:10px;">📈 今日分时</div>
+    <div id="statHourly">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;height:60px;padding:0 4px;" id="statHourlyBars"></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 4px 0;font-size:10px;color:#c5cae9;" id="statHourlyLabels"></div>
+    </div>
+  </div>
+
+  <!-- 来源 + 设备 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div class="card" style="padding:14px 16px;border:1.5px solid #e8eaf6;">
+      <div style="font-size:13px;font-weight:600;color:#5c6bc0;margin-bottom:8px;">🌐 来源</div>
+      <div id="statSources" style="font-size:12px;display:flex;flex-direction:column;gap:5px;"></div>
+    </div>
+    <div class="card" style="padding:14px 16px;border:1.5px solid #e8eaf6;">
+      <div style="font-size:13px;font-weight:600;color:#5c6bc0;margin-bottom:8px;">💻 设备</div>
+      <div id="statDevices" style="font-size:12px;color:#666;">
+        <div id="statBrowsers" style="margin-bottom:8px;"></div>
+        <div id="statOS"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -150286,7 +150368,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 20:07:47",
+"update_time": "2026-06-20 22:32:26",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -178021,9 +178103,10 @@ function getActiveData() {
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
     tab.classList.add('active');
-    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    var panel = document.getElementById('panel-' + tab.dataset.tab);
+    if (panel) { panel.classList.add('active'); panel.style.display = 'block'; }
     // 切换到上证数据监控时重绘图表（SVG需可见才能获取尺寸）
     if (tab.dataset.tab === 'shmonitor') {
       setTimeout(() => { try { drawAmountChart(); drawUpDownChart(); drawMarginChart(); drawEtfChart(); } catch(e) {} }, 100);
@@ -181260,8 +181343,12 @@ function searchByName(keyword) {
   const q = keyword.trim().toLowerCase();
   if (!q) return null;
   // 精确匹配代码
-  const exact = window.STOCK_LIST.find(s => s.code.toLowerCase() === q);
-  if (exact) return exact.code;
+  const exact = window.STOCK_LIST.find(s => s.code.toLowerCase() === q || s.code.toLowerCase() === 'hk' + q || s.code.toLowerCase() === 'hk0' + q);
+  if (exact) {
+    if (/^\d{5}$/.test(exact.code)) return 'hk' + exact.code;
+    if (/^\d{4}$/.test(exact.code)) return 'hk0' + exact.code;
+    return exact.code;
+  }
   // 精确匹配名称
   const exactName = window.STOCK_LIST.find(s => s.name.toLowerCase() === q);
   if (exactName) return exactName.code;
@@ -181308,8 +181395,17 @@ function searchByName(keyword) {
   if (window.GOLD_POOL && window.GOLD_POOL.stocks) {
     var gpKeys = Object.keys(window.GOLD_POOL.stocks);
     var qLower2 = keyword.trim().toLowerCase();
+    // 先尝试代码匹配
+    var numericQ = qLower2.replace(/[^0-9]/g, '');
     for (var gpi=0; gpi<gpKeys.length; gpi++) {
       var gs = window.GOLD_POOL.stocks[gpKeys[gpi]];
+      // 代码匹配（支持02865→hk_02865、01810→hk_01810）
+      if (numericQ) {
+        var keyNum = gpKeys[gpi].replace(/^hk_/,'');
+        if (keyNum === numericQ || keyNum.replace(/^0+/,'') === numericQ.replace(/^0+/,'')) {
+          return gpKeys[gpi].replace('_','');
+        }
+      }
       // 名称包含匹配
       if (gs.name && gs.name.includes(keyword)) {
         var gcode = gpKeys[gpi].replace('_','');  // hk_00148 → hk00148
@@ -181526,7 +181622,7 @@ function calcQueryScoreIdx(s, patterns) {
 async function fetchQueryKline(code) {
   // K线API (支持CORS) - 获取m5数据后聚合为日K
   try {
-    const url = `https://ifzq.gtimg.cn/appstock/app/kline/mkline?param=${code},m5,,60`;
+    const url = `https://ifzq.gtimg.cn/appstock/app/kline/mkline?param=${code},m5,,480`;
     const resp = await fetch(url);
     const data = await resp.json();
     if (data.code === 0 && data.data && data.data[code]) {
@@ -181691,17 +181787,9 @@ async function doQueryStock() {
     const actionBg = action === 'BUY' ? '#e53935' : action === '关注' ? '#ff9800' : '#9e9e9e';
     const board = isIndex ? '指数' : isEtf ? 'ETF' : getQueryBoard(code);
 
-    let historyHtml = '';
-    if (history && history.length >= 3) {
-      const recent = history.slice(-5);
-      historyHtml = `
-      <div class="query-kline-section">
-        <div class="query-kline-title">📈 近${recent.length}日K线形态</div>
-        <div class="query-kline-detail">
-          ${recent.map(k => `<span>${k.date.slice(5)} 开:${k.open.toFixed(1)} 收:${k.close.toFixed(1)} ${k.close > k.open ? '🔴' : '🟢'}</span>`).join('')}
-        </div>
-        ${multiPatterns.length ? `<div style="margin-top:8px;">${multiPatterns.map(p => `<span class="query-pattern-tag query-pattern-${p.type}">${p.name}</span>`).join('')}</div>` : ''}
-      </div>`;
+    let multiPatternsHtml = '';
+    if (history && history.length >= 3 && multiPatterns.length) {
+      multiPatternsHtml = '<div style="margin-top:8px;">' + multiPatterns.map(p => '<span class="query-pattern-tag query-pattern-' + p.type + '">' + p.name + '</span>').join('') + '</div>';
     }
 
     resultDiv.innerHTML = `
@@ -181742,7 +181830,7 @@ async function doQueryStock() {
           <span>振幅: ${s.amplitude ? s.amplitude.toFixed(1) : '-'}%</span>
         </div>
       </div>` : ''}
-      ${historyHtml}
+      ${multiPatternsHtml}
       <div class="query-bottom-info">
         <span>成交: ${s.turnover > 10000 ? (s.turnover / 10000).toFixed(1) + '亿' : s.turnover.toFixed(0) + '万'}</span>
         ${isStock ? `
@@ -181801,7 +181889,7 @@ function renderQueryKlineChart(history, curPrice, code) {
   canvas.style.height = '200px';
   ctx.scale(dpr, dpr);
 
-  var w = rect.width, h = 200, pad = {t:20, r:10, b:30, l:50};
+  var w = rect.width, h = 200, pad = {t:20, r:40, b:30, l:50};
   var pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
   var data = history.slice(-40);
   var max = -Infinity, min = Infinity;
@@ -181893,9 +181981,25 @@ function renderSignalWinRate() {
 
 // ===== 自选关注列表 =====
 function getWatchList() {
-  try { return JSON.parse(localStorage.getItem('wl_v1') || '[]'); } catch(e) { return []; }
+  try {
+    var wl = JSON.parse(localStorage.getItem('wl_v1') || '[]');
+    if (!wl || !wl.length) {
+      // 从备份恢复
+      var bak = JSON.parse(localStorage.getItem('wl_v1_bak') || '[]');
+      if (bak && bak.length) { wl = bak; saveWatchList(wl); }
+    }
+    return wl;
+  } catch(e) { return []; }
 }
-function saveWatchList(list) { localStorage.setItem('wl_v1', JSON.stringify(list)); }
+function saveWatchList(list) {
+  try {
+    localStorage.setItem('wl_v1', JSON.stringify(list));
+    localStorage.setItem('wl_v1_bak', JSON.stringify(list));
+  } catch(e) {
+    // localStorage 可能已满，尝试清理旧数据后重试
+    console.warn('保存自选列表失败:', e);
+  }
+}
 function addToWatchList() {
   var input = document.getElementById('wlInput');
   var val = (input.value || '').trim();
@@ -181923,7 +182027,9 @@ function addToWatchList() {
     var susp = isSuspended('sz' + raw) || isSuspended('sh' + raw) || isSuspended('hk' + raw);
     if (susp) name = susp.name;
   }
-  wl.push({code: raw, name: name || raw, added: new Date().toISOString()});
+  var typeEl = document.getElementById('wlType');
+  var type = typeEl ? typeEl.value : 'watch';
+  wl.push({code: raw, name: name || raw, type: type, added: new Date().toISOString()});
   saveWatchList(wl);
   input.value = '';
   renderWatchList();
@@ -181935,19 +182041,51 @@ function removeFromWatchList(code) {
 }
 function renderWatchList() {
   var wl = getWatchList();
-  var listEl = document.getElementById('wlList');
   var emptyEl = document.getElementById('wlEmpty');
-  if (!listEl) return;
-  if (!wl.length) { listEl.innerHTML = ''; if (emptyEl) emptyEl.style.display = ''; return; }
+  var holdEl = document.getElementById('wlHold');
+  var holdEmptyEl = document.getElementById('wlHoldEmpty');
+  var watchEl = document.getElementById('wlWatch');
+  var watchEmptyEl = document.getElementById('wlWatchEmpty');
+  
+  if (!wl.length) {
+    if (emptyEl) emptyEl.style.display = '';
+    if (holdEl) holdEl.innerHTML = '';
+    if (watchEl) watchEl.innerHTML = '';
+    if (holdEmptyEl) holdEmptyEl.style.display = '';
+    if (watchEmptyEl) watchEmptyEl.style.display = '';
+    return;
+  }
   if (emptyEl) emptyEl.style.display = 'none';
-  listEl.innerHTML = wl.map(function(s, i) {
-    return '<div style="background:#fff;border-radius:8px;padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;">' +
+
+  // 旧数据无type字段的默认归观察仓
+  wl.forEach(function(s) { if (!s.type) s.type = 'watch'; });
+
+  var holds = wl.filter(function(s) { return s.type === 'hold'; });
+  var watches = wl.filter(function(s) { return s.type === 'watch'; });
+
+  function renderCard(s) {
+    return '<div style="background:#fff;border-radius:8px;padding:8px 10px;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;align-items:center;gap:6px;">' +
       '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + s.name + '</div>' +
       '<div style="font-size:11px;color:#999;">' + s.code + '</div></div>' +
-      '<button onclick="queryWatchStock(\'' + s.code + '\')" style="padding:4px 10px;border:1px solid #ce93d8;background:#fff;color:#9c27b0;border-radius:6px;font-size:11px;cursor:pointer;">查询</button>' +
-      '<button onclick="removeFromWatchList(\'' + s.code + '\')" style="padding:4px 8px;border:none;background:none;color:#ccc;font-size:16px;cursor:pointer;line-height:1;">×</button>' +
+      '<button onclick="switchWatchType(\'' + s.code + '\',\'' + (s.type === 'hold' ? 'watch' : 'hold') + '\')" style="padding:2px 6px;border:1px solid #ddd;background:#fff;border-radius:4px;font-size:10px;cursor:pointer;color:#888;" title="移动到' + (s.type === 'hold' ? '观察' : '持仓') + '">⇄</button>' +
+      '<button onclick="queryWatchStock(\'' + s.code + '\')" style="padding:4px 8px;border:1px solid #ce93d8;background:#fff;color:#9c27b0;border-radius:6px;font-size:11px;cursor:pointer;">查询</button>' +
+      '<button onclick="removeFromWatchList(\'' + s.code + '\')" style="padding:4px 6px;border:none;background:none;color:#ccc;font-size:16px;cursor:pointer;line-height:1;">×</button>' +
       '</div>';
-  }).join('');
+  }
+
+  if (holdEl) {
+    holdEl.innerHTML = holds.length ? holds.map(renderCard).join('') : '';
+    if (holdEmptyEl) holdEmptyEl.style.display = holds.length ? 'none' : '';
+  }
+  if (watchEl) {
+    watchEl.innerHTML = watches.length ? watches.map(renderCard).join('') : '';
+    if (watchEmptyEl) watchEmptyEl.style.display = watches.length ? 'none' : '';
+  }
+}
+function switchWatchType(code, newType) {
+  var wl = getWatchList();
+  var item = wl.find(function(s) { return s.code === code; });
+  if (item) { item.type = newType; saveWatchList(wl); renderWatchList(); }
 }
 function queryWatchStock(code) {
   switchTabByName('query');
@@ -181976,29 +182114,175 @@ function switchTabByName(name) {
 
 // ============ 初始化 ============
 render();
-// 主人模式下显示自选Tab
-(function initWatchList() {
-  if (!window.IS_GUEST) {
-    var adminTabs = document.querySelectorAll('.admin-only');
-    adminTabs.forEach(function(t) { t.style.display = ''; });
-    renderWatchList();
-    setTimeout(renderSignalWinRate, 3000);
-  }
-})();
+// 自选列表所有人可用
+renderWatchList();
 </script>
-<div class="global-footer">九宝量化 v6.0 | 本站数据均来自权威公开网站，一切结论仅供参考，不构成投资建议，不承担法律责任。 <span id="visitStats" style="margin-left:12px;color:#bbb;"></span></div>
+<div class="global-footer">九宝量化 v6.0 | 本站数据均来自权威公开网站，一切结论仅供参考，不构成投资建议，不承担法律责任。</div>
 
 <script>
-// ===== 访问统计 =====
+// ===== 访问统计（增强版） =====
 (function(){
-  var key = 'visits_v6', today = new Date().toDateString();
-  var d = JSON.parse(localStorage.getItem(key) || '{"total":0,"daily":{},"first":"' + today + '"}');
-  d.total++; d.daily[today] = (d.daily[today] || 0) + 1;
-  var uniqueDays = Object.keys(d.daily).length;
+  var key = 'stats_v6', today = new Date().toDateString();
+  var hour = new Date().getHours();
+  var d = JSON.parse(localStorage.getItem(key) || '{"total":0,"daily":{},"hourly":{},"browsers":{},"oss":{},"referrers":{},"sessions":{},"stayTotal":0,"stayCount":0,"first":"' + today + '","lastHourlyReset":""}');
+
+  // 跨天重置分时
+  if (d.lastHourlyReset !== today) {
+    d.hourly[today] = {};
+    d.sessions[today] = {};
+    d.lastHourlyReset = today;
+  }
+
+  // 累计
+  d.total++;
+  d.daily[today] = (d.daily[today] || 0) + 1;
+  if (!d.hourly[today]) d.hourly[today] = {};
+  d.hourly[today][hour] = (d.hourly[today][hour] || 0) + 1;
+
+  // 浏览器检测
+  var ua = navigator.userAgent;
+  var browser = '其他';
+  if (ua.indexOf('Edg') > -1) browser = 'Edge';
+  else if (ua.indexOf('Chrome') > -1) browser = 'Chrome';
+  else if (ua.indexOf('Firefox') > -1) browser = 'Firefox';
+  else if (ua.indexOf('Safari') > -1) browser = 'Safari';
+  d.browsers[browser] = (d.browsers[browser] || 0) + 1;
+
+  // 系统检测
+  var os = '其他';
+  if (ua.indexOf('Windows') > -1) os = 'Windows';
+  else if (ua.indexOf('Mac') > -1) os = 'macOS';
+  else if (ua.indexOf('Linux') > -1) os = 'Linux';
+  else if (ua.indexOf('Android') > -1) os = 'Android';
+  else if (ua.indexOf('iPhone') > -1 || ua.indexOf('iPad') > -1) os = 'iOS';
+  d.oss[os] = (d.oss[os] || 0) + 1;
+
+  // 来源检测
+  var ref = document.referrer;
+  var source = '直接访问';
+  if (ref) {
+    if (ref.indexOf('baidu.com') > -1) source = '百度搜索';
+    else if (ref.indexOf('google.com') > -1) source = 'Google搜索';
+    else if (ref.indexOf('bing.com') > -1) source = 'Bing搜索';
+    else if (ref.indexOf('github.io') === -1) source = '外部链接';
+    else source = '站内跳转';
+  }
+  d.referrers[source] = (d.referrers[source] || 0) + 1;
+
+  // UV：为每个浏览器生成唯一ID
+  var vid = localStorage.getItem('visitor_id_v6');
+  if (!vid) {
+    vid = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('visitor_id_v6', vid);
+  }
+  if (!d.sessions[today]) d.sessions[today] = {};
+  d.sessions[today][vid] = true;
+
+  // 停留时长：记录进入时间
+  d._enterTime = Date.now();
+
   localStorage.setItem(key, JSON.stringify(d));
-  var el = document.getElementById('visitStats');
-  if (el) el.textContent = '👁 总访问 ' + d.total + ' 次 · ' + uniqueDays + ' 天 · 今日 ' + (d.daily[today] || 1) + ' 次';
+
+  // 页面离开时记录停留
+  window.addEventListener('beforeunload', function() {
+    var data = JSON.parse(localStorage.getItem(key) || '{}');
+    if (data._enterTime) {
+      data.stayTotal = (data.stayTotal || 0) + (Date.now() - data._enterTime);
+      data.stayCount = (data.stayCount || 0) + 1;
+      delete data._enterTime;
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+  });
+
+  var uniqueDays = Object.keys(d.daily).length;
 })();
+</script>
+
+<script>
+// ===== 统计面板（管理员专属） =====
+function renderStatsPanel() {
+  var key = 'stats_v6', today = new Date().toDateString();
+  var d = JSON.parse(localStorage.getItem(key) || '{}');
+  var set = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+  var setHtml = function(id, val) { var el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+  // === 核心指标 ===
+  set('statPv', d.total || '--');
+  var uvToday = d.sessions[today] ? Object.keys(d.sessions[today]).length : 0;
+  set('statUv', uvToday || '--');
+
+  var yesterday = new Date(Date.now() - 86400000).toDateString();
+  var todayCount = d.daily[today] || 0;
+  var yesterdayCount = d.daily[yesterday] || 0;
+  var pvDiff = yesterdayCount > 0 ? ((todayCount - yesterdayCount) / yesterdayCount * 100).toFixed(0) : '0';
+  var pvSign = parseInt(pvDiff) >= 0 ? '+' : '';
+  var diffColor = parseInt(pvDiff) >= 0 ? '#e57373' : '#81c784';
+  setHtml('statPvChange', '<span style="color:' + diffColor + ';font-size:11px;">' + pvSign + pvDiff + '% vs 昨日</span>');
+
+  setHtml('statUvChange', '<span style="font-size:11px;color:#9fa8da;">今日独立</span>');
+
+  // 平均停留
+  var avgStay = d.stayCount > 0 ? Math.round(d.stayTotal / d.stayCount / 1000) : 0;
+  if (avgStay < 60) { set('statStay', avgStay); }
+  else { set('statStay', Math.round(avgStay / 60) + 'm'); }
+
+  // === 访问来源 ===
+  var refs = d.referrers || {};
+  var srcEl = document.getElementById('statSources');
+  if (srcEl) {
+    var srcData = [
+      { label: '直接', key: '直接访问', bg: '#f5f5f5', color: '#757575' },
+      { label: '百度', key: '百度搜索', bg: '#e8eaf6', color: '#5c6bc0' },
+      { label: 'Google', key: 'Google搜索', bg: '#e0f2f1', color: '#00897b' },
+      { label: 'Bing', key: 'Bing搜索', bg: '#fce4ec', color: '#e57373' },
+      { label: '外链', key: '外部链接', bg: '#fff3e0', color: '#ff8f00' }
+    ];
+    var total = d.total || 1;
+    srcEl.innerHTML = srcData.map(function(s) {
+      var cnt = refs[s.key] || 0;
+      var pct = Math.round(cnt / total * 100);
+      return '<div style="display:flex;justify-content:space-between;align-items:center;background:' + s.bg + ';padding:6px 10px;border-radius:6px;margin-bottom:3px;">' +
+        '<span style="color:' + s.color + ';font-weight:500;">' + s.label + '</span><span style="font-weight:600;font-size:13px;">' + cnt + '</span></div>';
+    }).join('');
+  }
+
+  // === 分时趋势 ===
+  var hourly = d.hourly[today] || {};
+  var barsEl = document.getElementById('statHourlyBars');
+  var labelsEl = document.getElementById('statHourlyLabels');
+  if (barsEl && labelsEl) {
+    var maxH = Math.max(1, Math.max.apply(null, Object.values(hourly).concat([1])));
+    var barsHtml = '', labelsHtml = '';
+    for (var h = 0; h <= 23; h++) {
+      var val = hourly[h] || 0;
+      var hPct = Math.max(2, Math.round(val / maxH * 70));
+      barsHtml += '<div style="flex:1;text-align:center;margin:0 1px;">' +
+        '<div style="background:linear-gradient(180deg,#b39ddb,#d1c4e9);height:' + hPct + 'px;border-radius:3px 3px 0 0;min-height:' + (val > 0 ? 3 : 0) + 'px;transition:all 0.3s;' + (val > 0 ? '' : 'opacity:0.15;') + '" title="' + h + '时: ' + val + '次"></div>' +
+        '</div>';
+      labelsHtml += '<span style="flex:1;text-align:center;margin:0 1px;">' + (h % 4 === 0 ? h + '时' : '') + '</span>';
+    }
+    barsEl.innerHTML = barsHtml;
+    labelsEl.innerHTML = labelsHtml;
+  }
+
+  // === 浏览器/系统 ===
+  var browsers = d.browsers || {};
+  var oss = d.oss || {};
+  var brEl = document.getElementById('statBrowsers');
+  var osEl = document.getElementById('statOS');
+  if (brEl) {
+    var brList = Object.entries(browsers).sort(function(a, b) { return b[1] - a[1]; });
+    brEl.innerHTML = brList.length > 0 ? brList.map(function(e) {
+      return '<span style="background:#ede7f6;padding:2px 8px;border-radius:12px;margin:2px;display:inline-block;font-size:11px;color:#5e35b1;">' + e[0] + ' ' + e[1] + '</span>';
+    }).join(' ') : '<span style="color:#bbb;">暂无数据</span>';
+  }
+  if (osEl) {
+    var osList = Object.entries(oss).sort(function(a, b) { return b[1] - a[1]; });
+    osEl.innerHTML = osList.length > 0 ? osList.map(function(e) {
+      return '<span style="background:#e0f2f1;padding:2px 8px;border-radius:12px;margin:2px;display:inline-block;font-size:11px;color:#00695c;">' + e[0] + ' ' + e[1] + '</span>';
+    }).join(' ') : '<span style="color:#bbb;">暂无数据</span>';
+  }
+}
 </script>
 
 <!-- 密码保护模态框 — 马卡龙色系（永久嵌入母版） -->
@@ -182097,7 +182381,8 @@ render();
         const data = JSON.parse(stored);
         if (data.expire && Date.now() < data.expire) {
           const role = localStorage.getItem('alm_role');
-          if (role === 'guest') { window.IS_GUEST = true; applyGuestMode(); }
+          if (role === 'guest') { window.IS_GUEST = true; applyGuestMode(); var rl = document.getElementById('reloginLink'); if (rl) rl.style.display = ''; }
+          else { window.IS_GUEST = false; }
           hideOverlay(); return true;
         } else { localStorage.removeItem('alm_auth'); localStorage.removeItem('alm_role'); }
       }
@@ -182122,7 +182407,7 @@ render();
       }
       if (document.getElementById('rememberMe').checked) saveAuth();
       hideOverlay();
-      if (isGuest) applyGuestMode();
+      if (isGuest) applyGuestMode(); else { window.IS_GUEST = false; initAdminMode(); }
     } else {
       failCount++;
       var box = document.getElementById('pwdBox');
@@ -182160,6 +182445,39 @@ render();
       var caption = t.textContent.substring(0, 30);
       if (caption.indexOf('定时任务') >= 0 || caption.indexOf('评分') >= 0) t.style.display = 'none';
     });
+    // 显示切换账号链接
+    var rl = document.getElementById('reloginLink');
+    if (rl) rl.style.display = '';
+  }
+  function initAdminMode() {
+    var adminTabs = document.querySelectorAll('.admin-only');
+    adminTabs.forEach(function(t) { t.style.setProperty('display', '', 'important'); });
+    if (typeof renderStatsPanel === 'function') { try { renderStatsPanel(); } catch(e) { console.error('renderStatsPanel error:', e); } }
+    try { setTimeout(renderSignalWinRate, 3000); } catch(e) {}
+    // 隐藏切换账号链接
+    var rl = document.getElementById('reloginLink');
+    if (rl) rl.style.display = 'none';
+  }
+  function switchAccount() {
+    // 清除所有登录状态，重新显示登录弹窗
+    try { localStorage.removeItem('alm_auth'); } catch(e) {}
+    try { localStorage.removeItem('alm_role'); } catch(e) {}
+    window.IS_GUEST = false;
+    // 重新显示登录覆盖层
+    var ov = document.getElementById('pwdOverlay');
+    if (ov) {
+      ov.style.display = 'flex';
+      ov.style.opacity = '1';
+      ov.style.transform = 'scale(1)';
+      document.body.style.overflow = 'hidden';
+    }
+    // 重置错误状态
+    var err = document.getElementById('pwdError');
+    if (err) err.textContent = '';
+    var inp = document.getElementById('pwdInput');
+    if (inp) { inp.value = ''; inp.disabled = false; inp.focus(); }
+    var btn = document.querySelector('.enter-btn');
+    if (btn) btn.disabled = false;
   }
   function hideOverlay() {
     var ov = document.getElementById('pwdOverlay');
@@ -182172,6 +182490,7 @@ render();
     if (ps) ps.remove();
   }
   if (!checkStoredAuth()) { document.body.style.overflow = 'hidden'; }
+  else if (!window.IS_GUEST) { initAdminMode(); }
 })();
 </script>
 
@@ -182687,14 +183006,14 @@ function renderHerdingMain() {
     });
     if (ongoing.length || upcoming.length) {
       h += '<div style="margin-bottom:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">';
-      h += '<div><b style="color:#2a6496;">进行中</b>';
+      h += '<div><b style="color:#42a5f5;">进行中</b>';
       if (ongoing.length) {
-        ongoing.forEach(function(o){ h += '<div style="padding:3px 6px;background:#e3f2fd;border-radius:3px;margin-top:2px;">'+o.item.event+' <span style="font-size:10px;color:#1565c0;">'+o.dateLabel+'</span></div>'; });
+        ongoing.forEach(function(o){ h += '<div style="padding:3px 6px;background:#e3f2fd;border-radius:3px;margin-top:2px;">'+o.item.event+'</div>'; });
       } else { h += '<div style="color:#999;font-size:11px;">暂无</div>'; }
       h += '</div>';
       h += '<div><b style="color:#e65100;">预告</b>';
       if (upcoming.length) {
-        upcoming.forEach(function(o){ h += '<div style="padding:3px 6px;background:#fff3e0;border-radius:3px;margin-top:2px;">'+o.item.event+' <span style="font-size:10px;color:#e65100;">'+o.dateLabel+'</span></div>'; });
+        upcoming.forEach(function(o){ h += '<div style="padding:3px 6px;background:#fff3e0;border-radius:3px;margin-top:2px;">'+o.item.event+'</div>'; });
       } else { h += '<div style="color:#999;font-size:11px;">暂无</div>'; }
       h += '</div></div>';
     }
@@ -182708,7 +183027,7 @@ function renderHerdingMain() {
 
   // ── 左：当日 ──
   h += '<div style="display:flex;flex-direction:column;gap:8px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:#888;">当日</div>';
+  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;">当日</div>';
   // 当日流入
   h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;flex:1;">';
   h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP5</div>';
@@ -182736,7 +183055,7 @@ function renderHerdingMain() {
 
   // ── 右：本周 ──
   h += '<div style="display:flex;flex-direction:column;gap:8px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:#888;">本周</div>';
+  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;">本周</div>';
   // 本周流入
   h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;flex:1;">';
   h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP5</div>';
@@ -183320,6 +183639,17 @@ renderSuspensionAlert();
 
 
 <!-- 历史追踪模态框 -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?eb25c4f785161259aa2b3cea4dfc5243";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
 <script>
 (function(){
