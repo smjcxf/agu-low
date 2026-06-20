@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620134423 -->
+<!-- build: 20260620135111 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -996,18 +996,24 @@ tr:hover td { background: #fafbfc; }
         <h4 style="margin:0 0 10px;font-size:14px;color:#ff9800;border-left:4px solid #ff9800;padding-left:8px;">🔮 预判信号</h4>
         <div style="padding:10px 14px;background:#f8f9fa;border-radius:8px;font-size:12px;line-height:1.8;margin-bottom:8px;">
           <b>⚡ 一眼结论（顶栏总览）</b>：预判信号Tab顶部核心卡片，三色块浓缩三个维度（🐉机游共振蓝/🔥主力资金紫/🌏北向资金橙），一目了然当前市场信号强度。下方"核心关注"预警条汇总机游共振/主力抱团（含接力方向加粗高亮）/北向动态/内外资分歧/谨慎方向，板块级汇总。<br>
-          <b>🐉 机游共振·龙虎榜（卡片1）</b>：三色块布局——左🏦机构净买入/中⚡机游共振/右🔥游资净买入，按金额降序排列，支持连续上榜标注（连X日）。盘中实时更新，非T+1。<br>
+          <b>⚠️ 异动停牌观测</b>：一眼结论下方卡片，双栏展示——左🔒已停牌（股票名+天数）、右⚡近触发（股票名+偏离值%+距阈值%）。停牌数据来自东方财富停复牌接口，近触发扫描金股池+概念龙头+涨停板池涨幅≥15%的个股。<br>
+          <b>🐉 机游共振·龙虎榜（卡片1）</b>：三色块布局——左🏦机构净买入/中⚡机游共振/右🔥游资净买入，按金额降序，支持连续上榜标注（连X日）。8000万门槛（≈0.8亿），低于不显示。席位全部统计：机构专用/深股通沪股通/游资/量化/未识别，逐笔明细如实分类，知名游资标注别名（章盟主/孙哥等）。盘中实时更新，非T+1。<br>
           <b>🔥 主力资金抱团监控（卡片2）</b>：三大区块——①方向预判（当前抱团板块/4类接力方向：机构共识/事件驱动/蓄力中/分歧蓄力+谨慎方向+催化剂）→②板块资金实况（左当日/右本周，各流入流出TOP5双列并排）→③个股主力动向（当日净买入/净卖出TOP5及连续天数）。数据T+1盘后更新。<br>
           <b>🌏 北向资金监控（卡片3）</b>：当日/本周净流入大数字→方向预判（趋势+增持减持集中度+主力共振）→板块流向（增持/减持TOP5）→个股流向（净买入TOP5/连续加仓）→策略参考（风格偏好/合力信号）。蓝+靛蓝+淡粉+淡绿独立配色，增持板块排在减持前面。
         </div>
 
         <!-- 机游共振显示规则 -->
         <div style="padding:10px 14px;background:#fef9e7;border-radius:8px;font-size:12px;line-height:1.8;margin-bottom:8px;border-left:3px solid #f57f17;">
-          <b>🐉 机游共振·板块显示规则</b><br>
-          纯共振股票按申万行业分组，显示逻辑如下：<br>
-          <b>· 板块集中</b>：某行业 ≥2只 或占纯共振总数 >50% → 显示 <code style="background:#e3f2fd;color:#1565c0;padding:1px 4px;border-radius:3px;">XX板块 X只</code><br>
-          <b>· 板块分散</b>：各行业均 ≤1只 → 显示 <code style="background:#fce4ec;color:#c62828;padding:1px 4px;border-radius:3px;">跨N板块分散</code>（说明无行业共识，多点试探）<br>
-          <b>· 净买金额</b>：核心关注行始终显示净买合计金额（机构+游资，单位亿）
+          <b>🐉 龙虎榜席位分类规则</b><br>
+          东方财富逐笔席位明细全部统计，分类如下：<br>
+          <b>· 机构专用</b> → <code style="background:#e3f2fd;color:#1565c0;padding:1px 4px;border-radius:3px;">机构</code><br>
+          <b>· 深股通/沪股通专用</b> → <code style="background:#e8f5e9;color:#2e7d32;padding:1px 4px;border-radius:3px;">北向</code><br>
+          <b>· 知名席位（章盟主/孙哥/方新侠等65席）</b> → <code style="background:#fce4ec;color:#c62828;padding:1px 4px;border-radius:3px;">游资·具体别名</code><br>
+          <b>· 模糊匹配游资模式（拉萨团结路等12模式）</b> → <code style="background:#fce4ec;color:#c62828;padding:1px 4px;border-radius:3px;">游资</code><br>
+          <b>· 量化席位</b> → <code style="background:#f3e5f5;color:#7b1fa2;padding:1px 4px;border-radius:3px;">量化</code><br>
+          <b>· 未识别席位</b> → <code style="background:#f5f5f5;color:#666;padding:1px 4px;border-radius:3px;">未识别</code>（实事求是保留，不编造）<br><br>
+          <b>纯共振判定</b>：机构净买入 > <b>8000万</b> 且 非机构净买入（北向+游资+量化+未识别合计）> <b>8000万</b> → 纯共振<br>
+          三色块严格互斥：机构独买（仅机构达标）/ 机游共振（双向达标）/ 游资独买（仅非机构达标），同一股票只出现在其中一个块。
         </div>
       </div>
 
@@ -150193,7 +150199,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 13:43:53",
+"update_time": "2026-06-20 13:50:42",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -179257,7 +179263,8 @@ function renderUpdateSchedule() {
   ]);
 
   h += card('19:30', '收盘后全量更新', '#283593', [
-    {m:'🐉 龙虎榜机游共振', c:'三色块：机构净买入/机游共振/游资净买入+连续标注'},
+    {m:'🐉 龙虎榜机游共振', c:'三色块：机构净买入/机游共振/游资净买入+连续标注+游资别名'},
+    {m:'⚠️ 异动停牌观测', c:'停牌列表+近触发预警（金股池+涨停板池涨幅扫描）'},
     {m:'🏦 国际投行信号', c:'国际投行看多/中性信号拉取'},
     {m:'🔥 主力资金抱团监控', c:'方向预判+板块(当日)+个股(当日) T+1数据注入'},
     {m:'📰 投行研报', c:'投行最新研报 + 国际投行信号'},
