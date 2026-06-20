@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620133433 -->
+<!-- build: 20260620133706 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150193,7 +150193,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 13:34:06",
+"update_time": "2026-06-20 13:36:37",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -181781,24 +181781,36 @@ function renderLhbPredict() {
 
   function seatBadge(seats, color) {
     if (!seats) return '';
-    var types = [];
-    var typeMap = {'机构':'机构','北向':'北向','游资':'游资','量化':'量化','未识别':'未识别'};
+    var badges = [];
+    var styleMap = {
+      '机构': 'background:#e3f2fd;color:#1565c0;',
+      '北向': 'background:#e8f5e9;color:#2e7d32;',
+      '游资': 'background:#fce4ec;color:#c62828;',
+      '量化': 'background:#f3e5f5;color:#7b1fa2;',
+      '未识别': 'background:#f5f5f5;color:#666;',
+    };
+    // 先显示知名游资别名，再显示类型
+    var aliasDone = {};
     Object.keys(seats).forEach(function(t){
-      if (typeMap[t]) types.push(t);
+      var d = seats[t];
+      var aliases = d.aliases || [];
+      aliases.forEach(function(a){
+        if (!aliasDone[a]) {
+          aliasDone[a] = true;
+          var s = styleMap['游资'] || 'background:#fce4ec;color:#c62828;';
+          badges.push('<span style="font-size:9px;'+s+'padding:1px 4px;border-radius:2px;margin-left:2px;">'+a+'</span>');
+        }
+      });
     });
-    if (!types.length) return '';
-    var html = '';
-    types.forEach(function(t, i) {
-      var styles = {
-        '机构': 'background:#e3f2fd;color:#1565c0;',
-        '北向': 'background:#e8f5e9;color:#2e7d32;',
-        '游资': 'background:#fce4ec;color:#c62828;',
-        '量化': 'background:#f3e5f5;color:#7b1fa2;',
-        '未识别': 'background:#f5f5f5;color:#666;',
-      };
-      html += '<span style="font-size:9px;'+(styles[t]||'')+'padding:1px 4px;border-radius:2px;margin-left:2px;">'+t+'</span>';
+    // 再显示类型标签（机构/北向/量化/未识别，游资别名已显示则跳过）
+    Object.keys(seats).forEach(function(t){
+      var d = seats[t];
+      // 游资类型已有别名显示，不额外显示"游资"标签
+      if (t === '游资' && (d.aliases||[]).length > 0) return;
+      var s = styleMap[t] || '';
+      badges.push('<span style="font-size:9px;'+s+'padding:1px 4px;border-radius:2px;margin-left:2px;">'+t+'</span>');
     });
-    return html;
+    return badges.join('');
   }
 
   function renderBlock(stocks, netFn, title, bg, color, emoji, twoCol) {

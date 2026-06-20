@@ -29,23 +29,30 @@ def _load_lhb_seats():
         return json.load(f)
 
 def _classify_seat(seat_name, seats_db):
-    """分类席位：机构/北向/游资/量化/未识别"""
+    """分类席位：返回 (类型, 别名或空字符串)
+    知名游资精确匹配 → 类型+别名（如 ('游资', '章盟主')）
+    模式匹配游资 → ('游资', '')
+    机构/北向/量化 → ('机构', '') 等
+    未识别 → ('未识别', '')
+    """
     if not seat_name:
-        return '未识别'
+        return ('未识别', '')
     if '机构专用' in seat_name:
-        return '机构'
+        return ('机构', '')
     if '深股通' in seat_name or '沪股通' in seat_name:
-        return '北向'
+        return ('北向', '')
+    # 精确匹配已知席位 → 返回别名
     for s in seats_db.get("seats", []):
         if s["name"] == seat_name:
-            return s.get("type", "游资")
+            return (s.get("type", "游资"), s.get("alias", ""))
+    # 模糊匹配模式 → 类型匹配但不带别名
     for p in seats_db.get("patterns", {}).get("游资", []):
         if p in seat_name:
-            return '游资'
+            return ('游资', '')
     for p in seats_db.get("patterns", {}).get("量化", []):
         if p in seat_name:
-            return '量化'
-    return '未识别'
+            return ('量化', '')
+    return ('未识别', '')
 
 def get_date_str(target_date=None):
     if target_date is None:
@@ -88,9 +95,18 @@ def fetch_lhb_list(date_str):
         return []
 
 def fetch_seat_detail(stocks, date_str):
-    """逐笔席位明细：全量统计，按类型分组汇总（单位：万）"""
+    """逐笔席位明细：全量统计，按类型分组汇总（单位：万）
+    返回: {
+      code: {
+        "机构": {"buy": 0, "sell": 0},
+        "北向": {"buy": 0, "sell": 0},
+        "游资": {"buy": 0, "sell": 0, "aliases": ["章盟主", "孙哥"]},
+        "量化": {...},
+        "未识别": {...}
+      }
+    }
+    """
     seats_db = _load_lhb_seats()
-    # 按机构净买入金额排序（用新浪接口做近似），优先分析大金额股票
     inst_map = _fetch_inst_sina()
     priority = sorted(
         stocks,
@@ -99,7 +115,6 @@ def fetch_seat_detail(stocks, date_str):
     )
     codes = list(set(s['code'] for s in priority[:DETAIL_LIMIT]))
 
-    # 结果：{code: {"机构": {buy, sell}, "北向": {buy, sell}, ...}}
     detail_map = {}
 
     for code in codes:
@@ -112,19 +127,27 @@ def fetch_seat_detail(stocks, date_str):
                 col = '买入金额' if flag == '买入' else '卖出金额'
                 for _, drow in df.iterrows():
                     seat = str(drow.get('交易营业部名称', ''))
-                    stype = _classify_seat(seat, seats_db)
+                    stype, alias = _classify_seat(seat, seats_db)
                     amt = float(drow.get(col, 0) or 0) / 10000  # 元→万
+
                     if stype not in detail_map[code]:
                         detail_map[code][stype] = {'buy': 0, 'sell': 0}
+
                     if flag == '买入':
                         detail_map[code][stype]['buy'] += amt
                     else:
                         detail_map[code][stype]['sell'] += amt
+
+                    # 记录别名（去重）
+                    if alias:
+                        if 'aliases' not in detail_map[code][stype]:
+                            detail_map[code][stype]['aliases'] = []
+                        if alias not in detail_map[code][stype]['aliases']:
+                            detail_map[code][stype]['aliases'].append(alias)
                 time.sleep(0.3)
             except Exception:
                 pass
 
-    # 统计
     total_seats = sum(len(v) for v in detail_map.values())
     log(f"逐笔席位：{total_seats} 种类型命中，覆盖 {len(detail_map)} 只股票")
     return detail_map
@@ -194,10 +217,13 @@ def main():
         for stype in ('机构', '北向', '游资', '量化', '未识别'):
             d = seats.get(stype, {'buy': 0, 'sell': 0})
             if d['buy'] > 0 or d['sell'] > 0:
-                seat_detail[stype] = {
+                item = {
                     'buy': round(d['buy'], 1),
                     'sell': round(d['sell'], 1),
                 }
+                if d.get('aliases'):
+                    item['aliases'] = d['aliases']
+                seat_detail[stype] = item
 
         results[cat].append({
             'code': code,
