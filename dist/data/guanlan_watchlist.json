@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updated": "2026-06-19 19:31:44",
+  "updated": "2026-06-20 12:37:14",
   "total": 243,
   "stocks": {
     "SH600183": {
@@ -1754,9 +1754,14 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-18"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-18"
         }
       ],
-      "rec_count": 28,
+      "rec_count": 29,
       "institutions": [
         "花旗"
       ],
@@ -10091,7 +10096,7 @@
       "full_code": "SZ002008",
       "market": "A股",
       "first_seen": "2026-06-16",
-      "last_seen": "2026-06-16",
+      "last_seen": "2026-06-18",
       "recommendations": [
         {
           "institution": "花旗",
@@ -10162,9 +10167,14 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-16"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-18"
         }
       ],
-      "rec_count": 14,
+      "rec_count": 15,
       "institutions": [
         "花旗"
       ],
@@ -10544,9 +10554,14 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-18"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-18"
         }
       ],
-      "rec_count": 6,
+      "rec_count": 7,
       "institutions": [
         "花旗"
       ],
@@ -10611,9 +10626,14 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-18"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-18"
         }
       ],
-      "rec_count": 1,
+      "rec_count": 2,
       "institutions": [
         "花旗"
       ],
@@ -10632,9 +10652,14 @@
           "institution": "摩根士丹利",
           "rating": "买入",
           "date": "2026-06-18"
+        },
+        {
+          "institution": "摩根士丹利",
+          "rating": "买入",
+          "date": "2026-06-18"
         }
       ],
-      "rec_count": 1,
+      "rec_count": 2,
       "institutions": [
         "摩根士丹利"
       ],

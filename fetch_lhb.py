@@ -53,8 +53,8 @@ def _classify_seat(seat_name, seats_db):
     for p in seats_db.get("patterns", {}).get("量化", []):
         if p in seat_name:
             return ('量化', '')
-    # 5. 未知 → 归类为游资（包含所有非机构席位）
-    return ('游资', '')
+    # 5. 未知席位 → 跳过不统计（只认准知名游资席位）
+    return ('未知', '')
 
 def get_date_str(target_date=None):
     """返回 YYYYMMDD 格式日期字符串。

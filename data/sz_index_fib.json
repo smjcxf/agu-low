@@ -9,7 +9,7 @@
     "avg_pct": 0.01,
     "peak_date": "2026-05-13",
     "peak_close": 16089.75,
-    "date": "2026-06-18",
+    "date": "2026-06-20",
     "mode": "震荡整理"
   },
   "windows": [
@@ -17,7 +17,7 @@
       "name": "F(3)",
       "date": "2026-05-19",
       "desc": "小反弹窗口",
-      "days_left": -30,
+      "days_left": -32,
       "observation": {
         "index": 15530.23,
         "change_pct": 2.0,
@@ -34,7 +34,7 @@
       "name": "F(5)",
       "date": "2026-05-21",
       "desc": "短期变盘",
-      "days_left": -28,
+      "days_left": -30,
       "observation": {
         "index": 15569.91,
         "change_pct": 4.0,
@@ -51,7 +51,7 @@
       "name": "F(8)",
       "date": "2026-05-26",
       "desc": "8日变盘",
-      "days_left": -23,
+      "days_left": -25,
       "observation": {
         "index": 15856.61,
         "change_pct": -1.8,
@@ -68,7 +68,7 @@
       "name": "F(13)",
       "date": "2026-06-02",
       "desc": "13日重要窗口",
-      "days_left": -16,
+      "days_left": -18,
       "observation": {
         "index": 15340.36,
         "change_pct": -2.1,
@@ -85,7 +85,7 @@
       "name": "F(21)",
       "date": "2026-06-12",
       "desc": "21日大窗口 · SpaceX IPO日",
-      "days_left": -6,
+      "days_left": -8,
       "observation": {
         "index": 14954.1,
         "change_pct": 7.1,
@@ -102,23 +102,18 @@
       "name": "F(34)",
       "date": "2026-07-02",
       "desc": "34日中期窗口",
-      "days_left": 14,
+      "days_left": 12,
       "status": "future"
     },
     {
       "name": "F(55)",
       "date": "2026-07-31",
       "desc": "55日长期窗口",
-      "days_left": 43,
+      "days_left": 41,
       "status": "future"
     }
   ],
   "next_cycle": [
-    {
-      "name": "F(5)",
-      "date": "2026-06-19",
-      "desc": "下轮5日"
-    },
     {
       "name": "F(8)",
       "date": "2026-06-23",
@@ -149,5 +144,5 @@
     "summary": "从2026-05-13高点跌27天（-0.37%），震荡整理",
     "key_window": "⚡ F(21)窗口(2026-06-12)反转确认，下轮周期已推算"
   },
-  "update_time": "2026-06-18 23:01"
+  "update_time": "2026-06-20 12:40"
 }
