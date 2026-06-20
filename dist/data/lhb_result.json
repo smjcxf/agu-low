@@ -15,7 +15,8 @@
       "yz_buy_万": 120631.6,
       "yz_sell_万": 68773.2,
       "yz_net_万": 51858.4,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "sector": "小金属"
     },
     {
       "code": "002579",
@@ -30,7 +31,8 @@
       "yz_buy_万": 37038.8,
       "yz_sell_万": 19745.4,
       "yz_net_万": 17293.5,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "sector": "电子元件"
     },
     {
       "code": "300166",
@@ -45,7 +47,8 @@
       "yz_buy_万": 43525.9,
       "yz_sell_万": 15936.2,
       "yz_net_万": 27589.7,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "sector": "互联网服务"
     },
     {
       "code": "300861",
@@ -60,7 +63,8 @@
       "yz_buy_万": 23019.5,
       "yz_sell_万": 17093.0,
       "yz_net_万": 5926.4,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "sector": "非金属材料"
     },
     {
       "code": "301310",
@@ -75,7 +79,8 @@
       "yz_buy_万": 58321.8,
       "yz_sell_万": 54689.6,
       "yz_net_万": 3632.2,
-      "consecutive_days": 1
+      "consecutive_days": 1,
+      "sector": "电网设备"
     },
     {
       "code": "000539",
@@ -1373,5 +1378,14 @@
     "标X": 28,
     "不达标": 58,
     "总计": 91
-  }
+  },
+  "pure_sectors": {
+    "小金属": 1,
+    "电子元件": 1,
+    "互联网服务": 1,
+    "非金属材料": 1,
+    "电网设备": 1
+  },
+  "pure_sector_top": "小金属",
+  "pure_sector_count": 5
 }
