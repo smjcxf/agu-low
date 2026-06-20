@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620223615 -->
+<!-- build: 20260620224044 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150368,7 +150368,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 22:35:31",
+"update_time": "2026-06-20 22:39:58",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -180874,10 +180874,19 @@ function showQueryDropdown(keyword) {
   // 搜索个股（支持代码/名称/拼音首字母匹配）
   let stockMatches = [];
   if (window.STOCK_LIST && window.STOCK_LIST.length) {
+    // 5位纯数字 → 港股代码，仅精确匹配代码（防止"02865"误匹配A股"002865"）
+    var isFiveDigit = /^\d{5}$/.test(q);
     stockMatches = window.STOCK_LIST.filter(function(s) {
       const name = s.name.toLowerCase();
       const code = s.code.toLowerCase();
-      if (code.includes(qLower) || name.includes(qLower)) return true;
+      var codeMatch;
+      if (isFiveDigit) {
+        // 5位输入：只做精确代码匹配 + 名称匹配，不做子串匹配
+        codeMatch = (code === qLower);
+      } else {
+        codeMatch = code.includes(qLower);
+      }
+      if (codeMatch || name.includes(qLower)) return true;
       // 拼音首字母匹配
       if (!s._py) s._py = getPinyinAbbr(s.name);
       if (s._py.startsWith(qLower)) return true;
@@ -180937,6 +180946,16 @@ function showQueryDropdown(keyword) {
     return;
   }
   let html = '';
+  // 5位纯数字输入 → 港股优先显示
+  if (isFiveDigit && gpMatches.length) {
+    html += '<div style="padding:6px 15px;font-size:11px;color:#888;background:#f8f9fa;font-weight:600;">🇭🇰 港股</div>';
+    for (let i = 0; i < gpMatches.length; i++) {
+      const s = gpMatches[i];
+      html += '<div class="query-dropdown-item" data-code="' + s.code.replace('_','') + '" onclick="selectQueryStock(this)">';
+      html += '<span class="item-name">' + s.name + '</span>';
+      html += '<span class="item-code">' + s.code.replace('hk_','') + '</span></div>';
+    }
+  }
   // 个股
   if (stockMatches.length) {
     html += '<div style="padding:6px 15px;font-size:11px;color:#888;background:#f8f9fa;font-weight:600;">📈 个股</div>';
@@ -180969,8 +180988,8 @@ function showQueryDropdown(keyword) {
       html += '<span class="item-code">' + s.code + '</span></div>';
     }
   }
-  // 金股池港股
-  if (gpMatches.length) {
+  // 金股池港股（非5位数字输入时，放在指数之后）
+  if (!isFiveDigit && gpMatches.length) {
     html += '<div style="padding:6px 15px;font-size:11px;color:#888;background:#f8f9fa;font-weight:600;">🇭🇰 金股池港股</div>';
     for (let i = 0; i < gpMatches.length; i++) {
       const s = gpMatches[i];
