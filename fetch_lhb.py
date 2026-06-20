@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-龙虎榜机游共振分析 v5
+龙虎榜机游共振分析 v6
 - 新浪 jgmx_sina：机构席位买卖金额（真实，单位万）
-- 东方财富 stock_lhb_stock_detail_em：游资席位买卖金额（真实，单位元→万）
-- 分类：机构净买强(>1000万) + 游资净买强(>1000万) = 纯共振
-- 将纯共振股票更新到 nt_data.json 日历
+- 东方财富 stock_lhb_stock_detail_em：逐笔席位明细
+- 游资识别：精确匹配 lhb_seats.json 知名游资席位（不再用非机构席位一锅端）
+- 分类：机构净买>8000万 + 游资净买>8000万 = 纯共振
 """
 import akshare as ak
 import json
@@ -13,12 +13,48 @@ import time
 import datetime
 import os
 import sys
+import re
 
 OUT = "data/lhb_result.json"
-THRESHOLD = 1000  # 强买阈值：净买入 > 1000万
+THRESHOLD = 8000  # 强买阈值：净买入 > 8000万
+SEATS_PATH = os.path.join(os.path.dirname(__file__), "data", "lhb_seats.json")
 
 def log(msg):
     print(f"  {msg}", flush=True)
+
+def _load_lhb_seats():
+    """加载游资席位知识库"""
+    if not os.path.exists(SEATS_PATH):
+        log(f"[WARN] lhb_seats.json 不存在，回退到非机构席位统计算法")
+        return {"seats": [], "patterns": {}}
+    with open(SEATS_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def _classify_seat(seat_name, seats_db):
+    """对某个席位名称进行分类
+    返回 (type, alias) 如 ('游资', '章盟主'), ('机构', ''), ('量化', ''), ('北向', '')
+    """
+    if not seat_name:
+        return ('未知', '')
+    # 1. 机构专用 → 机构
+    if '机构专用' in seat_name:
+        return ('机构', '')
+    # 2. 北向资金通道
+    if '深股通' in seat_name or '沪股通' in seat_name:
+        return ('北向', '')
+    # 3. 精确匹配已知席位
+    for s in seats_db.get("seats", []):
+        if s["name"] == seat_name:
+            return (s["type"], s.get("alias", ""))
+    # 4. 模糊匹配已知游资模式
+    for p in seats_db.get("patterns", {}).get("游资", []):
+        if p in seat_name:
+            return ('游资', '')
+    for p in seats_db.get("patterns", {}).get("量化", []):
+        if p in seat_name:
+            return ('量化', '')
+    # 5. 未知 → 归类为游资（包含所有非机构席位）
+    return ('游资', '')
 
 def get_date_str(target_date=None):
     """返回 YYYYMMDD 格式日期字符串。
@@ -82,12 +118,13 @@ def fetch_inst_map():
     return inst_map
 
 def fetch_yz_map(stocks, date_str, limit=40):
-    """东方财富明细，游资席位买卖金额，单位：万"""
+    """东方财富逐笔席位明细，仅统计知名游资席位买卖金额，单位：万"""
     yz_map = {}
-    # 优先查机构净买强的股票
+    seats_db = _load_lhb_seats()
     priority = sorted(stocks, key=lambda s: abs(inst_map.get(s['code'], {}).get('buy', 0) - inst_map.get(s['code'], {}).get('sell', 0)), reverse=True) if 'inst_map' in dir() else stocks
     codes = list(set(s['code'] for s in priority[:limit]))
-    
+    yz_seat_count = 0  # 统计命中的游资席位数
+
     for code in codes:
         for flag in ['买入', '卖出']:
             try:
@@ -96,8 +133,11 @@ def fetch_yz_map(stocks, date_str, limit=40):
                     col = '买入金额' if flag == '买入' else '卖出金额'
                     for _, drow in detail_df.iterrows():
                         seat = str(drow.get('交易营业部名称', ''))
-                        if seat.strip() == '机构专用':
-                            continue  # 跳过机构
+                        stype, _ = _classify_seat(seat, seats_db)
+                        # 只统计游资/量化席位，跳过机构、北向、未知
+                        if stype not in ('游资', '量化'):
+                            continue
+                        yz_seat_count += 1
                         amt = float(drow.get(col, 0) or 0) / 10000  # 元→万
                         if code not in yz_map:
                             yz_map[code] = {'buy': 0, 'sell': 0}
@@ -105,10 +145,10 @@ def fetch_yz_map(stocks, date_str, limit=40):
                             yz_map[code]['buy'] += amt
                         else:
                             yz_map[code]['sell'] += amt
-                time.sleep(0.2)
+                time.sleep(0.3)
             except Exception:
                 pass
-    log(f"游资数据：{len(yz_map)} 只")
+    log(f"游资席位命中：{yz_seat_count} 次，覆盖 {len(yz_map)} 只股票")
     return yz_map
 
 def classify(inst_buy, inst_sell, yz_buy, yz_sell):
