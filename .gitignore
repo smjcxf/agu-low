@@ -1,15 +1,12 @@
 __pycache__/
 *.pyc
-# 忽略自动生成/缓存的py, 但保留核心脚本
+# 忽略所有 Python 脚本（核心算法保护）
 *.py
-!scanner.py
-!guanlan_extractor.py
+# 仅保留部署和运维必需的脚本
 !deploy_now.py
 !update_data_v2.py
 !backup_daily.py
-!generate_recommend.py
 !send_alert.py
-!fetch_*.py
 !deploy_audit.py
 *.bat
 .wrangler/
@@ -18,9 +15,6 @@ backup/
 backup_*/
 !/data/
 # 数据文件通过 git 跨机同步，见 data/.gitignore
-!generate_triple_resonance_history.py
-!update_triple_resonance_daily.py
-!inject_macro.py
 deploy_log.txt
 scanner_full.log
 .workbuddy/
