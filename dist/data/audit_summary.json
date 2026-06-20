@@ -1,30 +1,25 @@
 {
-  "timestamp": "2026-06-20T12:49:57.077124",
+  "timestamp": "2026-06-20T13:06:33.958889",
   "errors": 0,
-  "warnings": 6,
-  "ok": 43,
+  "warnings": 5,
+  "ok": 44,
   "details": {
     "errors": [],
     "warnings": [
       {
         "dashboard": "选股观测台",
-        "check": "scan_result.json(同步)",
-        "message": "源文件(0.0h前) 与 部署文件(17.1h前) 不同步——可能漏跑 update_data_v2"
-      },
-      {
-        "dashboard": "选股观测台",
         "check": "stock_names.json 新鲜度",
-        "message": "文件已老化 117.7h（阈值 72h）"
+        "message": "文件已老化 118.0h（阈值 72h）"
       },
       {
         "dashboard": "选股观测台",
         "check": "signal_backtest.json 新鲜度",
-        "message": "文件已老化 140.2h（阈值 72h）"
+        "message": "文件已老化 140.4h（阈值 72h）"
       },
       {
         "dashboard": "观澜台",
         "check": "guanlan_reports.json 新鲜度",
-        "message": "文件已老化 98.2h（阈值 48h）"
+        "message": "文件已老化 98.4h（阈值 48h）"
       },
       {
         "dashboard": "部署",
