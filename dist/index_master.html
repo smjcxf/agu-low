@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620224318 -->
+<!-- build: 20260620224745 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -44,11 +44,8 @@ body { font-family: -apple-system, "Microsoft YaHei", "Segoe UI", sans-serif; ba
 .content { padding: 14px; max-width: 1400px; margin: 0 auto; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
-/* 管理员专属Tab/面板：默认隐藏，JS根据登录态显示 */
-.admin-only { display: none; }
-/* 切换账号链接：默认隐藏，访客模式显示 */
-.relogin-link { display: none; cursor: pointer; font-size: 11px; color: #999; text-decoration: underline; margin-left: 12px; white-space: nowrap; }
-.relogin-link:hover { color: #666; }
+/* 管理员专属Tab/面板：默认可见，访客模式JS隐藏 */
+/* .relogin-link 已移除 */
 
 /* 底部 */
 .global-footer { text-align: center; padding: 16px; font-size: 11px; color: #aaa; margin: 16px auto 0; border-top: 1px solid #e0e0e0; display: block; width: 100%; clear: both; }
@@ -526,7 +523,6 @@ tr:hover td { background: #fafbfc; }
     </div>
   </div>
   <div class="header-right" style="display:flex;flex-direction:row;align-items:center;gap:14px;">
-    <span class="relogin-link" id="reloginLink" onclick="switchAccount()" title="清除登录状态，重新选择身份">🔑 切换</span>
     <div style="display:flex;flex-direction:row;align-items:center;gap:10px;">
       <span id="sanzuBadge" style="font-size:13px;font-weight:700;color:#FFD700;">四喜 0</span>
       <span id="sanxianBadge" style="font-size:13px;font-weight:700;color:#FFB6C1;">三线 0</span>
@@ -150368,7 +150364,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 22:42:49",
+"update_time": "2026-06-20 22:47:12",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -182400,8 +182396,7 @@ function renderStatsPanel() {
         const data = JSON.parse(stored);
         if (data.expire && Date.now() < data.expire) {
           const role = localStorage.getItem('alm_role');
-          if (role === 'guest') { window.IS_GUEST = true; applyGuestMode(); var rl = document.getElementById('reloginLink'); if (rl) rl.style.display = ''; }
-          else { window.IS_GUEST = false; }
+          if (role === 'guest') { window.IS_GUEST = true; applyGuestMode(); }
           hideOverlay(); return true;
         } else { localStorage.removeItem('alm_auth'); localStorage.removeItem('alm_role'); }
       }
@@ -182426,7 +182421,7 @@ function renderStatsPanel() {
       }
       if (document.getElementById('rememberMe').checked) saveAuth();
       hideOverlay();
-      if (isGuest) applyGuestMode(); else { window.IS_GUEST = false; initAdminMode(); }
+      if (isGuest) applyGuestMode(); else { try { renderStatsPanel(); } catch(e) {} }
     } else {
       failCount++;
       var box = document.getElementById('pwdBox');
@@ -182447,7 +182442,7 @@ function renderStatsPanel() {
     var hideSelectors = [
       '.tab[data-tab="guide"]',     // 逻辑详解Tab
       '#panel-guide',               // 逻辑详解面板
-      '.admin-only',                 // 管理员专用Tab/面板
+      '.admin-only',                 // 管理员专用Tab/面板（统计）
     ];
     hideSelectors.forEach(function(sel) {
       var el = document.querySelector(sel);
@@ -182464,39 +182459,6 @@ function renderStatsPanel() {
       var caption = t.textContent.substring(0, 30);
       if (caption.indexOf('定时任务') >= 0 || caption.indexOf('评分') >= 0) t.style.display = 'none';
     });
-    // 显示切换账号链接
-    var rl = document.getElementById('reloginLink');
-    if (rl) rl.style.display = '';
-  }
-  function initAdminMode() {
-    var adminTabs = document.querySelectorAll('.admin-only');
-    adminTabs.forEach(function(t) { t.style.setProperty('display', '', 'important'); });
-    if (typeof renderStatsPanel === 'function') { try { renderStatsPanel(); } catch(e) { console.error('renderStatsPanel error:', e); } }
-    try { setTimeout(renderSignalWinRate, 3000); } catch(e) {}
-    // 隐藏切换账号链接
-    var rl = document.getElementById('reloginLink');
-    if (rl) rl.style.display = 'none';
-  }
-  function switchAccount() {
-    // 清除所有登录状态，重新显示登录弹窗
-    try { localStorage.removeItem('alm_auth'); } catch(e) {}
-    try { localStorage.removeItem('alm_role'); } catch(e) {}
-    window.IS_GUEST = false;
-    // 重新显示登录覆盖层
-    var ov = document.getElementById('pwdOverlay');
-    if (ov) {
-      ov.style.display = 'flex';
-      ov.style.opacity = '1';
-      ov.style.transform = 'scale(1)';
-      document.body.style.overflow = 'hidden';
-    }
-    // 重置错误状态
-    var err = document.getElementById('pwdError');
-    if (err) err.textContent = '';
-    var inp = document.getElementById('pwdInput');
-    if (inp) { inp.value = ''; inp.disabled = false; inp.focus(); }
-    var btn = document.querySelector('.enter-btn');
-    if (btn) btn.disabled = false;
   }
   function hideOverlay() {
     var ov = document.getElementById('pwdOverlay');
@@ -182509,7 +182471,6 @@ function renderStatsPanel() {
     if (ps) ps.remove();
   }
   if (!checkStoredAuth()) { document.body.style.overflow = 'hidden'; }
-  else if (!window.IS_GUEST) { initAdminMode(); }
 })();
 </script>
 
