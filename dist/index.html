@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260620155924 -->
+<!-- build: 20260620160259 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150260,7 +150260,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-20 15:58:38",
+"update_time": "2026-06-20 16:02:15",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -179364,7 +179364,7 @@ function renderAISummary() {
     const amountLabel = flowYi >= 200 ? '大举进场' : flowYi >= 100 ? '明显流入' : flowYi >= 50 ? '温和流入' : '小幅流入';
     const moodLabel = netFlow > 0 ? (flowYi >= 200 ? '极度乐观' : '偏积极') : (flowYi >= 200 ? '极度谨慎' : '偏谨慎');
     lines.push('💰 国家队估算<b>' + dir + flowStr + '</b>' +
-      (netFlow > 0 ? ' (' + amountLabel + '，' + moodLabel + ')' : '') +
+      (netFlow > 0 ? '（<b style="color:#e65100;">' + amountLabel + '，' + moodLabel + '</b>）' : '') +
       ' —— ' + topNames + '，' + upCount + '涨' + downCount + '跌');
   }
 
@@ -179534,7 +179534,7 @@ function renderETFFlow() {
   }
 
   h += '监测' + etfs.length + '只主要ETF，' + upCount + '只上涨、' + downCount + '只下跌。估算<span style="color:' + moodColor + ';font-weight:700;">' +
-    flowDir + flowStr + '</span>，<span style="color:#1565c0;font-weight:700;">' + etfMood + '。</span></p>';
+    flowDir + flowStr + '</span>，<b style="color:#e65100;">' + etfMood + '。</b></p>';
 
   // 详细数据（直接展示）
   h += '<div style="padding-top:6px;">';
