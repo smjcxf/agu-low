@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621184744 -->
+<!-- build: 20260621185001 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -178216,6 +178216,9 @@ var RECOMMEND = window.RECOMMEND = [
       if (topWarn) html += '<div style="font-size:14px;color:#e65100;font-weight:700;margin-bottom:6px;">⚠️ 重点关注：' + topWarn + '</div>';
       if (warns.length) html += warns.map(function(w){ return '<div style="font-size:12px;color:#e65100;font-weight:600;line-height:1.8;">' + w + '</div>'; }).join('');
       el.innerHTML = html;
+      // 暴露给预判总览
+      window.__shReportWarns = warns;
+      window.__shReportTopWarn = topWarn;
     }
     updateMarginAlert();
 
@@ -183774,6 +183777,13 @@ function renderPredictSummary() {
   var da = window.__dataAlerts || [];
   if (da.length) {
     da.forEach(function(a){ alerts.push('<b style="color:#7f8c8d;">数据监控</b>：' + a.replace(/<\/?span[^>]*>/g, '')); });
+  }
+  // 阴跌磨底周报异动（融券/融资/成交/涨跌极端）
+  var sw = window.__shReportWarns || [];
+  var tw = window.__shReportTopWarn || '';
+  if (tw) alerts.push('<b style="color:#e65100;">⚠️ ' + tw + '</b>');
+  if (sw.length) {
+    sw.forEach(function(w){ alerts.push('<b style="color:#7f8c8d;">数据监控</b>：' + w.replace('⚠️ ', '')); });
   }
 
   if (alerts.length) {
