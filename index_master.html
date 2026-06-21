@@ -740,6 +740,7 @@ tr:hover td { background: #fafbfc; }
     <tr><td style="padding:6px 12px;">白银(COMEX)</td><td style="padding:6px 12px;text-align:center;" id="g-silver">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">工业+避险双属性</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
     <tr><td style="padding:6px 12px;">铜(COMEX)</td><td style="padding:6px 12px;text-align:center;" id="g-copper">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">全球经济晴雨表</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
     <tr><td style="padding:6px 12px;">原油(WTI)</td><td style="padding:6px 12px;text-align:center;" id="g-oil">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">通胀预期核心指标</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
+    <tr><td style="padding:6px 12px;">比特币(BTC)</td><td style="padding:6px 12px;text-align:center;" id="g-bitcoin">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">全球风险偏好风向标</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
 
     <!-- 市场情绪 -->
     <tr><td colspan="4" style="background:#1a2a3a;padding:6px 12px;color:#e91e63;font-weight:500;margin-top:4px;font-size:12px;">📈 市场情绪（反映投资者行为）</td></tr>
@@ -180412,16 +180413,16 @@ function renderMacro() {
   set('m-cn-bond', m.cn_bond_10y && m.cn_bond_10y.value, '%');
   set('m-us-bond', m.us_bond_10y && m.us_bond_10y.value, '%');
   // 央行公开市场操作 - API 经常不可用，拿不到就隐藏整行
-  if (m.omo && m.omo.net_inflow !== null && m.omo.net_inflow !== undefined) {
-    set('m-omo', m.omo.net_inflow, '亿');
+  if (m.open_market_operation && m.open_market_operation.net_inflow !== null && m.open_market_operation.net_inflow !== undefined) {
+    set('m-omo', m.open_market_operation.net_inflow, '亿');
   } else {
     var omoRow = document.getElementById('m-omo') && document.getElementById('m-omo').closest('tr');
     if (omoRow) omoRow.style.display = 'none';
   }
-  set('m-shibor', m.shibor && (m.shibor.on + '/' + m.shibor.w1), '%');
-  if (m.lpr) set('m-lpr', m.lpr.lpr_1y + '/' + m.lpr.lpr_5y, '%');
+  set('m-shibor', m.shibor && m.shibor.on !== undefined ? (m.shibor.on + '% / ' + m.shibor.w1 + '%') : '--');
+  if (m.lpr) set('m-lpr', m.lpr.lpr_1y + '% / ' + m.lpr.lpr_5y + '%');
   setU('upd-lpr', null, m.lpr && m.lpr.date);
-  if (m.m2) set('m-m1m2', m.m2.value + '%');
+  if (m.m2_yoy && m.m2_yoy.value !== null) set('m-m1m2', m.m2_yoy.value + '%');
   setU('upd-m2', null, m.m2 && m.m2.date);
   set('m-spread', (m.cn_us_spread && m.cn_us_spread.value), '');
 
@@ -180435,6 +180436,7 @@ function renderMacro() {
   if (comm.silver) set('g-silver', '$' + comm.silver.value + (comm.silver.unit ? ' ' + comm.silver.unit : ''));
   if (comm.copper) set('g-copper', '$' + comm.copper.value + (comm.copper.unit ? ' ' + comm.copper.unit : ''));
   if (comm.oil) set('g-oil', '$' + comm.oil.value + (comm.oil.unit ? ' ' + comm.oil.unit : ''));
+  if (comm.bitcoin) set('g-bitcoin', '$' + (comm.bitcoin.value >= 1000 ? (comm.bitcoin.value/1000).toFixed(1) + 'K' : comm.bitcoin.value.toLocaleString()) + (comm.bitcoin.change_24h ? ' (' + (comm.bitcoin.change_24h >= 0 ? '+' : '') + comm.bitcoin.change_24h.toFixed(1) + '%)' : ''));
 
   var s = md.market_sentiment || {};
   if (s.new_investors) set('mt-investors', s.new_investors.value + '万');
