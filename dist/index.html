@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621154946 -->
+<!-- build: 20260621155525 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -1384,7 +1384,8 @@ window.SCAN_DATA = {
 "金钻_黄柱": false,
 "四量图_机构变红": true,
 "上涨趋势": true,
-"三线共振": true
+"三线共振": true,
+"concepts": []
 }
 ],
 "double_signals": [
@@ -150335,7 +150336,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-21 12:40:55",
+"update_time": "2026-06-21 15:54:36",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -183188,12 +183189,17 @@ function renderHerdingMain() {
     }
   }
 
-  // ═══ 区块二：个股主力动向 ═══
-  h += '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin:10px 0 8px 0;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">个股主力动向（当日）</div>';
+  // ═══ 区块二：个股主力动向（左） + 板块资金实况（右，当日+本周上下排列） ═══
+  var mw = window.MAIN_WEEK_DATA || {};
+  var hasWeek = mw.available && (mw.buy_top5 && mw.buy_top5.length || mw.sell_top5 && mw.sell_top5.length);
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
+
+  // ── 左：个股主力动向 ──
+  h += '<div style="display:flex;flex-direction:column;gap:8px;">';
+  h += '<div style="font-size:13px;font-weight:600;color:#1a1a2e;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">个股主力动向（当日）</div>';
   // 净买入 — 两列各5只
   h += '<div style="background:#fff5f5;border-radius:8px;padding:10px;">';
-  h += '<div style="font-size:12px;font-weight:600;color:#c62828;margin-bottom:6px;">净买入</div>';
+  h += '<div style="font-size:12px;font-weight:600;color:#c62828;margin-bottom:6px;">净买入 TOP10</div>';
   if (ms.top_main_in && ms.top_main_in.length) {
     var in10 = ms.top_main_in.slice(0,10);
     var inLeft = in10.slice(0,5), inRight = in10.slice(5,10);
@@ -183213,7 +183219,7 @@ function renderHerdingMain() {
   h += '</div>';
   // 净卖出 — 两列各5只
   h += '<div style="background:#f5fff5;border-radius:8px;padding:10px;">';
-  h += '<div style="font-size:12px;font-weight:600;color:#2e7d32;margin-bottom:6px;">净卖出</div>';
+  h += '<div style="font-size:12px;font-weight:600;color:#2e7d32;margin-bottom:6px;">净卖出 TOP10</div>';
   if (ms.top_main_out && ms.top_main_out.length) {
     var out10 = ms.top_main_out.slice(0,10);
     var outLeft = out10.slice(0,5), outRight = out10.slice(5,10);
@@ -183230,19 +183236,17 @@ function renderHerdingMain() {
     }
     h += '</div>';
   } else { h += '<span style="color:#999;font-size:12px;">暂无</span>'; }
-  h += '</div></div>';
+  h += '</div>';
+  h += '</div>'; // close 个股主力动向 column
 
-  // ═══ 区块三：板块资金实况（当日 + 本周） ═══
-  var mw = window.MAIN_WEEK_DATA || {};
-  var hasWeek = mw.available && (mw.buy_top5 && mw.buy_top5.length || mw.sell_top5 && mw.sell_top5.length);
-  h += '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin:10px 0 8px 0;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">板块资金实况</div>';
-  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
+  // ── 右：当日 + 本周（上下排列）──
+  h += '<div style="display:flex;flex-direction:column;gap:10px;">';
 
-  // ── 左：当日 ──
-  h += '<div style="display:flex;flex-direction:column;gap:8px;">';
-  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;">当日</div>';
+  // 当日
+  h += '<div>';
+  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;margin-bottom:6px;">当日</div>';
   // 当日流入 — TOP10 分两列
-  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;flex:1;">';
+  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;margin-bottom:8px;">';
   h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP10</div>';
   if (sf.top_list && sf.top_list.length) {
     var inSectors = sf.top_list.filter(function(x){return x.net>0;}).slice(0,10);
@@ -183261,7 +183265,7 @@ function renderHerdingMain() {
   } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
   h += '</div>';
   // 当日流出 — TOP10 分两列
-  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;flex:1;">';
+  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;">';
   h += '<div style="font-size:11px;font-weight:600;color:#2e7d32;margin-bottom:4px;">流出 TOP10</div>';
   if (sf.top_list && sf.top_list.length) {
     var outSectors = sf.top_list.filter(function(x){return x.net<0;}).reverse().slice(0,10);
@@ -183278,13 +183282,14 @@ function renderHerdingMain() {
       h += '</div>';
     } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
   } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  h += '</div></div>';
+  h += '</div>';
+  h += '</div>'; // close 当日 panel
 
-  // ── 右：本周 ──
-  h += '<div style="display:flex;flex-direction:column;gap:8px;">';
-  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;">本周</div>';
+  // 本周
+  h += '<div>';
+  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;margin-bottom:6px;">本周</div>';
   // 本周流入
-  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;flex:1;">';
+  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;margin-bottom:8px;">';
   h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP10</div>';
   if (hasWeek && mw.buy_top5 && mw.buy_top5.length) {
     var wkIn = mw.buy_top5.slice(0,10);
@@ -183301,7 +183306,7 @@ function renderHerdingMain() {
   } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
   h += '</div>';
   // 本周流出
-  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;flex:1;">';
+  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;">';
   h += '<div style="font-size:11px;font-weight:600;color:#2e7d32;margin-bottom:4px;">流出 TOP10</div>';
   if (hasWeek && mw.sell_top5 && mw.sell_top5.length) {
     var wkOut = mw.sell_top5.slice(0,10);
@@ -183316,9 +183321,11 @@ function renderHerdingMain() {
     }
     h += '</div>';
   } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  h += '</div></div>'; // close 本周流出, close flex column
+  h += '</div>';
+  h += '</div>'; // close 本周 panel
 
-  h += '</div>'; // end 板块资金实况 grid
+  h += '</div>'; // close right stacked column
+  h += '</div>'; // end outer 1fr 1fr grid
 
   con.innerHTML = h;
 }
