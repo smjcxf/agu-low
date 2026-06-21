@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621182237 -->
+<!-- build: 20260621182410 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -183689,11 +183689,11 @@ function renderPredictSummary() {
   var h = '';
 
   // ═══ 左侧详细 + 右侧双色块 并排 ═══
-  h += '<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px;">';
+  h += '<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px;align-items:stretch;">';
 
-  // 先构建双色块（右侧）
+  // 先构建双色块（右侧，左右等高）
   var rightBlocks = '';
-  rightBlocks += '<div style="display:flex;flex-direction:column;gap:8px;">';
+  rightBlocks += '<div style="display:flex;flex-direction:column;gap:8px;height:100%;">';
 
   // 块1：机游共振
   var pureLhb = (lhb.stocks && lhb.stocks.length) ? lhb.stocks.filter(function(s){return s.category==='纯共振';}) : [];
@@ -183716,7 +183716,7 @@ function renderPredictSummary() {
   } else if (lhb.stocks && lhb.stocks.length) {
     lhbSub = lhb.stocks.length+'只上榜';
   }
-  rightBlocks += '<div style="background:#e3f2fd;border-radius:8px;padding:10px;text-align:center;">';
+  rightBlocks += '<div style="flex:1;background:#e3f2fd;border-radius:8px;padding:10px;text-align:center;display:flex;flex-direction:column;justify-content:center;">';
   rightBlocks += '<div style="font-size:13px;font-weight:700;color:#1565c0;margin-bottom:4px;">🐉 机游共振</div>';
   rightBlocks += '<div style="font-size:14px;font-weight:500;color:#1565c0;">'+lhbTitle+'</div>';
   if (lhbSub) rightBlocks += '<div style="font-size:11px;color:#555;margin-top:2px;">'+lhbSub+'</div>';
@@ -183733,7 +183733,7 @@ function renderPredictSummary() {
   } else if (ms.top_main_in && ms.top_main_in.length) {
     mainSub = ms.top_main_in[0].name + ' +' + ms.top_main_in[0].net_in + ms.top_main_in[0].unit;
   }
-  rightBlocks += '<div style="background:#f3e5f5;border-radius:8px;padding:10px;text-align:center;">';
+  rightBlocks += '<div style="flex:1;background:#f3e5f5;border-radius:8px;padding:10px;text-align:center;display:flex;flex-direction:column;justify-content:center;">';
   rightBlocks += '<div style="font-size:13px;font-weight:700;color:#6a1b9a;margin-bottom:4px;">🔥 主力资金</div>';
   rightBlocks += '<div style="font-size:14px;font-weight:500;color:#6a1b9a;">'+mainTitle+'</div>';
   if (mainSub) rightBlocks += '<div style="font-size:11px;color:#555;margin-top:2px;">'+mainSub+'</div>';
@@ -183773,7 +183773,7 @@ function renderPredictSummary() {
         var tagColor = p.tag==='机构共识'?'#ba68c8':p.tag==='事件驱动'?'#e65100':p.tag==='蓄力中'?'#00838f':'#c62828';
         return '<span style="color:'+tagColor+';font-weight:500;">'+p.tag+'→'+p.sector+'</span>';
       });
-      alertHtml += '<br><span style="font-size:11px;color:#666;">'+hpItems.join(' &nbsp;·&nbsp; ')+'</span>';
+      alertHtml += '<br><span style="font-size:11px;color:#666;">'+hpItems.join('<br>')+'</span>';
     }
     alerts.push(alertHtml);
   }
@@ -183785,7 +183785,7 @@ function renderPredictSummary() {
   }
 
   if (alerts.length) {
-    h += '<div><div style="padding:10px 12px;background:#fff8f0;border-radius:8px;border-left:3px solid #ff9800;font-size:12px;color:#555;line-height:1.8;">';
+    h += '<div><div style="padding:10px 12px;background:#fff8f0;border-radius:8px;border-left:3px solid #ff9800;font-size:13px;color:#555;line-height:1.7;">';
     alerts.forEach(function(a){ h += '<div>• '+a+'</div>'; });
     h += '</div></div>';
   } else {
