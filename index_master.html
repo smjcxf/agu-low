@@ -178175,13 +178175,13 @@ var RECOMMEND = window.RECOMMEND = [
         // 融券评价
         var rqRatio = (rqNow / rzNow * 100).toFixed(2);
         var rqEval = '';
-        if (rqRatio < 0.5) rqEval = '，做空力量极弱';
-        else if (rqRatio < 1) rqEval = '，空头占比较低';
-        else if (rqRatio < 2) rqEval = '，做空力量温和';
-        else if (rqRatio < 5) rqEval = '，空头活跃需警惕';
-        else rqEval = '，做空力量异常高';
-        var rqTrend = rqChg > 5 ? '↑'+rqChg+'%' + rqEval : rqChg < -5 ? '↓'+Math.abs(rqChg)+'%' + rqEval : '稳定' + rqEval;
-        h += '<b>两融：</b>融资'+rzYi+'万亿 '+rzTrend+' · 融券'+rqNow.toFixed(0)+'亿（占融资'+rqRatio+'%）'+rqTrend+'<br>';
+        if (rqRatio < 0.5) rqEval = '（做空力量极弱）';
+        else if (rqRatio < 1) rqEval = '（空头占比较低）';
+        else if (rqRatio < 2) rqEval = '（做空力量温和）';
+        else if (rqRatio < 5) rqEval = '（空头活跃需警惕）';
+        else rqEval = '（做空力量异常高）';
+        var rqTrend = rqChg > 5 ? '↑'+rqChg+'%' : rqChg < -5 ? '↓'+Math.abs(rqChg)+'%' : '稳定';
+        h += '<b>两融：</b>融资'+rzYi+'万亿 '+rzTrend+' · 融券'+rqNow.toFixed(0)+'亿（占融资'+rqRatio+'%）'+rqTrend+' '+rqEval+'<br>';
       }
       // ETF申赎趋势
       var etf = window.ETF_SUBSCRIPTION || {}, etfSh = etf.sh || [];
@@ -178200,11 +178200,11 @@ var RECOMMEND = window.RECOMMEND = [
         if (consRed >= 3) {
           var redSum = 0;
           for (var i = etfSh.length - 1; i >= etfSh.length - consRed; i--) redSum += etfSh[i].net_subscribe_bil||0;
-          h += '<b>ETF：</b>连续'+consRed+'日净赎回'+Math.abs(redSum).toFixed(1)+'亿，机构资金持续流出<br>';
+          h += '<b>ETF：</b>连续'+consRed+'日净赎回'+Math.abs(redSum).toFixed(1)+'亿（机构资金持续流出）<br>';
         } else if (consBuy >= 3) {
           var buySum = 0;
           for (var i = etfSh.length - 1; i >= etfSh.length - consBuy; i--) buySum += etfSh[i].net_subscribe_bil||0;
-          h += '<b>ETF：</b>连续'+consBuy+'日净申购'+buySum.toFixed(1)+'亿，机构资金持续进场<br>';
+          h += '<b>ETF：</b>连续'+consBuy+'日净申购'+buySum.toFixed(1)+'亿（机构资金持续进场）<br>';
         } else {
           h += '<b>ETF：</b>最新'+etfAmt+'亿'+(lastEtf.net_subscribe_bil>0?'净申购':'净赎回')+'<br>';
         }
