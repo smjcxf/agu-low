@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621164243 -->
+<!-- build: 20260621164754 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -648,14 +648,14 @@ tr:hover td { background: #fafbfc; }
   <!-- 上证数据监控 -->
   <div class="tab-panel" id="panel-shmonitor">
     <!-- 顶部双卡片 -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:8px;margin-bottom:8px;">
       <!-- 左侧：标题+状态 -->
       <div id="shTitleCard" style="background:linear-gradient(135deg,#e3f2fd,#f5f5ff);border:2px solid #bbdefb;border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;justify-content:flex-start;">
         <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:2px;">数据监控</div>
         <div style="font-size:10px;color:#888;margin-bottom:8px;">斐波那契时间窗口 · 缠论视角</div>
-        <div style="display:flex;align-items:center;gap:12px;flex:1;">
+        <div style="display:flex;align-items:center;gap:10px;flex:1;">
           <span id="shBadge" style="font-size:18px;font-weight:800;padding:6px 20px;border-radius:16px;color:#fff;background:#90caf9;white-space:nowrap;flex-shrink:0;">震荡整理</span>
-          <span id="shConclusion" style="font-size:12px;color:#e65100;font-weight:600;line-height:1.4;"></span>
+          <span id="shConclusion" style="font-size:12px;color:#e65100;font-weight:600;line-height:1.6;"></span>
         </div>
       </div>
       <!-- 右侧：异动提醒+监控数据 -->
@@ -150336,7 +150336,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-21 16:41:48",
+"update_time": "2026-06-21 16:47:00",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -178146,44 +178146,25 @@ var RECOMMEND = window.RECOMMEND = [
       updateShSummary();
     }
     function updateShSummary() {
-      var el = document.getElementById('shSummary');
+      var el = document.getElementById("shSummary");
       if (!el) return;
-      var h = '';
+      var h = "";
+      // 涨跌家数
+      var hd = window.SH_SZ_HISTORY || {}, ds = hd.daily_stats || [];
+      if (ds.length) { var dl = ds[ds.length-1]; h += "<span style="color:#c62828;">涨</span>" + dl.up + " / <span style="color:#2e7d32;">跌</span>" + dl.down + " · "; }
       // 两融
       var md = window.MARGIN_DATA || {}, msh = md.sh || [];
-      if (msh.length) { var ml = msh[msh.length-1]; h += '融券' + (ml.rq_balance_amt||0).toFixed(0) + '亿 · 融资' + ((ml.rz_balance||0)/10000).toFixed(2) + '万亿 · '; }
-      // 下跌状态
-      var fib = window.SH_FIB || {}, cur = fib.current || {};
-      if (cur.days_down) { h += '下跌' + cur.days_down + '天（累计' + (cur.total_pct||0).toFixed(1) + '%） · '; } else { h += '趋势正常 · '; }
-      // 成交额
-      var hd = window.SH_SZ_HISTORY || {}, ah = hd.amount_history || [];
-      if (ah.length) { var al = ah[ah.length-1]; h += '成交' + (al.total||0).toFixed(0) + '亿 · '; }
-      // 涨跌家数
-      var ds = hd.daily_stats || [];
-      if (ds.length) { var dl = ds[ds.length-1]; h += '涨' + dl.up + '/' + '跌' + dl.down + ' · '; }
-      // 主力板块TOP1
-      var sf = window.SECTOR_FUND_FLOW || {}, sfi = sf.inflow || [], sfo = sf.outflow || [];
-      var topFlow = null;
-      if (sfi.length && sfi[0].net && sfo.length && sfo[0].net) {
-        topFlow = sfi[0].net >= Math.abs(sfo[0].net) ? {name:sfi[0].name, net:sfi[0].net, dir:'流入'} : {name:sfo[0].name, net:sfo[0].net, dir:'流出'};
-      } else if (sfi.length && sfi[0].net >= 3) {
-        topFlow = {name:sfi[0].name, net:sfi[0].net, dir:'流入'};
-      } else if (sfo.length && sfo[0].net && Math.abs(sfo[0].net) >= 3) {
-        topFlow = {name:sfo[0].name, net:sfo[0].net, dir:'流出'};
+      if (msh.length) {
+        var ml = msh[msh.length-1];
+        var rzYi = ((ml.rz_balance||0) / 10000).toFixed(2);
+        h += "融资" + rzYi + "万亿 · 融券" + (ml.rq_balance_amt||0).toFixed(0) + "亿";
       }
-      if (topFlow && topFlow.net) h += topFlow.name + ' ' + topFlow.dir + Math.abs(topFlow.net).toFixed(0) + '亿 · ';
-      // 北向
-      var nf = window.NORTH_FUND_DATA || {};
-      if (nf.net_flow && nf.net_flow.total && nf.net_flow.total !== 0) {
-        var ndir = nf.net_flow.total > 0 ? '流入' : '流出';
-        h += '北向' + ndir + Math.abs(nf.net_flow.total).toFixed(0) + '亿 · ';
+      if (h) {
+        el.innerHTML = "<span style="font-size:11px;color:#666;">" + h.replace(/ · $/, "") + "</span>";
+        el.style.display = "block";
+      } else {
+        el.style.display = "none";
       }
-      // VIX
-      var macroData = window.MACRO_DATA || {};
-      if (macroData.vix !== undefined) h += 'VIX ' + macroData.vix.toFixed(0) + ' · ';
-      // 去掉末尾" · "
-      h = h.replace(/ · $/, '');
-      el.innerHTML = '<span style="font-size:13px;line-height:1.8;">' + h + '</span>';
     }
     function updateShReport() {
       var el = document.getElementById('shReport');
@@ -179119,18 +179100,19 @@ function renderShMonitor() {
     badgeEl.style.background = badgeColor;
     badgeEl.style.color = '#fff';
   }
-  // 更新结论文案
+  // 更新右侧数据摘要（连跌天数 + 累计跌幅）
   var conclusionEl = document.getElementById('shConclusion');
   if (conclusionEl) {
     var pct = cur.total_pct || 0, days = cur.days_down || 0;
-    var conclusion = '';
-    if (pct <= -10) conclusion = '深度超卖，关注斐波那契窗口反弹信号';
-    else if (pct <= -5 || (days >= 10 && pct <= -3)) conclusion = '持续阴跌磨底，需耐心等待右侧确认';
-    else if (days >= 20 && pct < 0) conclusion = '超长下跌周期，量能萎缩或为见底前兆';
-    else if (pct >= 5) conclusion = '强势行情，注意斐波那契窗口阻力位';
-    else if (pct >= 2) conclusion = '震荡偏多，可适度关注主线板块';
-    else conclusion = '趋势不明朗，建议观望为主';
-    conclusionEl.textContent = conclusion;
+    var lines = [];
+    if (days > 0) { lines.push('连跌' + days + '天'); }
+    if (pct !== 0) { lines.push('累计' + (pct>=0?'+':'') + pct.toFixed(1) + '%'); }
+    var hd = window.SH_SZ_HISTORY || {}, ah = hd.amount_history || [];
+    if (ah.length) {
+      var al = ah[ah.length-1];
+      lines.push('成交' + (al.total||0).toFixed(0) + '亿');
+    }
+    conclusionEl.innerHTML = lines.join('<br>');
   }
 
   // 跟踪下一个即将到来的斐波那契窗口（动态查找future状态中最近的）
