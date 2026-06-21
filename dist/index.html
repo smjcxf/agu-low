@@ -12595,20 +12595,20 @@ function renderHerdingMain() {
     h += '</div>';
   }
 
-  // 4类接力方向（全部展示，一行横向排列）
+  // 4类接力方向（全部展示，竖排每行一个）
   if (hd.high_prob && hd.high_prob.length) {
-    h += '<div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px;">';
+    h += '<div style="margin-bottom:8px;">';
     h += '<span style="font-size:11px;font-weight:600;color:#e65100;line-height:22px;">高概率接力：</span>';
     hd.high_prob.forEach(function(p){
       var tagColor = p.tag === '机构共识' ? '#2a6496' : p.tag === '事件驱动' ? '#e65100' : p.tag === '蓄力中' ? '#00838f' : '#c62828';
       var tagBg = p.tag === '机构共识' ? '#e3f2fd' : p.tag === '事件驱动' ? '#fff3e0' : p.tag === '蓄力中' ? '#e0f7fa' : '#fff0f0';
       var borderColor = p.tag === '机构共识' ? '#90caf9' : p.tag === '事件驱动' ? '#ffcc80' : p.tag === '蓄力中' ? '#80deea' : '#ef9a9a';
-      h += '<span style="padding:2px 6px;background:'+tagBg+';border:1px solid '+borderColor+';border-radius:4px;font-size:11px;white-space:nowrap;">';
+      h += '<div style="padding:3px 8px;background:'+tagBg+';border:1px solid '+borderColor+';border-radius:4px;font-size:11px;margin-bottom:3px;">';
       h += '<span style="display:inline-block;padding:1px 4px;border-radius:2px;font-size:9px;font-weight:600;color:#fff;background:'+tagColor+';margin-right:3px;">'+p.tag+'</span>';
       h += '<b>'+p.sector+'</b>';
       if (p.strength && p.strength !== p.tag) h += '<span style="font-size:9px;color:#666;"> '+p.strength+'</span>';
       h += ' — ' + p.desc;
-      h += '</span>';
+      h += '</div>';
     });
     h += '</div>';
   }
@@ -13180,7 +13180,7 @@ function renderPredictSummary() {
         var tagColor = p.tag==='机构共识'?'#ba68c8':p.tag==='事件驱动'?'#e65100':p.tag==='蓄力中'?'#00838f':'#c62828';
         return '<span style="color:'+tagColor+';font-weight:500;">'+p.tag+'→'+p.sector+'</span>';
       });
-      alertHtml += '<br><span style="font-size:11px;color:#666;">'+hpItems.join(' · ')+'</span>';
+      alertHtml += '<br><span style="font-size:11px;color:#666;">'+hpItems.join('<br>')+'</span>';
     }
     alerts.push(alertHtml);
   }
