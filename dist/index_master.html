@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621182806 -->
+<!-- build: 20260621182929 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -736,7 +736,6 @@ tr:hover td { background: #fafbfc; }
     <tr><td style="padding:6px 12px;">白银(COMEX)</td><td style="padding:6px 12px;text-align:center;" id="g-silver">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">工业+避险双属性</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
     <tr><td style="padding:6px 12px;">铜(COMEX)</td><td style="padding:6px 12px;text-align:center;" id="g-copper">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">全球经济晴雨表</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
     <tr><td style="padding:6px 12px;">原油(WTI)</td><td style="padding:6px 12px;text-align:center;" id="g-oil">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">通胀预期核心指标</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
-    <tr><td style="padding:6px 12px;">比特币(BTC)</td><td style="padding:6px 12px;text-align:center;" id="g-btc">--</td><td style="padding:6px 12px;color:#5d6d7e;font-size:12px;">全球风险偏好极值</td><td style="padding:6px 12px;text-align:right;color:#7f8c8d;font-size:11px;">每日</td></tr>
 
     <!-- 市场情绪 -->
     <tr><td colspan="4" style="background:#1a2a3a;padding:6px 12px;color:#e91e63;font-weight:500;margin-top:4px;font-size:12px;">📈 市场情绪（反映投资者行为）</td></tr>
@@ -180354,14 +180353,6 @@ function renderMacro() {
   if (comm.silver) set('g-silver', '$' + comm.silver.value + (comm.silver.unit ? ' ' + comm.silver.unit : ''));
   if (comm.copper) set('g-copper', '$' + comm.copper.value + (comm.copper.unit ? ' ' + comm.copper.unit : ''));
   if (comm.oil) set('g-oil', '$' + comm.oil.value + (comm.oil.unit ? ' ' + comm.oil.unit : ''));
-  if (comm.bitcoin) {
-    var btcStr = '$' + (comm.bitcoin.value ? comm.bitcoin.value.toLocaleString('en-US') : '--');
-    if (comm.bitcoin.change_24h != null) {
-      var chgSign = comm.bitcoin.change_24h >= 0 ? '+' : '';
-      btcStr += ' <span style="font-size:10px;color:' + (comm.bitcoin.change_24h >= 0 ? '#c62828' : '#2e7d32') + ';">' + chgSign + comm.bitcoin.change_24h.toFixed(1) + '%</span>';
-    }
-    document.getElementById('g-btc').innerHTML = btcStr;
-  }
 
   var s = md.market_sentiment || {};
   if (s.new_investors) set('mt-investors', s.new_investors.value + '万');

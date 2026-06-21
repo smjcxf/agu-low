@@ -450,48 +450,6 @@ def fetch_macro_data():
             'date': str(cl_last['date'])[:10],
         }
 
-    # 比特币 (Binance公开API → CoinGecko备用)
-    print("  比特币...")
-    try:
-        import urllib.request as _req2
-        # 优先用Binance API（国内可直连）
-        btc_price = None
-        btc_change = None
-        try:
-            binance_url = 'https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT'
-            bnb_req = _req2.Request(binance_url, headers={'User-Agent': 'Mozilla/5.0'})
-            bnb_resp = _req2.urlopen(bnb_req, timeout=10)
-            bnb_data = json.loads(bnb_resp.read().decode('utf-8'))
-            btc_price = float(bnb_data.get('lastPrice', 0))
-            btc_change = float(bnb_data.get('priceChangePercent', 0))
-            print(f"    BTC(Binance): ${btc_price:,.0f} (24h: {btc_change:.1f}%)")
-        except Exception as e_bnb:
-            print(f"    [INFO] Binance API失败, 改用CoinGecko... ({e_bnb})")
-        # 备用: CoinGecko
-        if btc_price is None:
-            try:
-                cg_url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true'
-                cg_req = _req2.Request(cg_url, headers={'User-Agent': 'Mozilla/5.0'})
-                cg_resp = _req2.urlopen(cg_req, timeout=15)
-                cg_data = json.loads(cg_resp.read().decode('utf-8'))
-                if 'bitcoin' in cg_data:
-                    btc = cg_data['bitcoin']
-                    btc_price = btc.get('usd')
-                    btc_change = btc.get('usd_24h_change')
-                    print(f"    BTC(CoinGecko): ${btc_price:,.0f} (24h: {btc_change:.1f}%)")
-            except Exception as e_cg:
-                print(f"    [WARN] CoinGecko也失败: {e_cg}")
-        # 有结果就写入
-        if btc_price is not None:
-            commodities['bitcoin'] = {
-                'value': btc_price,
-                'unit': '美元/BTC',
-                'change_24h': btc_change if btc_change is not None else 0,
-                'date': datetime.now().strftime('%Y-%m-%d'),
-            }
-    except Exception as e_btc:
-        print(f"  [WARN] BTC全部API获取失败: {e_btc}")
-
     return result
 
 
