@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621182929 -->
+<!-- build: 20260621183147 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -178127,6 +178127,8 @@ var RECOMMEND = window.RECOMMEND = [
       if (alerts.length) {
         alertEl.innerHTML = alerts.map(function(a){ return '<span style="background:#fff;border:1px solid #ff9800;padding:3px 8px;border-radius:12px;white-space:nowrap;color:#e65100;">'+a+'</span>'; }).join(' ');
         alertEl.style.display = 'block';
+        // 暴露给预判总览
+        window.__dataAlerts = alerts;
         // 卡片边框变橙色
         var topCard = document.getElementById('shAlertCard');
         if (topCard) topCard.style.borderColor = '#ff9800';
@@ -183773,6 +183775,12 @@ function renderPredictSummary() {
   if (hd.cautious && hd.cautious.length) {
     var cNames = hd.cautious.map(function(c){return c.sector+'('+c.reason+')';}).join(' · ');
     alerts.push('<b style="color:#e65100;">谨慎</b>：'+cNames);
+  }
+
+  // 数据监控异动
+  var da = window.__dataAlerts || [];
+  if (da.length) {
+    da.forEach(function(a){ alerts.push('<b style="color:#7f8c8d;">数据监控</b>：' + a.replace(/<\/?span[^>]*>/g, '')); });
   }
 
   if (alerts.length) {
