@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621150205 -->
+<!-- build: 20260621150515 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -181887,41 +181887,54 @@ function calcQueryScoreIdx(s, patterns) {
 }
 
 async function fetchQueryKline(code) {
-  // K线API (支持CORS) - 获取m5数据后聚合为日K
+  // K线API — A股用mkline(m5聚合为日K)，港股用fqkline(直接返回日K)
   try {
-    // 港股K线API使用 r_hk 前缀格式
-    const apiCode = code.startsWith('hk') ? 'r_' + code : code;
-    const url = `https://ifzq.gtimg.cn/appstock/app/kline/mkline?param=${apiCode},m5,,480`;
+    const isHk = code.startsWith('hk');
+    let url, dataKey;
+    if (isHk) {
+      // 港股：fqkline API返回日K数据，无需聚合
+      url = `https://ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,10,qfq`;
+      dataKey = code;
+    } else {
+      // A股：mkline API返回m5数据，需聚合为日K
+      url = `https://ifzq.gtimg.cn/appstock/app/kline/mkline?param=${code},m5,,480`;
+      dataKey = code;
+    }
     const resp = await fetch(url);
     const data = await resp.json();
-    // 港股API返回的data key 也可能带 r_ 前缀
-    const dataKey = code.startsWith('hk') ? 'r_' + code : code;
-    const dataKey2 = code; // fallback
-    const dayData = (data.data && data.data[dataKey]) || (data.data && data.data[dataKey2]);
+    const dayData = data.data && data.data[dataKey];
     if (data.code === 0 && dayData) {
-      const m5 = dayData.m5 || [];
-      if (m5.length > 0) {
-        // 将5分钟线按日期聚合为日K
-        const dayMap = {};
-        m5.forEach(k => {
-          const date = k[0].slice(0, 8); // YYYYMMDD
-          const yyyy = date.slice(0,4), mm = date.slice(4,6), dd = date.slice(6,8);
-          const dateStr = yyyy + '-' + mm + '-' + dd;
-          const open = +k[1], close = +k[2], high = +k[3], low = +k[4], vol = +k[5];
-          if (!dayMap[dateStr]) dayMap[dateStr] = { open, high, low, close, volume: vol };
-          else {
-            if (open > 0) dayMap[dateStr].open = open; // 首笔开盘价
-            dayMap[dateStr].high = Math.max(dayMap[dateStr].high, high);
-            dayMap[dateStr].low = Math.min(dayMap[dateStr].low, low);
-            dayMap[dateStr].close = close;
-            dayMap[dateStr].volume += vol;
-          }
-        });
-        const days = Object.keys(dayMap).sort().map(d => ({
-          date: d, open: dayMap[d].open, close: dayMap[d].close,
-          high: dayMap[d].high, low: dayMap[d].low, volume: dayMap[d].volume
+      if (isHk) {
+        // 港股日K数据：[date, open, close, high, low, volume] — 直接使用
+        const days = (dayData.day || []).map(k => ({
+          date: k[0], open: +k[1], close: +k[2], high: +k[3], low: +k[4], volume: +k[5]
         }));
         if (days.length >= 3) return days;
+      } else {
+        // A股m5数据聚合为日K
+        const m5 = dayData.m5 || [];
+        if (m5.length > 0) {
+          const dayMap = {};
+          m5.forEach(k => {
+            const date = k[0].slice(0, 8);
+            const yyyy = date.slice(0,4), mm = date.slice(4,6), dd = date.slice(6,8);
+            const dateStr = yyyy + '-' + mm + '-' + dd;
+            const open = +k[1], close = +k[2], high = +k[3], low = +k[4], vol = +k[5];
+            if (!dayMap[dateStr]) dayMap[dateStr] = { open, high, low, close, volume: vol };
+            else {
+              if (open > 0) dayMap[dateStr].open = open;
+              dayMap[dateStr].high = Math.max(dayMap[dateStr].high, high);
+              dayMap[dateStr].low = Math.min(dayMap[dateStr].low, low);
+              dayMap[dateStr].close = close;
+              dayMap[dateStr].volume += vol;
+            }
+          });
+          const days = Object.keys(dayMap).sort().map(d => ({
+            date: d, open: dayMap[d].open, close: dayMap[d].close,
+            high: dayMap[d].high, low: dayMap[d].low, volume: dayMap[d].volume
+          }));
+          if (days.length >= 3) return days;
+        }
       }
     }
   } catch(e) { console.log('K线获取失败:', e.message); }
