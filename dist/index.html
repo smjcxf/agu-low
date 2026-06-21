@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621163823 -->
+<!-- build: 20260621164243 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -150336,7 +150336,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-21 16:37:26",
+"update_time": "2026-06-21 16:41:48",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -183395,45 +183395,26 @@ function renderLhbPredict() {
     return badges.join('');
   }
 
-  function renderBlock(stocks, netFn, title, bg, color, emoji, twoCol, showYz) {
+  function renderBlock(stocks, netFn, title, bg, color, emoji, showYz) {
     var b = '';
-    var maxShow = twoCol ? 16 : 8;
+    var maxShow = 10;
     var sorted = stocks.slice().sort(function(a,b){ return netFn(b) - netFn(a); });
-    b += '<div style="background:'+bg+';border-radius:10px;padding:12px;min-height:100px;">';
-    b += '<div style="font-size:'+(twoCol?'12':'13')+'px;font-weight:700;color:'+color+';margin-bottom:6px;"><span style="font-size:'+(twoCol?'18':'18')+'px;">'+emoji+'</span> '+title+' <b>'+sorted.length+'只</b></div>';
+    b += '<div style="background:'+bg+';border-radius:10px;padding:10px;min-height:100px;">';
+    b += '<div style="font-size:12px;font-weight:700;color:'+color+';margin-bottom:6px;"><span style="font-size:18px;">'+emoji+'</span> '+title+' <b>'+sorted.length+'只</b></div>';
     if (sorted.length) {
-      if (twoCol) {
-        b += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;">';
-        sorted.slice(0, maxShow).forEach(function(s){
-          var net = netFn(s);
-          var dayTag = '';
-          if (s.consecutive_days && s.consecutive_days >= 2) {
-            dayTag = ' <span style="font-size:9px;color:#fff;background:'+color+';padding:0 3px;border-radius:2px;">连'+s.consecutive_days+'日</span>';
-          }
-          var sBadge = showYz ? yzBadge(s.seats) : '';
-          b += '<div style="font-size:11px;color:#333;display:flex;justify-content:space-between;align-items:center;padding:1px 0;">';
-          b += '<span>' + s.name + sBadge + dayTag + '</span>';
-          b += '<b style="font-size:10px;color:'+color+';white-space:nowrap;">' + formatNet(net) + '</b>';
-          b += '</div>';
-        });
-      } else {
-        b += '<div style="display:flex;flex-direction:column;gap:3px;">';
-        sorted.slice(0, maxShow).forEach(function(s){
-          var net = netFn(s);
-          var dayTag = '';
-          if (s.consecutive_days && s.consecutive_days >= 2) {
-            dayTag = ' <span style="font-size:10px;color:#fff;background:'+color+';padding:0 4px;border-radius:3px;">连'+s.consecutive_days+'日</span>';
-          }
-          var sBadge = showYz ? yzBadge(s.seats) : '';
-          b += '<div style="font-size:13px;color:#333;display:flex;justify-content:space-between;align-items:center;">';
-          b += '<span>' + s.name + sBadge + dayTag + '</span>';
-          b += '<b style="color:'+color+';">' + formatNet(net) + '</b>';
-          b += '</div>';
-        });
-      }
-      if (sorted.length > maxShow) {
-        b += '<div style="font-size:11px;color:#999;margin-top:2px;">...等' + sorted.length + '只</div>';
-      }
+      b += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;">';
+      sorted.slice(0, maxShow).forEach(function(s){
+        var net = netFn(s);
+        var dayTag = '';
+        if (s.consecutive_days && s.consecutive_days >= 2) {
+          dayTag = ' <span style="font-size:10px;font-weight:700;color:#fff;background:'+color+';padding:2px 5px;border-radius:3px;">连'+s.consecutive_days+'日</span>';
+        }
+        var sBadge = showYz ? yzBadge(s.seats) : '';
+        b += '<div style="font-size:11px;color:#333;display:flex;justify-content:space-between;align-items:center;padding:2px 0;">';
+        b += '<span>' + s.name + sBadge + dayTag + '</span>';
+        b += '<b style="font-size:10px;color:'+color+';white-space:nowrap;">' + formatNet(net) + '</b>';
+        b += '</div>';
+      });
       b += '</div>';
     } else {
       b += '<div style="font-size:12px;color:#999;">暂无</div>';
@@ -183447,11 +183428,11 @@ function renderLhbPredict() {
   // 三色块
   h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">';
   // 左：机构净买入（不显示游资标签，标题已说明）
-  h += renderBlock(instStocks, function(s){ return s.inst_net_万; }, '机构净买入', '#e3f2fd', '#1565c0', '🏦', true, false);
+  h += renderBlock(instStocks, function(s){ return s.inst_net_万; }, '机构净买入', '#e3f2fd', '#1565c0', '🏦', false);
   // 中：机游共振（显示游资别名）
-  h += renderBlock(resonance, function(s){ return (s.inst_net_万||0) + (s.yz_net_万||0); }, '机游共振', '#fff8e1', '#f57f17', '⚡', false, true);
+  h += renderBlock(resonance, function(s){ return (s.inst_net_万||0) + (s.yz_net_万||0); }, '机游共振', '#fff8e1', '#f57f17', '⚡', true);
   // 右：游资净买入（显示游资别名）
-  h += renderBlock(yzStocks, function(s){ return s.yz_net_万; }, '游资净买入', '#fce4ec', '#c62828', '🔥', true, true);
+  h += renderBlock(yzStocks, function(s){ return s.yz_net_万; }, '游资净买入', '#fce4ec', '#c62828', '🔥', true);
   h += '</div>';
 
   // 底部辅助信息
@@ -183658,15 +183639,16 @@ function renderSuspensionAlert() {
   var sList = document.getElementById('suspList');
   if (sCount) sCount.textContent = suspended.length;
   if (sList) {
-    if (suspended.length) {
+    var showSuspended = suspended.slice(0, 10);
+    if (showSuspended.length) {
       var pairs = [];
-      for (var i = 0; i < suspended.length; i += 2) {
-        var left = suspended[i].name + ' ' + suspended[i].days + '天';
+      for (var i = 0; i < showSuspended.length; i += 2) {
+        var left = '<span style="font-weight:600;">' + showSuspended[i].name + '</span> <span style="font-size:10px;color:#c62828;background:#ffebee;padding:1px 5px;border-radius:3px;">' + showSuspended[i].days + '天</span>';
         var right = '';
-        if (i + 1 < suspended.length) {
-          right = suspended[i+1].name + ' ' + suspended[i+1].days + '天';
+        if (i + 1 < showSuspended.length) {
+          right = '<span style="font-weight:600;">' + showSuspended[i+1].name + '</span> <span style="font-size:10px;color:#c62828;background:#ffebee;padding:1px 5px;border-radius:3px;">' + showSuspended[i+1].days + '天</span>';
         }
-        pairs.push('<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;">' +
+        pairs.push('<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 8px;">' +
           '<span>' + left + '</span>' +
           '<span>' + right + '</span>' +
           '</div>');
@@ -183682,17 +183664,20 @@ function renderSuspensionAlert() {
   var nList = document.getElementById('nearList');
   if (nCount) nCount.textContent = near.length;
   if (nList) {
-    if (near.length) {
+    var showNear = near.slice(0, 10);
+    if (showNear.length) {
       var npairs = [];
-      for (var i = 0; i < near.length; i += 2) {
-        var left = near[i].name + ' ' + near[i].pct + '%';
-        if (near[i].gap > 0) left += ' · 距触发 ' + near[i].gap + '%';
+      for (var i = 0; i < showNear.length; i += 2) {
+        var gapClass = showNear[i].gap > 0 && showNear[i].gap <= 5 ? 'color:#c62828;background:#ffebee;' : 'color:#888;background:#f5f5f5;';
+        var left = '<span style="font-weight:600;">' + showNear[i].name + '</span> <span style="font-size:11px;">' + showNear[i].pct + '%</span>';
+        if (showNear[i].gap > 0) left += ' <span style="font-size:10px;' + gapClass + 'padding:1px 5px;border-radius:3px;">距' + showNear[i].gap + '%</span>';
         var right = '';
-        if (i + 1 < near.length) {
-          right = near[i+1].name + ' ' + near[i+1].pct + '%';
-          if (near[i+1].gap > 0) right += ' · 距触发 ' + near[i+1].gap + '%';
+        if (i + 1 < showNear.length) {
+          var gapClass2 = showNear[i+1].gap > 0 && showNear[i+1].gap <= 5 ? 'color:#c62828;background:#ffebee;' : 'color:#888;background:#f5f5f5;';
+          right = '<span style="font-weight:600;">' + showNear[i+1].name + '</span> <span style="font-size:11px;">' + showNear[i+1].pct + '%</span>';
+          if (showNear[i+1].gap > 0) right += ' <span style="font-size:10px;' + gapClass2 + 'padding:1px 5px;border-radius:3px;">距' + showNear[i+1].gap + '%</span>';
         }
-        npairs.push('<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;">' +
+        npairs.push('<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 8px;">' +
           '<span>' + left + '</span>' +
           '<span>' + right + '</span>' +
           '</div>');
