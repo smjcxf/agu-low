@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621185001 -->
+<!-- build: 20260621185229 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -183780,8 +183780,6 @@ function renderPredictSummary() {
   }
   // 阴跌磨底周报异动（融券/融资/成交/涨跌极端）
   var sw = window.__shReportWarns || [];
-  var tw = window.__shReportTopWarn || '';
-  if (tw) alerts.push('<b style="color:#e65100;">⚠️ ' + tw + '</b>');
   if (sw.length) {
     sw.forEach(function(w){ alerts.push('<b style="color:#7f8c8d;">数据监控</b>：' + w.replace('⚠️ ', '')); });
   }
