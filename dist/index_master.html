@@ -183294,7 +183294,8 @@ function renderHerdingMain() {
     for (var col=0; col<2; col++) {
       h += '<div>';
       for (var i=col*wkInHalf; i<Math.min((col+1)*wkInHalf, wkIn.length); i++) {
-        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkIn[i].name+' <span style="color:#c62828;font-weight:600;">+'+wkIn[i].net+wkIn[i].unit+'</span></div>';
+        var wTag = wkIn[i].week_count >= 3 ? '<span style="font-size:9px;background:#c62828;color:#fff;padding:1px 3px;border-radius:3px;margin-left:2px;">连'+wkIn[i].week_count+'周</span>' : (wkIn[i].week_count >= 2 ? '<span style="font-size:9px;color:#999;margin-left:2px;">连'+wkIn[i].week_count+'周</span>' : '');
+        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkIn[i].name+' <span style="color:#c62828;font-weight:600;">+'+wkIn[i].net+wkIn[i].unit+'</span>'+wTag+'</div>';
       }
       h += '</div>';
     }
@@ -183311,7 +183312,8 @@ function renderHerdingMain() {
     for (var col=0; col<2; col++) {
       h += '<div>';
       for (var i=col*wkOutHalf; i<Math.min((col+1)*wkOutHalf, wkOut.length); i++) {
-        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkOut[i].name+' <span style="color:#2e7d32;font-weight:600;">'+wkOut[i].net+wkOut[i].unit+'</span></div>';
+        var wTag2 = wkOut[i].week_count >= 3 ? '<span style="font-size:9px;background:#2e7d32;color:#fff;padding:1px 3px;border-radius:3px;margin-left:2px;">连'+wkOut[i].week_count+'周</span>' : (wkOut[i].week_count >= 2 ? '<span style="font-size:9px;color:#999;margin-left:2px;">连'+wkOut[i].week_count+'周</span>' : '');
+        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkOut[i].name+' <span style="color:#2e7d32;font-weight:600;">'+wkOut[i].net+wkOut[i].unit+'</span>'+wTag2+'</div>';
       }
       h += '</div>';
     }
