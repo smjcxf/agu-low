@@ -1593,7 +1593,7 @@ window.SCAN_DATA = {
 "sh": [],
 "update_time": ""
 };window.MACRO_DATA = {
-"update_time": "2026-06-21 19:23:29",
+"update_time": "2026-06-21 19:29:56",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -12828,6 +12828,79 @@ if (window.NT_DATA && window.NT_DATA.calendar && window.NT_DATA.calendar.events)
 }
 </script>
 
+<script>
+(function(){
+  if(typeof window.MACRO_DATA === "undefined") return;
+  const m = window.MACRO_DATA;
+  var el = document.getElementById("macroUpdateTime");
+  if(el && m.update_time) { var ft = (typeof fmtDataTime === 'function') ? fmtDataTime(m.update_time) : {text: (m.update_time||'').slice(0,16)}; el.textContent = '更新于 ' + ft.text; }
+  var leg = document.getElementById("macroStarLegend");
+  if(leg) {
+    var st = m.indicator_status || {};
+    var monthlyKeys = ["lpr","m2_yoy","pmi","cpi","ppi","social_financing","export_yoy","new_investors"];
+    var total = monthlyKeys.length;
+    var fresh = 0;
+    for(var i=0; i<monthlyKeys.length; i++) {
+      var sti = st[monthlyKeys[i]];
+      if(sti && sti.is_fresh) fresh++;
+    }
+    leg.innerHTML = "⭐ 已更新 " + fresh + "/" + total + " &nbsp; ☆ 待更新";
+  }
+  function v(id,val,color){var e=document.getElementById(id); if(!e)return; e.innerHTML=val||"--"; if(color)e.style.color=color;}
+  function note(id, level, text) {
+    if(!text) return;
+    var e = document.getElementById(id);
+    if(!e || !e.parentNode) return;
+    var td = e.parentNode.children[2];
+    if(!td || td.dataset.noted) return;
+    var icon = level>=2 ? "🔴 " : (level>=1 ? "🟡 " : "");
+    if(icon) {
+      td.innerHTML = icon + text;
+      td.style.color = level>=2 ? "#f44336" : "#ff9800";
+    }
+    td.dataset.noted = "1";
+  }
+  /* ===== ⭐ 月度指标标记渲染 ===== */
+  function star(id, key){
+    var e=document.getElementById(id); if(!e)return;
+    var st = m.indicator_status && m.indicator_status[key];
+    if(st && st.is_fresh){ e.innerHTML = "⭐ 月度"; e.style.color = "#FFD700"; }
+    else { e.innerHTML = "☆ 月度"; e.style.color = "#999"; }
+  }
+  star("upd-lpr", "lpr");
+  star("upd-m2", "m2_yoy");
+  star("upd-pmi", "pmi");
+  star("upd-cpi", "cpi");
+  star("upd-ppi", "ppi");
+  star("upd-szr", "social_financing");
+  star("upd-export", "export_yoy");
+  star("upd-investors", "new_investors");
+
+  /* ===== 数值渲染（异常说明写入第3列） ===== */
+  var mon = m.monetary || {};
+  if(mon.cn_bond_10y) { var cb=mon.cn_bond_10y.value; var cbLv=cb<1.8?2:(cb<2.0?1:0); v("m-cn-bond", cb+"%", "#4fc3f7"); note("m-cn-bond", cbLv, cb<1.8?"利率极低，流动性泛滥":(cb<2.0?"利率偏低":"")); }
+  if(mon.us_bond_10y) { var ub=mon.us_bond_10y.value; var ubLv=ub>=5?2:(ub>=4.5?1:0); v("m-us-bond", ub+"%", "#ff9800"); note("m-us-bond", ubLv, ub>=5?"高利率压制全球资产":(ub>=4.5?"利率偏高":"正常区间")); }
+  if(mon.shibor) { var so=mon.shibor.on; var sLv=so>3?2:(so>2?1:0); v("m-shibor", so+"% / "+mon.shibor.w1+"%", "#b0bec5"); note("m-shibor", sLv, so>3?"资金面紧张":(so>2?"偏紧":"")); }
+  if(mon.cn_us_spread){var s=mon.cn_us_spread.value; var spLv=s<-2.5?2:(s<-1.5?1:0); v("m-spread", s+"%", s<0?"#f44336":"#4caf50"); note("m-spread", spLv, s<-2.5?"利差严重倒挂，资本外流压力大":(s<-1?"利差倒挂":"正常"));}
+  if(mon.lpr) v("m-lpr", mon.lpr.lpr_1y+"% / "+mon.lpr.lpr_5y+"%", "#81c784");
+  if(mon.m2_yoy && mon.m2_yoy.value!==null) { var m2v=mon.m2_yoy.value; var m2Lv=m2v>10?2:(m2v>8?1:(m2v<0?2:0)); v("m-m1m2", m2v+"%", m2v>8?"#f44336":"#4caf50"); note("m-m1m2", m2Lv, m2v>8?"货币供应偏快":(m2v<0?"货币收缩":"正常")); }
+  if(mon.open_market_operation){var omo=mon.open_market_operation; v("m-omo", (omo.net_inflow>=0?"+":"")+omo.net_inflow+"亿", omo.net_inflow>=0?"#4caf50":"#f44336");}
+  var eco = m.economy || {};
+  if(eco.pmi){var p=eco.pmi.value; var pCol=p>=50?"#4caf50":"#f44336"; var pLv=p<49?2:(p<50?1:0); v("e-pmi", p+(eco.pmi.forecast?" (预:"+eco.pmi.forecast+")":""), pCol); note("e-pmi", pLv, p<49?"PMI收缩，经济下行压力":(p<50?"PMI偏弱，景气度不足":"PMI扩张，经济向好"));}
+  if(eco.cpi){var cv=eco.cpi.value; var cStr=cv!==null&&cv!==undefined?cv+"%":(eco.cpi.previous?eco.cpi.previous+"%(前值)":"--"); v("e-cpi", cStr, undefined); if(cv!==null&&cv!==undefined){ var cLv=cv<0?2:(cv>3?2:(cv<1?1:0)); note("e-cpi", cLv, cv<0?"通缩风险":(cv>3?"通胀压力":(cv<1?"偏低":""))); } }
+  if(eco.ppi){var pp=eco.ppi.value; var ppStr=pp!==null&&pp!==undefined?pp+"%":(eco.ppi.previous?eco.ppi.previous+"%(前值)":"--"); v("e-ppi", ppStr, undefined); if(pp!==null&&pp!==undefined){ var ppLv=pp<-3?2:(pp<-2?1:0); note("e-ppi", ppLv, pp<-3?"通缩压力严重":"正常"); } }
+  if(eco.social_financing) { var sz=eco.social_financing; var szLv=sz.change_pct<-15?2:(sz.change_pct<-5?1:0); v("e-szr", sz.value+"亿 "+(sz.change_pct>0?"↑":"↓")+Math.abs(sz.change_pct)+"%", sz.change_pct<0?"#f44336":"#4caf50"); note("e-szr", szLv, sz.change_pct<-10?"社融大幅回落":(sz.change_pct<0?"社融回落":"")); }
+  if(eco.export_yoy){var ex=eco.export_yoy.value; var exStr=ex+"%"+(eco.export_yoy.previous?" (前:"+eco.export_yoy.previous+"%)":""); var exCol=ex>0?"#4caf50":"#f44336"; var exLv=ex<-5?2:(ex<0?1:0); v("e-export", exStr, exCol); note("e-export", exLv, ex<-5?"出口大幅下滑":"正常");}
+  if(eco.ipo){ var ipo=eco.ipo; var ipoLv=ipo.count>20?2:(ipo.count>10?1:0); v("e-ipo", ipo.count+"只 / "+ipo.amount+"亿", "#90caf9"); note("e-ipo", ipoLv, ipo.count>20?"IPO供给压力大":"正常");}
+  var mt = m.market_sentiment || {};
+  if(mt.new_investors){ var ni=mt.new_investors; var invStr=ni.value+"万"+(ni.change?" ("+(ni.change>=0?"+":"")+ni.change+"万)":""); var invCol=ni.change>0?"#ef5350":"#4caf50"; var niLv=ni.value>150?2:(ni.value>100?1:(ni.value<30?2:0)); v("mt-investors", invStr, invCol); note("mt-investors", niLv, ni.value>150?"散户过热，警惕":(ni.value<30?"人气极端低迷":"正常"));}
+  var g = m.global_macro || {};
+  if(g.vix){var vx=g.vix.value; var vxCol=vx<20?"#4caf50":(vx<30?"#ff9800":"#f44336"); var vxLv=vx>30?2:(vx>25?1:0); v("g-vix", vx, vxCol); note("g-vix", vxLv, vx>30?"极度恐慌":(vx>25?"恐慌上升":"低波动"));}
+  if(g.dxy) { var dx=g.dxy.value; var dxLv=dx>105?2:(dx>100?1:0); v("g-dxy", dx, "#90caf9"); note("g-dxy", dxLv, dx>105?"强美元，新兴市场承压":(dx>100?"美元偏强":"")); }
+  if(g.usdcnh){var price=g.usdcnh.price; var usdStr=price?price.toFixed(4)+(g.usdcnh.prev_close?" (昨:"+g.usdcnh.prev_close+")":""):"暂无数据"; var usdCol=price>7.2?"#f44336":"#4caf50"; var usdLv=price>7.3?2:(price>7.2?1:0); v("g-usdcnh", usdStr, usdCol); note("g-usdcnh", usdLv, price>7.3?"贬值压力大，北向流出风险":(price>7.2?"轻微贬值":"正常"));}
+  else v("g-usdcnh", "暂无数据", "#666");
+})();
+</script>
 <script>
 (function(){
   if(typeof window.MACRO_DATA === "undefined") return;
