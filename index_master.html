@@ -664,7 +664,10 @@ tr:hover td { background: #fafbfc; }
         <div style="padding:10px 16px;flex:1;display:flex;flex-direction:column;justify-content:center;">
           <div id="shAlert" style="display:none;margin-bottom:6px;"></div>
           <div id="shReport" style="font-size:13px;color:#555;line-height:1.8;"></div>
-          <div class="accent-bar accent-lilac" style="margin-top:6px;"><div id="shSummary" style="font-size:12px;color:#555;line-height:1.9;"></div></div>
+          <div style="margin-top:8px;position:relative;padding-left:12px;" id="shSummaryWrap">
+            <span style="position:absolute;left:0;top:2px;bottom:2px;width:4px;background:#9c27b0;border-radius:0 3px 3px 0;"></span>
+            <div id="shSummary" style="font-size:12px;color:#555;line-height:1.9;"></div>
+          </div>
         </div>
       </div>
     </div>
