@@ -183185,11 +183185,100 @@ function renderHerdingMain() {
   // ═══ 区块二：个股主力动向（左） + 板块资金实况（右，当日+本周上下排列） ═══
   var mw = window.MAIN_WEEK_DATA || {};
   var hasWeek = mw.available && (mw.buy_top5 && mw.buy_top5.length || mw.sell_top5 && mw.sell_top5.length);
+
+  // ═══ 区块二上：板块资金实况（当日 + 本周 左右并排） ═══
+  h += '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin:6px 0 8px 0;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">板块资金实况</div>';
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
 
-  // ── 左：个股主力动向 ──
+  // ── 左：当日 ──
   h += '<div style="display:flex;flex-direction:column;gap:8px;">';
-  h += '<div style="font-size:13px;font-weight:600;color:#1a1a2e;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">个股主力动向（当日）</div>';
+  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;">当日</div>';
+  // 当日流入 — TOP10 分两列
+  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;">';
+  h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP10</div>';
+  if (sf.top_list && sf.top_list.length) {
+    var inSectors = sf.top_list.filter(function(x){return x.net>0;}).slice(0,10);
+    if (inSectors.length) {
+      h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
+      var inHalf = Math.ceil(inSectors.length/2);
+      for (var col=0; col<2; col++) {
+        h += '<div>';
+        for (var i=col*inHalf; i<Math.min((col+1)*inHalf, inSectors.length); i++) {
+          h += '<div style="padding:1px 0;">'+(i+1)+' '+inSectors[i].name+' <span style="color:#c62828;font-weight:600;">+'+inSectors[i].net.toFixed(1)+'亿</span></div>';
+        }
+        h += '</div>';
+      }
+      h += '</div>';
+    } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
+  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
+  h += '</div>';
+  // 当日流出 — TOP10 分两列
+  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;">';
+  h += '<div style="font-size:11px;font-weight:600;color:#2e7d32;margin-bottom:4px;">流出 TOP10</div>';
+  if (sf.top_list && sf.top_list.length) {
+    var outSectors = sf.top_list.filter(function(x){return x.net<0;}).reverse().slice(0,10);
+    if (outSectors.length) {
+      h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
+      var outHalf = Math.ceil(outSectors.length/2);
+      for (var col=0; col<2; col++) {
+        h += '<div>';
+        for (var i=col*outHalf; i<Math.min((col+1)*outHalf, outSectors.length); i++) {
+          h += '<div style="padding:1px 0;">'+(i+1)+' '+outSectors[i].name+' <span style="color:#2e7d32;font-weight:600;">'+outSectors[i].net.toFixed(1)+'亿</span></div>';
+        }
+        h += '</div>';
+      }
+      h += '</div>';
+    } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
+  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
+  h += '</div>';
+  h += '</div>'; // close 当日 column
+
+  // ── 右：本周 ──
+  h += '<div style="display:flex;flex-direction:column;gap:8px;">';
+  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;">本周</div>';
+  // 本周流入
+  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;">';
+  h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP10</div>';
+  if (hasWeek && mw.buy_top5 && mw.buy_top5.length) {
+    var wkIn = mw.buy_top5.slice(0,10);
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
+    var wkInHalf = Math.ceil(wkIn.length/2);
+    for (var col=0; col<2; col++) {
+      h += '<div>';
+      for (var i=col*wkInHalf; i<Math.min((col+1)*wkInHalf, wkIn.length); i++) {
+        var wTag = wkIn[i].week_count >= 3 ? '<span style="font-size:9px;background:#c62828;color:#fff;padding:1px 3px;border-radius:3px;margin-left:2px;">连'+wkIn[i].week_count+'周</span>' : (wkIn[i].week_count >= 2 ? '<span style="font-size:9px;color:#999;margin-left:2px;">连'+wkIn[i].week_count+'周</span>' : '');
+        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkIn[i].name+' <span style="color:#c62828;font-weight:600;">+'+wkIn[i].net+wkIn[i].unit+'</span>'+wTag+'</div>';
+      }
+      h += '</div>';
+    }
+    h += '</div>';
+  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
+  h += '</div>';
+  // 本周流出
+  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;">';
+  h += '<div style="font-size:11px;font-weight:600;color:#2e7d32;margin-bottom:4px;">流出 TOP10</div>';
+  if (hasWeek && mw.sell_top5 && mw.sell_top5.length) {
+    var wkOut = mw.sell_top5.slice(0,10);
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
+    var wkOutHalf = Math.ceil(wkOut.length/2);
+    for (var col=0; col<2; col++) {
+      h += '<div>';
+      for (var i=col*wkOutHalf; i<Math.min((col+1)*wkOutHalf, wkOut.length); i++) {
+        var wTag2 = wkOut[i].week_count >= 3 ? '<span style="font-size:9px;background:#2e7d32;color:#fff;padding:1px 3px;border-radius:3px;margin-left:2px;">连'+wkOut[i].week_count+'周</span>' : (wkOut[i].week_count >= 2 ? '<span style="font-size:9px;color:#999;margin-left:2px;">连'+wkOut[i].week_count+'周</span>' : '');
+        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkOut[i].name+' <span style="color:#2e7d32;font-weight:600;">'+wkOut[i].net+wkOut[i].unit+'</span>'+wTag2+'</div>';
+      }
+      h += '</div>';
+    }
+    h += '</div>';
+  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
+  h += '</div>';
+  h += '</div>'; // close 本周 column
+
+  h += '</div>'; // end 板块资金实况 grid
+
+  // ═══ 区块二下：个股主力动向 ═══
+  h += '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin:6px 0 8px 0;padding-bottom:4px;border-bottom:1px solid #e0e0e0;">个股主力动向（当日）</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
   // 净买入 — 两列各5只
   h += '<div style="background:#fff5f5;border-radius:8px;padding:10px;">';
   h += '<div style="font-size:12px;font-weight:600;color:#c62828;margin-bottom:6px;">净买入 TOP10</div>';
@@ -183230,97 +183319,7 @@ function renderHerdingMain() {
     h += '</div>';
   } else { h += '<span style="color:#999;font-size:12px;">暂无</span>'; }
   h += '</div>';
-  h += '</div>'; // close 个股主力动向 column
-
-  // ── 右：当日 + 本周（上下排列）──
-  h += '<div style="display:flex;flex-direction:column;gap:10px;">';
-
-  // 当日
-  h += '<div>';
-  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;margin-bottom:6px;">当日</div>';
-  // 当日流入 — TOP10 分两列
-  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;margin-bottom:8px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP10</div>';
-  if (sf.top_list && sf.top_list.length) {
-    var inSectors = sf.top_list.filter(function(x){return x.net>0;}).slice(0,10);
-    if (inSectors.length) {
-      h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
-      var inHalf = Math.ceil(inSectors.length/2);
-      for (var col=0; col<2; col++) {
-        h += '<div>';
-        for (var i=col*inHalf; i<Math.min((col+1)*inHalf, inSectors.length); i++) {
-          h += '<div style="padding:1px 0;">'+(i+1)+' '+inSectors[i].name+' <span style="color:#c62828;font-weight:600;">+'+inSectors[i].net.toFixed(1)+'亿</span></div>';
-        }
-        h += '</div>';
-      }
-      h += '</div>';
-    } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  h += '</div>';
-  // 当日流出 — TOP10 分两列
-  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:#2e7d32;margin-bottom:4px;">流出 TOP10</div>';
-  if (sf.top_list && sf.top_list.length) {
-    var outSectors = sf.top_list.filter(function(x){return x.net<0;}).reverse().slice(0,10);
-    if (outSectors.length) {
-      h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
-      var outHalf = Math.ceil(outSectors.length/2);
-      for (var col=0; col<2; col++) {
-        h += '<div>';
-        for (var i=col*outHalf; i<Math.min((col+1)*outHalf, outSectors.length); i++) {
-          h += '<div style="padding:1px 0;">'+(i+1)+' '+outSectors[i].name+' <span style="color:#2e7d32;font-weight:600;">'+outSectors[i].net.toFixed(1)+'亿</span></div>';
-        }
-        h += '</div>';
-      }
-      h += '</div>';
-    } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  h += '</div>';
-  h += '</div>'; // close 当日 panel
-
-  // 本周
-  h += '<div>';
-  h += '<div style="font-size:15px;font-weight:700;color:#42a5f5;margin-bottom:6px;">本周</div>';
-  // 本周流入
-  h += '<div style="background:#fff5f5;border-radius:8px;padding:8px;margin-bottom:8px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:#c62828;margin-bottom:4px;">流入 TOP10</div>';
-  if (hasWeek && mw.buy_top5 && mw.buy_top5.length) {
-    var wkIn = mw.buy_top5.slice(0,10);
-    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
-    var wkInHalf = Math.ceil(wkIn.length/2);
-    for (var col=0; col<2; col++) {
-      h += '<div>';
-      for (var i=col*wkInHalf; i<Math.min((col+1)*wkInHalf, wkIn.length); i++) {
-        var wTag = wkIn[i].week_count >= 3 ? '<span style="font-size:9px;background:#c62828;color:#fff;padding:1px 3px;border-radius:3px;margin-left:2px;">连'+wkIn[i].week_count+'周</span>' : (wkIn[i].week_count >= 2 ? '<span style="font-size:9px;color:#999;margin-left:2px;">连'+wkIn[i].week_count+'周</span>' : '');
-        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkIn[i].name+' <span style="color:#c62828;font-weight:600;">+'+wkIn[i].net+wkIn[i].unit+'</span>'+wTag+'</div>';
-      }
-      h += '</div>';
-    }
-    h += '</div>';
-  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  h += '</div>';
-  // 本周流出
-  h += '<div style="background:#f5fff5;border-radius:8px;padding:8px;">';
-  h += '<div style="font-size:11px;font-weight:600;color:#2e7d32;margin-bottom:4px;">流出 TOP10</div>';
-  if (hasWeek && mw.sell_top5 && mw.sell_top5.length) {
-    var wkOut = mw.sell_top5.slice(0,10);
-    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 6px;font-size:10px;">';
-    var wkOutHalf = Math.ceil(wkOut.length/2);
-    for (var col=0; col<2; col++) {
-      h += '<div>';
-      for (var i=col*wkOutHalf; i<Math.min((col+1)*wkOutHalf, wkOut.length); i++) {
-        var wTag2 = wkOut[i].week_count >= 3 ? '<span style="font-size:9px;background:#2e7d32;color:#fff;padding:1px 3px;border-radius:3px;margin-left:2px;">连'+wkOut[i].week_count+'周</span>' : (wkOut[i].week_count >= 2 ? '<span style="font-size:9px;color:#999;margin-left:2px;">连'+wkOut[i].week_count+'周</span>' : '');
-        h += '<div style="padding:1px 0;">'+(i+1)+' '+wkOut[i].name+' <span style="color:#2e7d32;font-weight:600;">'+wkOut[i].net+wkOut[i].unit+'</span>'+wTag2+'</div>';
-      }
-      h += '</div>';
-    }
-    h += '</div>';
-  } else { h += '<span style="color:#999;font-size:11px;">暂无</span>'; }
-  h += '</div>';
-  h += '</div>'; // close 本周 panel
-
-  h += '</div>'; // close right stacked column
-  h += '</div>'; // end outer 1fr 1fr grid
+  h += '</div>'; // end 个股主力动向 grid
 
   con.innerHTML = h;
 }
