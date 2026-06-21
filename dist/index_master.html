@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621162406 -->
+<!-- build: 20260621163823 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -651,9 +651,12 @@ tr:hover td { background: #fafbfc; }
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
       <!-- 左侧：标题+状态 -->
       <div id="shTitleCard" style="background:linear-gradient(135deg,#e3f2fd,#f5f5ff);border:2px solid #bbdefb;border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;justify-content:flex-start;">
-        <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:4px;">数据监控</div>
-        <div style="font-size:10px;color:#888;">斐波那契时间窗口 · 缠论视角</div>
-        <span id="shBadge" style="font-size:20px;font-weight:800;padding:8px 28px;border-radius:20px;color:#fff;background:#90caf9;display:inline-block;text-align:center;align-self:center;margin-top:10px;">震荡整理</span>
+        <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:2px;">数据监控</div>
+        <div style="font-size:10px;color:#888;margin-bottom:8px;">斐波那契时间窗口 · 缠论视角</div>
+        <div style="display:flex;align-items:center;gap:12px;flex:1;">
+          <span id="shBadge" style="font-size:18px;font-weight:800;padding:6px 20px;border-radius:16px;color:#fff;background:#90caf9;white-space:nowrap;flex-shrink:0;">震荡整理</span>
+          <span id="shConclusion" style="font-size:12px;color:#e65100;font-weight:600;line-height:1.4;"></span>
+        </div>
       </div>
       <!-- 右侧：异动提醒+监控数据 -->
       <div id="shAlertCard" style="background:linear-gradient(135deg,#faf0ff,#f3e5f5);border:2px solid #ce93d8;border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;justify-content:center;">
@@ -150333,7 +150336,7 @@ window.SCAN_DATA = {
 ],
 "update_time": "2026-06-20 12:40"
 };window.MACRO_DATA = {
-"update_time": "2026-06-21 16:23:11",
+"update_time": "2026-06-21 16:37:26",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.7299,
@@ -178224,7 +178227,8 @@ var RECOMMEND = window.RECOMMEND = [
       }
       if (!warns.length) { el.style.display = 'none'; return; }
       el.style.display = 'block';
-      el.innerHTML = warns.map(function(w){ return '<div style="font-size:12px;color:#c62828;font-weight:600;line-height:1.8;">' + w + '</div>'; }).join('');
+      el.innerHTML = '<div style="font-size:13px;color:#c62828;font-weight:700;margin-bottom:6px;">⚠️ 重点关注</div>' +
+        warns.map(function(w){ return '<div style="font-size:12px;color:#e65100;font-weight:600;line-height:1.8;">' + w + '</div>'; }).join('');
     }
     updateMarginAlert();
 
@@ -179114,6 +179118,19 @@ function renderShMonitor() {
     badgeEl.textContent = badgeText;
     badgeEl.style.background = badgeColor;
     badgeEl.style.color = '#fff';
+  }
+  // 更新结论文案
+  var conclusionEl = document.getElementById('shConclusion');
+  if (conclusionEl) {
+    var pct = cur.total_pct || 0, days = cur.days_down || 0;
+    var conclusion = '';
+    if (pct <= -10) conclusion = '深度超卖，关注斐波那契窗口反弹信号';
+    else if (pct <= -5 || (days >= 10 && pct <= -3)) conclusion = '持续阴跌磨底，需耐心等待右侧确认';
+    else if (days >= 20 && pct < 0) conclusion = '超长下跌周期，量能萎缩或为见底前兆';
+    else if (pct >= 5) conclusion = '强势行情，注意斐波那契窗口阻力位';
+    else if (pct >= 2) conclusion = '震荡偏多，可适度关注主线板块';
+    else conclusion = '趋势不明朗，建议观望为主';
+    conclusionEl.textContent = conclusion;
   }
 
   // 跟踪下一个即将到来的斐波那契窗口（动态查找future状态中最近的）
@@ -180099,7 +180116,7 @@ function renderSectorFundFlow() {
   let sectorMood = '', sectorColor = '#7b1fa2';
   if (sectorNetFlow > 50) { sectorMood = '主力资金大幅做多，板块情绪积极'; sectorColor = '#c62828'; }
   else if (sectorNetFlow > 10) { sectorMood = '资金净流入，市场偏暖'; sectorColor = '#7b1fa2'; }
-  else if (sectorNetFlow < -50) { sectorMood = '⚠️ 重点关注：主力资金大幅撤退，注意风险'; sectorColor = '#c62828'; }
+  else if (sectorNetFlow < -50) { sectorMood = '⚠️ 重点关注：主力资金大幅撤退，注意风险'; sectorColor = '#e65100'; }
   else if (sectorNetFlow < -10) { sectorMood = '资金净流出，情绪偏谨慎'; sectorColor = '#e65100'; }
   else { sectorMood = '资金进出平衡，观望为主'; sectorColor = '#888'; }
 
