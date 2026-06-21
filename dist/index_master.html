@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621182410 -->
+<!-- build: 20260621182806 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -179229,7 +179229,7 @@ function renderShMonitor() {
     // 活跃窗口（今日+追踪中合并一行）
     var hotWins = active.concat(tracking);
     if (hotWins.length) {
-      judgeHtml += '<p style="margin:4px 0;">' + hotWins.map(function(w){return w.name+'('+w.date+')';}).join('、') + ' <b style="color:#c62828;">⚠️ 重点关注</b>' + (triggered.length?' （'+triggered.join('、')+' 已触发）':' ') + '</p>';
+      judgeHtml += '<p style="margin:4px 0;">' + hotWins.map(function(w){return w.name+'('+w.date+')';}).join('、') + ' <b style="color:#c62828;">⚠️ 重点关注</b>' + (triggered.length?' （'+triggered.map(function(w){return w.name;}).join('、')+' 已触发）':' ') + '</p>';
     }
     
     // 下个窗口
