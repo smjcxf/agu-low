@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621145025 -->
+<!-- build: 20260621145222 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -180475,7 +180475,8 @@ function renderCalendar() {
     for (const ev of dayEvents) {
       const t = ev.type || '';
       const style = typeColorMap[t] || {bg:'#f5f5f5', color:'#666'};
-      content += '<div style="font-size:10px;padding:1px 3px;border-radius:3px;background:' + style.bg + ';color:' + style.color + ';margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + ev.title + '</div>';
+      var dateLabel = (ev.date || '').replace(/^\d{4}-/, '');
+      content += '<div style="font-size:10px;padding:1px 3px;border-radius:3px;background:' + style.bg + ';color:' + style.color + ';margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + dateLabel + ' ' + ev.title + '</div>';
     }
     // 全部展开，不再折叠
     h += '<div style="min-height:60px;padding:4px;border-radius:6px;' + bg + '">' + content + '</div>';
@@ -183168,12 +183169,12 @@ function renderHerdingMain() {
       h += '<div style="margin-bottom:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">';
       h += '<div><b style="color:#42a5f5;">进行中</b>';
       if (ongoing.length) {
-        ongoing.forEach(function(o){ h += '<div style="padding:3px 6px;background:#e3f2fd;border-radius:3px;margin-top:2px;">'+o.item.event+'</div>'; });
+        ongoing.forEach(function(o){ h += '<div style="padding:3px 6px;background:#e3f2fd;border-radius:3px;margin-top:2px;">'+o.item.event+' <span style="font-size:10px;color:#888;">'+o.dateLabel+'</span></div>'; });
       } else { h += '<div style="color:#999;font-size:11px;">暂无</div>'; }
       h += '</div>';
       h += '<div><b style="color:#e65100;">预告</b>';
       if (upcoming.length) {
-        upcoming.forEach(function(o){ h += '<div style="padding:3px 6px;background:#fff3e0;border-radius:3px;margin-top:2px;">'+o.item.event+'</div>'; });
+        upcoming.forEach(function(o){ h += '<div style="padding:3px 6px;background:#fff3e0;border-radius:3px;margin-top:2px;">'+o.item.event+' <span style="font-size:10px;color:#888;">'+o.dateLabel+'</span></div>'; });
       } else { h += '<div style="color:#999;font-size:11px;">暂无</div>'; }
       h += '</div></div>';
     }
