@@ -344,16 +344,8 @@ def audit_global_market():
     check_file_freshness(f, STALE_72H * 7, "全球股市台", "industry_map.json 新鲜度")
     check_dist_sync(f, "全球股市台", "industry_map.json")
 
-    # 3. resonance_history.json
-    f = DATA_DIR / "resonance_history.json"
-    if f.exists():
-        check_file_freshness(f, STALE_48H, "全球股市台", "resonance_history.json 新鲜度")
-        data = check_json_valid(f, "全球股市台", "resonance_history.json 格式")
-        if data is not None:
-            check_json_non_empty(data, "全球股市台", "resonance_history.json 内容")
-        check_dist_sync(f, "全球股市台", "resonance_history.json")
-    else:
-        log("INFO", "全球股市台", "resonance_history.json", "文件不存在（可选）")
+    # 3. 历史追踪已统一使用 triple_resonance_history.json，旧 resonance_history.json 已删除
+    log("INFO", "全球股市台", "历史数据", "统一使用 triple_resonance_history.json")
 
     # 4. 检查 dist/ 下是否有 triple_resonance 相关 HTML
     html_files = list(DIST_DIR.glob("triple_resonance*.html"))
