@@ -178183,6 +178183,33 @@ var RECOMMEND = window.RECOMMEND = [
         var rqTrend = rqChg > 5 ? '↑'+rqChg+'%' + rqEval : rqChg < -5 ? '↓'+Math.abs(rqChg)+'%' + rqEval : '稳定' + rqEval;
         h += '<b>两融：</b>融资'+rzYi+'万亿 '+rzTrend+' · 融券'+rqNow.toFixed(0)+'亿（占融资'+rqRatio+'%）'+rqTrend+'<br>';
       }
+      // ETF申赎趋势
+      var etf = window.ETF_SUBSCRIPTION || {}, etfSh = etf.sh || [];
+      if (etfSh.length >= 3) {
+        var consRed = 0, consBuy = 0;
+        for (var i = etfSh.length - 1; i >= 0; i--) {
+          if (etfSh[i].net_subscribe_bil < 0) consRed++;
+          else break;
+        }
+        for (var i = etfSh.length - 1; i >= 0; i--) {
+          if (etfSh[i].net_subscribe_bil > 0) consBuy++;
+          else break;
+        }
+        var lastEtf = etfSh[etfSh.length-1];
+        var etfAmt = Math.abs(lastEtf.net_subscribe_bil||0).toFixed(1);
+        if (consRed >= 3) {
+          var redSum = 0;
+          for (var i = etfSh.length - 1; i >= etfSh.length - consRed; i--) redSum += etfSh[i].net_subscribe_bil||0;
+          h += '<b>ETF：</b>连续'+consRed+'日净赎回'+Math.abs(redSum).toFixed(1)+'亿，机构资金持续流出<br>';
+        } else if (consBuy >= 3) {
+          var buySum = 0;
+          for (var i = etfSh.length - 1; i >= etfSh.length - consBuy; i--) buySum += etfSh[i].net_subscribe_bil||0;
+          h += '<b>ETF：</b>连续'+consBuy+'日净申购'+buySum.toFixed(1)+'亿，机构资金持续进场<br>';
+        } else {
+          h += '<b>ETF：</b>最新'+etfAmt+'亿'+(lastEtf.net_subscribe_bil>0?'净申购':'净赎回')+'<br>';
+        }
+      }
+
       // 成交额分析
       var ah = hd.amount_history || [];
       if (ah.length >= 2) {
