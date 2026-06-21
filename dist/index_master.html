@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- build: 20260621145222 -->
+<!-- build: 20260621145347 -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -183401,6 +183401,39 @@ function renderNorthFund() {
   var wf = d.week_flow || {};
   var sf = d.sector_flow || {};
 
+  // ── 策略参考（顶部总结）──
+  if (wf.days || nf.direction) {
+    var strategyItems = [];
+    if (wf.days >= 5 && wf.direction === '流入') {
+      strategyItems.push('外资连续流入，中期偏多');
+    }
+    if (sf.buy_top5 && sf.buy_top5.length) {
+      var sectorTypes = { '电力设备':'新能源', '电子':'科技', '医药生物':'医药', '食品饮料':'消费', '银行':'金融', '非银金融':'金融', '有色金属':'周期', '基础化工':'周期', '汽车':'制造', '机械设备':'制造', '计算机':'科技', '通信':'科技', '国防军工':'军工' };
+      var types = {};
+      sf.buy_top5.forEach(function(x){
+        var t = sectorTypes[x.name] || '综合';
+        types[t] = (types[t]||0) + 1;
+      });
+      var topType = Object.keys(types).sort(function(a,b){return types[b]-types[a];})[0];
+      if (topType) strategyItems.push('风格偏好：'+topType);
+    }
+    if (nf.direction === '流入' && window.SECTOR_FUND_FLOW && window.SECTOR_FUND_FLOW.top_list) {
+      var mfTopIn = (window.SECTOR_FUND_FLOW.top_list||[]).filter(function(x){return x.net>10;});
+      if (mfTopIn.length) {
+        strategyItems.push('与主力同向，合力信号增强');
+      }
+    }
+    strategyItems.push('加仓板块优先关注');
+    strategyItems.push('减持板块短期回避');
+
+    h += '<div style="margin-bottom:12px;padding:10px 12px;background:#e8f5e9;border-radius:8px;font-size:12px;color:#2e7d32;line-height:1.8;">';
+    h += '<div style="font-weight:600;margin-bottom:4px;">策略参考</div>';
+    strategyItems.forEach(function(item, i){
+      h += '<div>· '+item+'</div>';
+    });
+    h += '</div>';
+  }
+
   // ── 核心指标 ──
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">';
   var nfDir = nf.direction === '流出' ? '-' : '+';
@@ -183511,39 +183544,6 @@ function renderNorthFund() {
     h += '</table>';
   } else { h += '<span style="color:#999;font-size:12px;">暂无</span>'; }
   h += '</div></div>';
-
-  // ── 策略参考 ──
-  if (wf.days || nf.direction) {
-    var strategyItems = [];
-    if (wf.days >= 5 && wf.direction === '流入') {
-      strategyItems.push('外资连续流入，中期偏多');
-    }
-    if (sf.buy_top5 && sf.buy_top5.length) {
-      var sectorTypes = { '电力设备':'新能源', '电子':'科技', '医药生物':'医药', '食品饮料':'消费', '银行':'金融', '非银金融':'金融', '有色金属':'周期', '基础化工':'周期', '汽车':'制造', '机械设备':'制造', '计算机':'科技', '通信':'科技', '国防军工':'军工' };
-      var types = {};
-      sf.buy_top5.forEach(function(x){
-        var t = sectorTypes[x.name] || '综合';
-        types[t] = (types[t]||0) + 1;
-      });
-      var topType = Object.keys(types).sort(function(a,b){return types[b]-types[a];})[0];
-      if (topType) strategyItems.push('风格偏好：'+topType);
-    }
-    if (nf.direction === '流入' && window.SECTOR_FUND_FLOW && window.SECTOR_FUND_FLOW.top_list) {
-      var mfTopIn = (window.SECTOR_FUND_FLOW.top_list||[]).filter(function(x){return x.net>10;});
-      if (mfTopIn.length) {
-        strategyItems.push('与主力同向，合力信号增强');
-      }
-    }
-    strategyItems.push('加仓板块优先关注');
-    strategyItems.push('减持板块短期回避');
-
-    h += '<div style="margin-top:12px;padding:10px 12px;background:#e8f5e9;border-radius:8px;font-size:12px;color:#2e7d32;line-height:1.8;">';
-    h += '<div style="font-weight:600;margin-bottom:4px;">策略参考</div>';
-    strategyItems.forEach(function(item, i){
-      h += '<div>· '+item+'</div>';
-    });
-    h += '</div>';
-  }
 
   con.innerHTML = h;
 }
