@@ -178172,8 +178172,16 @@ var RECOMMEND = window.RECOMMEND = [
         var rzChg = rzPrev ? ((rzNow - rzPrev) / rzPrev * 100).toFixed(2) : 0;
         var rqChg = rqPrev ? ((rqNow - rqPrev) / rqPrev * 100).toFixed(1) : 0;
         var rzTrend = rzChg > 1 ? '↑'+rzChg+'%（加杠杆）' : rzChg < -1 ? '↓'+Math.abs(rzChg)+'%（降杠杆）' : '持平';
-        var rqTrend = rqChg > 5 ? '↑'+rqChg+'%（做空升温）' : rqChg < -5 ? '↓'+Math.abs(rqChg)+'%（空头撤退）' : '稳定';
-        h += '<b>两融：</b>融资'+rzYi+'万亿 '+rzTrend+' · 融券'+rqNow.toFixed(0)+'亿 '+rqTrend+'<br>';
+        // 融券评价
+        var rqRatio = (rqNow / rzNow * 100).toFixed(2);
+        var rqEval = '';
+        if (rqRatio < 0.5) rqEval = '，做空力量极弱';
+        else if (rqRatio < 1) rqEval = '，空头占比较低';
+        else if (rqRatio < 2) rqEval = '，做空力量温和';
+        else if (rqRatio < 5) rqEval = '，空头活跃需警惕';
+        else rqEval = '，做空力量异常高';
+        var rqTrend = rqChg > 5 ? '↑'+rqChg+'%' + rqEval : rqChg < -5 ? '↓'+Math.abs(rqChg)+'%' + rqEval : '稳定' + rqEval;
+        h += '<b>两融：</b>融资'+rzYi+'万亿 '+rzTrend+' · 融券'+rqNow.toFixed(0)+'亿（占融资'+rqRatio+'%）'+rqTrend+'<br>';
       }
       // 成交额分析
       var ah = hd.amount_history || [];
