@@ -7994,8 +7994,12 @@ function renderRecommend() {
   // 渲染四喜临门
   const sanzuContainer = document.getElementById('sanzuContainer');
   if (sanzuGrid) {
-    if (sanzuContainer) sanzuContainer.style.display = '';
-    sanzuGrid.innerHTML = sanzuUnique.length ? renderSignalCards(sanzuUnique, 'sanzu') : '<div style="color:#999;font-size:12px;text-align:center;padding:8px;">暂无符合四喜临门条件的股票，等待信号触发</div>';
+    if (!sanzuUnique.length) {
+      if (sanzuContainer) sanzuContainer.style.display = 'none';
+    } else {
+      if (sanzuContainer) sanzuContainer.style.display = '';
+      sanzuGrid.innerHTML = renderSignalCards(sanzuUnique, 'sanzu');
+    }
   }
 
   // 渲染三线共振
