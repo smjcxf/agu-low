@@ -178159,8 +178159,8 @@ var RECOMMEND = window.RECOMMEND = [
         var dl = ds[ds.length-1];
         var total = (dl.up||0) + (dl.down||0) + (dl.flat||0);
         var upPct = total ? (dl.up / total * 100).toFixed(0) : 0;
-        var mood = upPct >= 70 ? '普涨，情绪过热' : upPct >= 50 ? '偏多' : upPct >= 30 ? '偏空' : '普跌，恐慌信号';
-        h += '涨'+dl.up+'跌'+dl.down+'（'+upPct+'%上涨，'+mood+'） · ';
+        var mood = upPct >= 70 ? '多头主导，情绪偏热' : upPct >= 50 ? '偏多，个股分化' : upPct >= 30 ? '偏空，弱势居多' : '空头主导，恐慌弥漫';
+        h += '<b>涨跌比：</b>'+upPct+'%个股上涨（'+mood+'）<br>';
       }
       // 两融 → 结论
       var md = window.MARGIN_DATA || {}, msh = md.sh || [];
@@ -178169,14 +178169,29 @@ var RECOMMEND = window.RECOMMEND = [
         var rzNow = ml.rz_balance || 0, rzPrev = mp.rz_balance || 0;
         var rzYi = (rzNow / 10000).toFixed(2);
         var rqNow = ml.rq_balance_amt || 0, rqPrev = mp.rq_balance_amt || 0;
-        var rzChg = rzPrev ? ((rzNow - rzPrev) / rzPrev * 100).toFixed(1) : 0;
+        var rzChg = rzPrev ? ((rzNow - rzPrev) / rzPrev * 100).toFixed(2) : 0;
         var rqChg = rqPrev ? ((rqNow - rqPrev) / rqPrev * 100).toFixed(1) : 0;
-        var rzTrend = rzChg > 1 ? '大增' + rzChg + '%，杠杆加仓' : rzChg < -1 ? '缩减' + Math.abs(rzChg) + '%，降杠杆' : '持平';
-        var rqTrend = rqChg > 5 ? '激增' + rqChg + '%，做空升温' : rqChg < -5 ? '缩减' + Math.abs(rqChg) + '%，空头撤退' : '稳定';
-        h += '融资' + rzYi + '万亿（' + rzTrend + '） · 融券' + rqNow.toFixed(0) + '亿（' + rqTrend + '）';
+        var rzTrend = rzChg > 1 ? '↑'+rzChg+'%（加杠杆）' : rzChg < -1 ? '↓'+Math.abs(rzChg)+'%（降杠杆）' : '持平';
+        var rqTrend = rqChg > 5 ? '↑'+rqChg+'%（做空升温）' : rqChg < -5 ? '↓'+Math.abs(rqChg)+'%（空头撤退）' : '稳定';
+        h += '<b>两融：</b>融资'+rzYi+'万亿 '+rzTrend+' · 融券'+rqNow.toFixed(0)+'亿 '+rqTrend+'<br>';
+      }
+      // 成交额分析
+      var ah = hd.amount_history || [];
+      if (ah.length >= 2) {
+        var al = ah[ah.length-1], ap = ah[ah.length-2];
+        if (ap.total > 0) {
+          var amtChg = ((al.total - ap.total) / ap.total * 100);
+          var amtNote = amtChg > 10 ? '放量'+amtChg.toFixed(0)+'%' : amtChg < -10 ? '缩量'+Math.abs(amtChg).toFixed(0)+'%' : '持平';
+          h += '<b>成交：</b>'+al.total.toFixed(0)+'亿（环比'+amtNote+'）<br>';
+        }
+      }
+      // 斐波那契窗口
+      var fib = window.SH_FIB || {}, cur = fib.current || {};
+      if (cur.days_down) {
+        h += '<b>趋势：</b>'+cur.mode+'，从'+cur.peak_date+'高点回调'+cur.days_down+'天，累计'+cur.total_pct+'%';
       }
       if (h) {
-        el.innerHTML = '<span style="font-size:12px;color:#555;line-height:1.8;">' + h.replace(/ · $/, '') + '</span>';
+        el.innerHTML = '<span style="font-size:12px;color:#555;line-height:1.9;">' + h + '</span>';
         el.style.display = 'block';
       } else {
         el.style.display = "none";
@@ -178202,9 +178217,9 @@ var RECOMMEND = window.RECOMMEND = [
           if (Math.abs(rzChg) >= 1) warns.push('⚠️ 融资余额' + (rzChg>0?'大增':'大减') + Math.abs(rzChg).toFixed(1) + '%');
         }
       }
-      // 上证异动（作为头条大字体）
+      // 上证异动（仅极端情况触发）
       var fib = window.SH_FIB || {}, cur = fib.current || {};
-      if (cur.days_down >= 20) topWarn = '上证连跌' + cur.days_down + '天，累计' + (cur.total_pct||0).toFixed(2) + '%';
+      if (cur.total_pct <= -10) topWarn = '⚠️ 上证累计跌幅' + (cur.total_pct||0).toFixed(2) + '%，深跌警戒';
       else if (cur.total_pct <= -8) topWarn = '上证累计跌幅' + (cur.total_pct||0).toFixed(2) + '%，警戒区间';
       // 成交额异动
       var hd = window.SH_SZ_HISTORY || {}, ah = hd.amount_history || [];
