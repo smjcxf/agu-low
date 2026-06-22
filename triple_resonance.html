@@ -146,6 +146,7 @@ var EMBEDDED_HISTORY_DATA = {"2026-06-01": [{"code": "sh_688777", "name": "中�
   <div class="tab active" onclick="switchTab('list', event)">📋 股票列表</div>
   <div class="tab" onclick="switchTab('timeline', event)">📅 时间轴</div>
   <div class="tab" onclick="switchTab('calendar', event)">📅 持续日历</div>
+  <div class="tab" onclick="switchTab('rank', event)">📊 涨幅排名</div>
 </div>
 
 <div class="content">
@@ -200,6 +201,30 @@ var EMBEDDED_HISTORY_DATA = {"2026-06-01": [{"code": "sh_688777", "name": "中�
       </div>
     </div>
   </div>
+  <div id="tabRank" class="tab-content" style="display:none;">
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> 涨幅排名 — 信号触发后表现 <span style="color:#999;font-size:11px;font-weight:400;">基于各股首次进入三线共振的触发日计算</span></div>
+      <div class="table-wrap">
+      <table id="rankTable">
+        <thead>
+          <tr>
+            <th>排名</th>
+            <th>代码</th>
+            <th>名称</th>
+            <th>触发日</th>
+            <th>触发价</th>
+            <th style="background:#c62828;color:#fff;">5日涨幅</th>
+            <th style="background:#2e7d32;color:#fff;">21日涨幅</th>
+            <th>最新价</th>
+            <th>信号强度</th>
+          </tr>
+        </thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+      </div>
+      <div class="empty-state" id="emptyRank" style="display:none;">暂无足够历史数据计算涨幅</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -240,6 +265,97 @@ function findLastTradingDay(dateStr) {
     d.setDate(d.getDate() - 1);
   }
   return dateStr;
+}
+
+// 涨幅排名：5日爆发力 + 21日最终成绩
+function renderRank() {
+  var tbody = document.getElementById('rankBody');
+  var emptyEl = document.getElementById('emptyRank');
+  var table = document.getElementById('rankTable');
+  if (!tbody) return;
+
+  // 收集所有首次出现且有后续数据的股票
+  var dates = Object.keys(historyData).sort();
+  var tradingDates = getTradingDates(dates);
+  var rankList = [];
+  var seen = {};
+
+  for (var di = 0; di < tradingDates.length; di++) {
+    var d = tradingDates[di];
+    var stocks = historyData[d] || [];
+    for (var si = 0; si < stocks.length; si++) {
+      var s = stocks[si];
+      var key = s.code;
+      if (seen[key]) continue;
+      seen[key] = true;
+
+      // 找5交易日后的价格
+      var idx5 = di + 5;
+      if (idx5 >= tradingDates.length) continue;
+      var price5 = null;
+      for (var i5 = idx5; i5 < Math.min(idx5 + 3, tradingDates.length); i5++) {
+        var s5 = (historyData[tradingDates[i5]] || []).find(function(x){ return x.code === s.code; });
+        if (s5 && s5.close) { price5 = s5.close; break; }
+      }
+      if (!price5) continue;
+
+      // 找21交易日后的价格
+      var idx21 = di + 21;
+      if (idx21 >= tradingDates.length) continue;
+      var price21 = null;
+      for (var i21 = idx21; i21 < Math.min(idx21 + 3, tradingDates.length); i21++) {
+        var s21 = (historyData[tradingDates[i21]] || []).find(function(x){ return x.code === s.code; });
+        if (s21 && s21.close) { price21 = s21.close; break; }
+      }
+      if (!price21) continue;
+
+      var ret5 = ((price5 - s.close) / s.close * 100);
+      var ret21 = ((price21 - s.close) / s.close * 100);
+
+      rankList.push({
+        code: s.code.replace(/^(sh|sz|bj|hk)_/, ''),
+        name: s.name,
+        triggerDate: d,
+        triggerPrice: s.close,
+        ret5: ret5,
+        ret21: ret21,
+        signalCount: s.signal_count || 3,
+        latest: s.close
+      });
+    }
+  }
+
+  if (rankList.length === 0) {
+    tbody.innerHTML = '';
+    table.style.display = 'none';
+    if (emptyEl) emptyEl.style.display = 'block';
+    return;
+  }
+
+  // 按21日涨幅排序
+  rankList.sort(function(a, b){ return b.ret21 - a.ret21; });
+
+  var html = '';
+  for (var ri = 0; ri < rankList.length; ri++) {
+    var r = rankList[ri];
+    var rankBadge = ri === 0 ? '🥇' : ri === 1 ? '🥈' : ri === 2 ? '🥉' : (ri + 1);
+    var ret5Color = r.ret5 >= 0 ? '#c62828' : '#2e7d32';
+    var ret21Color = r.ret21 >= 0 ? '#c62828' : '#2e7d32';
+    html += '<tr>';
+    html += '<td style="font-weight:700;">' + rankBadge + '</td>';
+    html += '<td style="font-family:monospace;">' + r.code + '</td>';
+    html += '<td><b>' + r.name + '</b></td>';
+    html += '<td>' + r.triggerDate + '</td>';
+    html += '<td>' + r.triggerPrice.toFixed(2) + '</td>';
+    html += '<td style="color:' + ret5Color + ';font-weight:600;">' + (r.ret5 >= 0 ? '+' : '') + r.ret5.toFixed(1) + '%</td>';
+    html += '<td style="color:' + ret21Color + ';font-weight:700;">' + (r.ret21 >= 0 ? '+' : '') + r.ret21.toFixed(1) + '%</td>';
+    html += '<td>' + r.latest.toFixed(2) + '</td>';
+    html += '<td><span class="badge badge-signal">' + r.signalCount + '信号</span></td>';
+    html += '</tr>';
+  }
+  tbody.innerHTML = html;
+  table.style.display = '';
+  if (emptyEl) emptyEl.style.display = 'none';
 }
 
 // 初始化
@@ -302,6 +418,8 @@ function updateCurrentTab() {
     renderTimeline();
   } else if (currentTab === 'calendar') {
     renderCalendar();
+  } else if (currentTab === 'rank') {
+    renderRank();
   }
 }
 
