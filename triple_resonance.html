@@ -244,7 +244,7 @@ function getTradingDates(allDates) {
 function findLastTradingDay(dateStr) {
   var d = new Date(dateStr + 'T00:00:00');
   for (var i = 0; i < 15; i++) {
-    var s = d.toISOString().split('T')[0];
+    var s = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
     if (isTradingDay(s)) return s;
     d.setDate(d.getDate() - 1);
   }
@@ -342,7 +342,7 @@ function renderRank() {
         });
         continue;
       }
-      if (ret5 === null) continue;
+      if (ret5 === null && ret21 === null) continue;  // 两者都没有才跳过
 
       // 判断状态：满21日=已完成，否则=追踪中
       var status = ret21 !== null ? 'done' : 'tracking';
@@ -531,7 +531,7 @@ function renderList() {
 
   var html = '';
   data.forEach(function(stock) {
-    var jinzuan = stock['金钻_起涨'] || stock['金钻_黄柱'];
+    var jinzuan = stock['金钻_起涨'] || stock['金钻_黄柱'] || false;
     var signals = [stock['缠论买_日K'], jinzuan, stock['四量图_机构变红'], stock['上涨趋势']];
     var signalCount = signals.filter(Boolean).length;
     var rawCode = (stock.code || '').replace(/^(sh|sz|bj|hk)_/, '');
@@ -562,17 +562,15 @@ function calcStockScore(s) {
   var signalCount = s.signal_count || 0;
   var pctChg = s.pct_chg || 0;
   var pctChg20d = s.pct_chg_20d || 0;
-  return (signalCount * 3 + pctChg * 0.5 + pctChg20d * 0.2).toFixed(1);
+  return signalCount * 3 + pctChg * 0.5 + pctChg20d * 0.2;  // 数字类型，显示时再 toFixed
 }
 
 // 时间轴点击：跳转到股票列表并选中该日期
 function clickTimelineDate(date) {
   document.getElementById('dateSelector').value = date;
   currentDate = date;
-  // 切换到列表Tab
-  switchTab('list', {target: document.querySelector('.tab')});
-  renderList();
-  updateStats();
+  // 切换到列表Tab（switchTab 内部已调用 updateCurrentTab → renderList + updateStats）
+  switchTab('list', null);
 }
 
 // 渲染时间轴
@@ -640,7 +638,7 @@ function renderTimeline() {
     html += '<div class="timeline-content">';
 
     var currentList = item.stocks.map(function(s) {
-      return s.name + ' <span style="color:#999;font-size:11px;">(' + calcStockScore(s) + '分)</span>';
+      return s.name + ' <span style="color:#999;font-size:11px;">(' + calcStockScore(s).toFixed(1) + '分)</span>';
     }).join('、');
     html += '<div style="margin-bottom:8px;font-size:' + (isToday ? '15px' : '13px') + ';color:#5ec3ff;font-weight:' + (isToday ? '600' : '500') + ';line-height:1.6;">📍 当前：' + currentList + '</div>';
 
@@ -775,6 +773,11 @@ function switchTab(tab, e) {
   var tabs = document.querySelectorAll('.tab');
   for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove('active'); }
   if (e && e.target) e.target.classList.add('active');
+  else {
+    // 无事件时，根据 tab 名激活对应标签
+    var targetTab = document.querySelector('.tab[onclick*="' + tab + '"]');
+    if (targetTab) targetTab.classList.add('active');
+  }
 
   var tabContents = document.querySelectorAll('.tab-content');
   for (var i = 0; i < tabContents.length; i++) { tabContents[i].style.display = 'none'; }
@@ -786,16 +789,19 @@ function switchTab(tab, e) {
 
 // 跳转日期
 function jumpToDate(days) {
-  var current = new Date(currentDate);
+  // 读取日期选择器当前值，而非依赖可能过时的全局 currentDate
+  var selectorVal = document.getElementById('dateSelector').value;
+  if (selectorVal) currentDate = selectorVal;
+  var current = new Date(currentDate + 'T00:00:00');
   var maxDate = new Date().toISOString().split('T')[0];
   var minDate = '2026-06-01';
 
+  var newDate = '';
   // 逐日跳过休市日
   for (var i = 0; i < 20; i++) {
     current.setDate(current.getDate() + days);
-    var newDate = current.toISOString().split('T')[0];
+    newDate = current.getFullYear() + '-' + String(current.getMonth() + 1).padStart(2, '0') + '-' + String(current.getDate()).padStart(2, '0');
     if (isTradingDay(newDate)) break;
-    // 非交易日继续同方向跳
   }
 
   if (newDate >= minDate && newDate <= maxDate) {
