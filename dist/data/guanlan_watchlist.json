@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updated": "2026-06-22 09:38:23",
+  "updated": "2026-06-22 11:45:28",
   "total": 243,
   "stocks": {
     "SH600183": {
@@ -10197,9 +10197,14 @@
           "institution": "花旗",
           "rating": "买入",
           "date": "2026-06-18"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-18"
         }
       ],
-      "rec_count": 16,
+      "rec_count": 17,
       "institutions": [
         "花旗"
       ],
@@ -10686,7 +10691,7 @@
       "full_code": "HK.02338",
       "market": "港股",
       "first_seen": "2026-06-18",
-      "last_seen": "2026-06-18",
+      "last_seen": "2026-06-22",
       "recommendations": [
         {
           "institution": "摩根士丹利",
@@ -10712,9 +10717,14 @@
           "institution": "摩根士丹利",
           "rating": "买入",
           "date": "2026-06-18"
+        },
+        {
+          "institution": "花旗",
+          "rating": "买入",
+          "date": "2026-06-22"
         }
       ],
-      "rec_count": 5,
+      "rec_count": 6,
       "institutions": [
         "摩根士丹利",
         "花旗"
