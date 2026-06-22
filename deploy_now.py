@@ -202,16 +202,24 @@ def main():
         os.makedirs(tmpdir, exist_ok=True)
         r = run(f"git -C {tmpdir} init")
         r = run(f"git -C {tmpdir} checkout --orphan gh-pages")
+        # 确保 .nojekyll 存在
+        open(os.path.join(tmpdir, ".nojekyll"), "w").close()
+        log("   ✓ .nojekyll 已创建（orphan）")
     else:
         log("   Cloned, cleaning old files...")
         for item in os.listdir(tmpdir):
-            if item == ".git":
+            if item in (".git", ".nojekyll"):
                 continue
             path = os.path.join(tmpdir, item)
             if os.path.isdir(path):
                 shutil.rmtree(path, ignore_errors=True)
             else:
                 os.remove(path)
+        # 确保 .nojekyll 始终存在（防止 Jekyll 处理破坏页面）
+        nojekyll = os.path.join(tmpdir, ".nojekyll")
+        if not os.path.exists(nojekyll):
+            open(nojekyll, "w").close()
+            log("   ✓ .nojekyll 已创建")
 
     # 1.5 CDN cache busting
     log("1.5. Busting CDN cache...")
@@ -266,6 +274,11 @@ def main():
             shutil.copy2(src, dst)
             file_count += 1
     log(f"   Copied {file_count} files")
+    # 最后防线：确保 .nojekyll 绝不丢失（防 Jekyll 破坏页面）
+    nojekyll_final = os.path.join(tmpdir, ".nojekyll")
+    if not os.path.exists(nojekyll_final):
+        open(nojekyll_final, "w").close()
+        log("   ✓ .nojekyll 最后防线已创建")
 
     # 3. Commit and push
     log("3. Committing and pushing...")
