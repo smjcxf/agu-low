@@ -13,8 +13,13 @@ __pycache__/
 worker/
 backup/
 backup_*/
-!/data/
-# 数据文件通过 git 跨机同步，见 data/.gitignore
+# 数据目录：全部走坚果云实时同步，不进 Git（避免双机数据冲突）
+data/
+dist/data/
+# 生成产物：由 update_data_v2.py 生成，不进 Git
+dist/index.html
+dist/index_master.html
+dist/triple_resonance.html
 deploy_log.txt
 scanner_full.log
 .workbuddy/
