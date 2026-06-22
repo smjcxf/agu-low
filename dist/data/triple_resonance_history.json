@@ -526,9 +526,9 @@
       "上涨趋势": true,
       "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 2,
-      "enter_date": "2026-06-12",
-      "duration_days": 2
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "hk_01109",
@@ -541,9 +541,9 @@
       "上涨趋势": true,
       "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 3,
-      "enter_date": "2026-06-11",
-      "duration_days": 3
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "sz_002129",
@@ -556,9 +556,9 @@
       "上涨趋势": true,
       "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 2,
-      "enter_date": "2026-06-12",
-      "duration_days": 2
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     }
   ],
   "2026-06-16": [
@@ -574,8 +574,8 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 1,
-      "enter_date": "2026-06-16",
-      "duration_days": 1
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "sz_300292",
@@ -589,8 +589,8 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 1,
-      "enter_date": "2026-06-16",
-      "duration_days": 1
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "sh_688603",
@@ -604,8 +604,8 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 1,
-      "enter_date": "2026-06-16",
-      "duration_days": 1
+      "enter_date": "",
+      "duration_days": 0
     }
   ],
   "2026-06-17": [
@@ -621,8 +621,8 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 1,
-      "enter_date": "2026-06-17",
-      "duration_days": 1
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "sz_300292",
@@ -635,9 +635,9 @@
       "上涨趋势": true,
       "signal_count": 3,
       "score": 9,
-      "days_in_resonance": 2,
-      "enter_date": "2026-06-16",
-      "duration_days": 2
+      "days_in_resonance": 1,
+      "enter_date": "",
+      "duration_days": 0
     },
     {
       "code": "sh_688603",
@@ -651,8 +651,8 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 2,
-      "enter_date": "2026-06-16",
-      "duration_days": 2
+      "enter_date": "",
+      "duration_days": 0
     }
   ],
   "2026-06-18": [
@@ -668,8 +668,8 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 1,
-      "enter_date": "2026-06-18",
-      "duration_days": 1
+      "enter_date": "",
+      "duration_days": 0
     }
   ],
   "2026-06-19": [
@@ -685,8 +685,9 @@
       "signal_count": 3,
       "score": 9,
       "days_in_resonance": 2,
-      "enter_date": "2026-06-18",
-      "duration_days": 2
+      "enter_date": "",
+      "duration_days": 0
     }
-  ]
+  ],
+  "2026-06-22": []
 }

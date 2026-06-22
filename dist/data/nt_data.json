@@ -1,29 +1,11 @@
 {
-  "update_time": "2026-06-20 18:46",
+  "update_time": "2026-06-22 09:23",
   "alerts": [
     {
       "type": "summary",
-      "severity": "low",
-      "message": "ETF监测中，11涨1跌",
-      "time": "18:46"
-    },
-    {
-      "type": "etf",
       "severity": "medium",
-      "message": "华夏科创50ETF 大涨 4.02%",
-      "time": "18:47"
-    },
-    {
-      "type": "etf",
-      "severity": "medium",
-      "message": "5G通信ETF 大涨 3.75%",
-      "time": "18:47"
-    },
-    {
-      "type": "etf",
-      "severity": "medium",
-      "message": "芯片ETF 大涨 4.68%",
-      "time": "18:47"
+      "message": "ETF监测中，3涨9跌",
+      "time": "09:23"
     }
   ],
   "etfFlow": {
@@ -32,129 +14,129 @@
         "code": "510300",
         "name": "华泰柏瑞沪深300ETF",
         "type": "宽基",
-        "price": 4.984,
-        "change_pct": 0.52,
-        "volume": 12933430.0,
-        "amount": 6434057084.0,
-        "amplitude": 1.21
+        "price": 4.983,
+        "change_pct": -0.02,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "510310",
         "name": "易方达沪深300ETF",
         "type": "宽基",
-        "price": 4.828,
-        "change_pct": 0.46,
-        "volume": 7569684.0,
-        "amount": 3648594988.0,
-        "amplitude": 1.19
+        "price": 4.826,
+        "change_pct": -0.04,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "159919",
         "name": "嘉实沪深300ETF",
         "type": "宽基",
-        "price": 5.192,
-        "change_pct": 0.44,
-        "volume": 6550414.0,
-        "amount": 3398339545.064,
-        "amplitude": 1.28
+        "price": 5.191,
+        "change_pct": -0.02,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "510330",
         "name": "华夏沪深300ETF",
         "type": "宽基",
-        "price": 5.191,
-        "change_pct": 0.5,
-        "volume": 6805190.0,
-        "amount": 3528133385.0,
-        "amplitude": 1.22
+        "price": 5.181,
+        "change_pct": -0.19,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "510050",
         "name": "华夏上证50ETF",
         "type": "宽基",
-        "price": 3.017,
-        "change_pct": 0.07,
-        "volume": 8261911.0,
-        "amount": 2493979013.0,
-        "amplitude": 1.09
+        "price": 3.015,
+        "change_pct": -0.07,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "510500",
         "name": "南方中证500ETF",
         "type": "宽基",
-        "price": 8.828,
-        "change_pct": 0.74,
-        "volume": 2529609.0,
-        "amount": 2226241971.0,
-        "amplitude": 1.61
+        "price": 8.827,
+        "change_pct": -0.01,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "159845",
         "name": "华夏中证1000ETF",
         "type": "宽基",
-        "price": 3.638,
-        "change_pct": 0.92,
-        "volume": 3109338.0,
-        "amount": 1127658626.731,
-        "amplitude": 4.85
+        "price": 3.67,
+        "change_pct": 0.88,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "588000",
         "name": "华夏科创50ETF",
         "type": "宽基",
         "price": 2.017,
-        "change_pct": 4.02,
-        "volume": 40816717.0,
-        "amount": 8160146209.0,
-        "amplitude": 5.67
+        "change_pct": 0.0,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "512690",
         "name": "酒ETF",
         "type": "行业",
-        "price": 0.404,
-        "change_pct": -2.18,
-        "volume": 22633240.0,
-        "amount": 915919913.0,
-        "amplitude": 2.91
+        "price": 0.403,
+        "change_pct": -0.25,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "515050",
         "name": "5G通信ETF",
         "type": "行业",
-        "price": 1.383,
-        "change_pct": 3.75,
-        "volume": 11545859.0,
-        "amount": 1579905117.0,
-        "amplitude": 5.63
+        "price": 1.411,
+        "change_pct": 2.02,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "159995",
         "name": "芯片ETF",
         "type": "行业",
-        "price": 2.816,
-        "change_pct": 4.68,
-        "volume": 7768728.0,
-        "amount": 2152388403.522,
-        "amplitude": 6.69
+        "price": 2.858,
+        "change_pct": 1.49,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       },
       {
         "code": "512010",
         "name": "医药ETF",
         "type": "行业",
         "price": 0.326,
-        "change_pct": 0.93,
-        "volume": 15422510.0,
-        "amount": 503509543.0,
-        "amplitude": 3.41
+        "change_pct": 0.0,
+        "volume": NaN,
+        "amount": NaN,
+        "amplitude": 0.0
       }
     ],
     "summary": {
       "total": 12,
       "valid": 12,
-      "up": 11,
-      "down": 1,
-      "alerts_count": 3
+      "up": 3,
+      "down": 9,
+      "alerts_count": 0
     }
   },
   "calendar": [
@@ -844,12 +826,12 @@
       "type": "hk_holiday"
     },
     {
-      "date": "2026-06-19",
+      "date": "2026-06-12",
       "title": "华为开发者大会HDC·Day1",
       "type": "product_launch"
     },
     {
-      "date": "2026-06-19",
+      "date": "2026-06-08",
       "title": "苹果WWDC·Day1",
       "type": "product_launch"
     },
@@ -869,12 +851,12 @@
       "type": "holiday"
     },
     {
-      "date": "2026-06-20",
+      "date": "2026-06-13",
       "title": "华为开发者大会HDC·Day2",
       "type": "product_launch"
     },
     {
-      "date": "2026-06-20",
+      "date": "2026-06-09",
       "title": "苹果WWDC·Day2",
       "type": "product_launch"
     },
@@ -884,12 +866,12 @@
       "type": "holiday"
     },
     {
-      "date": "2026-06-21",
+      "date": "2026-06-14",
       "title": "华为开发者大会HDC·Day3",
       "type": "product_launch"
     },
     {
-      "date": "2026-06-21",
+      "date": "2026-06-10",
       "title": "苹果WWDC·Day3",
       "type": "product_launch"
     },
@@ -919,7 +901,7 @@
       "type": "data"
     },
     {
-      "date": "2026-06-30",
+      "date": "2026-06-24",
       "title": "美光Q3财报",
       "type": "earnings_calendar"
     },
