@@ -229,6 +229,7 @@ HOLIDAYS_2026.forEach(function(d) { HOLIDAY_SET[d] = true; });
 
 function isTradingDay(dateStr) {
   if (!dateStr) return false;
+  if (dateStr.startsWith('_')) return false;  // 排除元数据key（如_tracking_latest）
   if (HOLIDAY_SET[dateStr]) return false;
   var d = new Date(dateStr + 'T00:00:00');
   var day = d.getDay();
