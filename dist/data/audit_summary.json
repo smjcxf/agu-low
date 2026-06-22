@@ -1,25 +1,111 @@
 {
-  "timestamp": "2026-06-20T13:06:33.958889",
-  "errors": 0,
-  "warnings": 5,
-  "ok": 44,
+  "timestamp": "2026-06-21T19:03:23.224097",
+  "errors": 19,
+  "warnings": 3,
+  "ok": 10,
   "details": {
-    "errors": [],
-    "warnings": [
+    "errors": [
+      {
+        "dashboard": "选股观测台",
+        "check": "scan_result.json 新鲜度",
+        "message": "文件不存在: scan_result.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "scan_result.json 格式",
+        "message": "文件不存在: scan_result.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "watch_result.json 新鲜度",
+        "message": "文件不存在: watch_result.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "watch_result.json 格式",
+        "message": "文件不存在: watch_result.json"
+      },
       {
         "dashboard": "选股观测台",
         "check": "stock_names.json 新鲜度",
-        "message": "文件已老化 118.0h（阈值 72h）"
+        "message": "文件不存在: stock_names.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "stock_names.json 格式",
+        "message": "文件不存在: stock_names.json"
       },
       {
         "dashboard": "选股观测台",
         "check": "signal_backtest.json 新鲜度",
-        "message": "文件已老化 140.4h（阈值 72h）"
+        "message": "文件不存在: signal_backtest.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "signal_backtest.json 格式",
+        "message": "文件不存在: signal_backtest.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "industry_map.json 新鲜度",
+        "message": "文件不存在: industry_map.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "industry_map.json 格式",
+        "message": "文件不存在: industry_map.json"
       },
       {
         "dashboard": "观澜台",
         "check": "guanlan_reports.json 新鲜度",
-        "message": "文件已老化 98.4h（阈值 48h）"
+        "message": "文件不存在: guanlan_reports.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "guanlan_reports.json 格式",
+        "message": "文件不存在: guanlan_reports.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "recommend.json 新鲜度",
+        "message": "文件不存在: recommend.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "recommend.json 格式",
+        "message": "文件不存在: recommend.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "guanlan_watchlist.json 新鲜度",
+        "message": "文件不存在: guanlan_watchlist.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "guanlan_watchlist.json 格式",
+        "message": "文件不存在: guanlan_watchlist.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "脚本检查",
+        "message": "guanlan_extractor.py 不存在！"
+      },
+      {
+        "dashboard": "国家队动向台",
+        "check": "脚本检查",
+        "message": "fetch_nt_data.py 不存在！"
+      },
+      {
+        "dashboard": "全球股市台",
+        "check": "industry_map.json 新鲜度",
+        "message": "文件不存在: industry_map.json"
+      }
+    ],
+    "warnings": [
+      {
+        "dashboard": "全球股市台",
+        "check": "脚本检查",
+        "message": "update_triple_resonance_daily.py 不存在"
       },
       {
         "dashboard": "部署",
