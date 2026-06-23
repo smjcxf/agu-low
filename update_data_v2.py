@@ -477,6 +477,7 @@ def main():
     etf_subscription = load_json(os.path.join(DATA_DIR, "etf_subscription.json"), {"sh": [], "update_time": ""})
     macro_data   = load_json(os.path.join(DATA_DIR, "macro_data.json"), {"update_time": "", "monetary": {}, "economy": {}, "market_sentiment": {}, "global_macro": {}})
     herding_data = load_json(os.path.join(DATA_DIR, "herding_data.json"), {"update_time": ""})
+    cffex_holdings = load_json(os.path.join(DATA_DIR, "cffex_holdings.json"), {})
     # 计算龙虎榜连续买入天数（依赖 lhb_history.json）
     try:
         subprocess.run([sys.executable, os.path.join(BASE_DIR, "compute_lhb_consecutive.py")],
@@ -617,11 +618,12 @@ def main():
         ("SUSPENSION_ALERT", "window.SUSPENSION_ALERT = ",  "{", "}"),
         ("STOCK_DEVIATION", "var STOCK_DEVIATION = window.STOCK_DEVIATION = ", "{", "}"),
         ("FOMC_SUMMARY",   "window.FOMC_SUMMARY = ",  "{", "}"),
+        ("CFFEX_HOLDINGS", "window.CFFEX_HOLDINGS = ", "{", "}"),
     ]
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
                  concept_ranking, market_alerts, margin_data, etf_subscription, macro_data,                  herding_data,
-                 lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, stock_deviation, fomc_summary]
+                 lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, stock_deviation, fomc_summary, cffex_holdings]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):
