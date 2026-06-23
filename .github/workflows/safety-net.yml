@@ -1,4 +1,4 @@
-name: "\U0001f6e1️ 定时任务兜底监控"
+name: "Safety Net - 定时任务兜底监控"
 
 on:
   schedule:
