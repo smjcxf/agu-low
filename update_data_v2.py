@@ -827,59 +827,6 @@ def main():
             os.remove(sf_path)
     print(f"  ✓ 已同步 data/*.json → dist/data/")
 
-    # ===== 大文件外置（减少 HTML 体积，利用浏览器缓存） =====
-    dist_root = os.path.dirname(OUTPUT_PATH)  # dist/ 目录
-    _EXTERNALIZE = [
-        ("window.GOLD_POOL = ", "data/gold_pool_data.js"),
-        ("window.WATCH_DATA = ", "data/watch_data.js"),
-    ]
-    ext_count = 0
-    for prefix, rel_path in _EXTERNALIZE:
-        start = content.find(prefix)
-        if start < 0:
-            continue
-        # 找到 JSON 块结束的 };
-        depth = 0
-        end = start + len(prefix)
-        json_start = end
-        while end < len(content):
-            ch = content[end]
-            if ch == '{': depth += 1
-            elif ch == '}': 
-                depth -= 1
-                if depth == 0:
-                    end += 1
-                    break
-            end += 1
-        if depth != 0:
-            continue
-        if end < len(content) and content[end] == ';':
-            end += 1
-        
-        json_str = content[json_start:end]
-        if json_str.endswith(';'):
-            json_str = json_str[:-1]
-        
-        js_out = os.path.join(dist_root, rel_path)
-        os.makedirs(os.path.dirname(js_out), exist_ok=True)
-        with open(js_out, "w", encoding="utf-8") as f:
-            f.write(f"{prefix}{json_str};\n")
-        
-        # 替换为 script 标签
-        script_tag = f'<script src="{rel_path}"></script>'
-        content = content[:start] + script_tag + content[end:]
-        ext_count += 1
-        print(f"  ✓ 外置: {prefix.split('.')[1].split('=')[0].strip():>10} → {rel_path} ({len(json_str):,} 字符)")
-
-    if ext_count:
-        print(f"  ✓ 共外置 {ext_count} 个大文件，HTML 体积大幅缩减")
-        # 重新保存删除了大块的 HTML
-        with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
-            f.write(content)
-        with open(OUTPUT_PATH_MASTER, "w", encoding="utf-8", newline="\n") as f:
-            f.write(content)
-        print(f"  ✓ 已重新保存精简版 HTML ({len(content):,} 字符)")
-
     print(f"\n✅ 数据块更新成功！")
     print(f"   部署: python deploy_now.py")
     print(f"   网址: https://ah-quant999.github.io/quant-scanner-v6/")
