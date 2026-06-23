@@ -17,9 +17,9 @@ SMTP_HOST = "smtp.qq.com"
 SMTP_PORT = 465
 SMTP_USER = "2814546@qq.com"          # 发件人
 SMTP_TO = "2814546@qq.com"            # 收件人
-# QQ邮箱授权码 — 在QQ邮箱设置→账户→POP3/SMTP服务中生成
-# 请替换为实际授权码，或通过环境变量 QQ_SMTP_PASS 传入
-SMTP_PASS = os.environ.get("QQ_SMTP_PASS", "")
+# QQ邮箱授权码（优先读环境变量，fallback 到硬编码）
+SMTP_AUTH_CODE = "sceornygysatcaig"
+SMTP_PASS = os.environ.get("QQ_SMTP_PASS", SMTP_AUTH_CODE)
 
 # 数据文件 → 显示名称 映射
 DATA_SOURCES = {
