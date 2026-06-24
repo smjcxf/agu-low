@@ -298,7 +298,7 @@ def _release_deploy_lock():
     run("git pull --rebase origin main", cwd=PROJECT_ROOT)
     r = run("git rm -f --ignore-unmatch .deploy_lock", cwd=PROJECT_ROOT)
     if r.returncode == 0:
-        run("git commit -m '[lock] release'", cwd=PROJECT_ROOT)
+        run('git commit -m "lock: release"', cwd=PROJECT_ROOT)
         r2 = run("git push origin main", cwd=PROJECT_ROOT)
         if r2.returncode == 0:
             log("   [LOCK] released")
