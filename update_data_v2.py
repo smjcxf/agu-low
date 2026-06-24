@@ -353,54 +353,90 @@ def main():
     gold_pool   = load_json(os.path.join(DATA_DIR, "gold_pool.json"))
     stock_names = load_json(os.path.join(DATA_DIR, "stock_names.json"), [])
 
-    # 【EMA修复】从 watch_result 同步 latest 到 gold_pool（解决金股池卡片 EMA 0/7 问题）
-    if gold_pool and watch_data:
+    # 【EMA修复】从 scan_result + watch_result 同步 latest 到 gold_pool
+    # 根因：scanner.py full 模式只扫描信号子集（~237只），gold_pool 有 517 只
+    # 策略：优先从扫描数据匹配，无匹配则用 gold_pool 自身字段构建基础 latest
+    if gold_pool:
         _wp_stocks = gold_pool.get("stocks", {})
         _wp_updated = 0
-        # 构建 watch 代码索引
-        _watch_idx = {}
-        for _s in watch_data.get("double_signals", []) + watch_data.get("triple_signals", []):
-            _c = _s.get("code", "")
-            # 纯数字代码：去掉sh_/sz_/hk_前缀后存入索引
-            _clean = _c.split("_")[-1] if "_" in _c else _c
-            _watch_idx[_clean] = _s
-            _watch_idx[_c] = _s  # 原始格式也存一份
+        _wp_fallback = 0
+        
+        # 构建扫描代码索引（先 scan_result，后 watch_result）
+        _scan_idx = {}
+        for _src in [scan_data, watch_data]:
+            if not _src: continue
+            for _s in _src.get("double_signals", []) + _src.get("triple_signals", []):
+                _c = str(_s.get("code", ""))
+                _clean = _c.split("_")[-1] if "_" in _c else _c
+                _scan_idx[_clean] = _s
+                _scan_idx[_c] = _s
+        
         for _gp_code, _gp_data in _wp_stocks.items():
-            if "latest" in _gp_data and _gp_data["latest"].get("ema_up") is not None:
+            if "latest" in _gp_data and isinstance(_gp_data["latest"], dict) and _gp_data["latest"].get("ema_up") is not None:
                 continue
-            # 清理gold_pool的代码
             _norm = _gp_code.split("_")[-1] if "_" in _gp_code else _gp_code
-            _ws = _watch_idx.get(_norm) or _watch_idx.get(_gp_code)
-            if _ws and isinstance(_ws, dict) and _ws.get("ema_up") is not None:
+            
+            # 尝试从扫描数据匹配
+            _ms = _scan_idx.get(_norm) or _scan_idx.get(_gp_code)
+            if _ms and isinstance(_ms, dict):
                 _gp_data["latest"] = {
-                    "close": _ws.get("close", 0),
-                    "pct_chg": _ws.get("pct_chg", 0),
-                    "rsi_14": _ws.get("rsi_14", 50),
-                    "signal_score": _ws.get("signal_score", 0),
-                    "ema_up": _ws.get("ema_up"),
-                    "ema_dirs": _ws.get("ema_dirs"),
-                    "ema_score": _ws.get("ema_score"),
-                    "turnover_rate": _ws.get("turnover_rate", 0),
-                    "缠论买_日K": _ws.get("缠论买_日K"),
-                    "缠论买_次数": _ws.get("缠论买_次数"),
-                    "金钻_黄柱": _ws.get("金钻_黄柱"),
-                    "金钻_起涨": _ws.get("金钻_起涨"),
-                    "四量图_机构变红": _ws.get("四量图_机构变红"),
-                    "上涨趋势": _ws.get("上涨趋势"),
-                    "三线共振": _ws.get("三线共振"),
-                    "三足鼎立": _ws.get("三足鼎立"),
-                    "signal_count": _ws.get("signal_count"),
-                    "当日涨停": _ws.get("当日涨停"),
-                    "开盘_标签": _ws.get("开盘_标签"),
+                    "close": _ms.get("close", 0),
+                    "pct_chg": _ms.get("pct_chg", 0),
+                    "pct_chg_5d": _ms.get("pct_chg_5d", _ms.get("pct_chg", 0)),
+                    "pct_chg_20d": _ms.get("pct_chg_20d", _ms.get("pct_chg", 0)),
+                    "rsi_14": _ms.get("rsi_14", 50),
+                    "signal_score": _ms.get("signal_score", 0),
+                    "ema_up": _ms.get("ema_up", 0),
+                    "ema_dirs": _ms.get("ema_dirs", [False]*7),
+                    "ema_score": _ms.get("ema_score", 0),
+                    "turnover_rate": _ms.get("turnover_rate", 0),
+                    "缠论买_日K": _ms.get("缠论买_日K", False),
+                    "缠论买_次数": _ms.get("缠论买_次数", 0),
+                    "金钻_黄柱": _ms.get("金钻_黄柱", False),
+                    "金钻_起涨": _ms.get("金钻_起涨", False),
+                    "四量图_机构变红": _ms.get("四量图_机构变红", False),
+                    "上涨趋势": _ms.get("上涨趋势", False),
+                    "三线共振": _ms.get("三线共振", False),
+                    "三足鼎立": _ms.get("三足鼎立", False),
+                    "signal_count": _ms.get("signal_count", 0),
+                    "当日涨停": _ms.get("当日涨停", False),
+                    "开盘_标签": _ms.get("开盘_标签", ""),
                 }
                 _wp_updated += 1
-        if _wp_updated:
-            print(f"  ▸ GOLD_POOL: 从 watch_result 同步了 {_wp_updated} 只股票的 latest(含EMA)数据")
-        # 无论如何刷新update_time（原值可能很旧，上次同步已写入磁盘但未更新元数据）
+            else:
+                # 无扫描数据匹配：用 gold_pool 自身字段构建基础 latest（EMA=0, 信号用已有值）
+                _gp_data["latest"] = {
+                    "close": _gp_data.get("close", 0),
+                    "pct_chg": _gp_data.get("pct_chg", 0),
+                    "pct_chg_5d": _gp_data.get("pct_chg_5d", _gp_data.get("pct_chg", 0)),
+                    "pct_chg_20d": _gp_data.get("pct_chg_20d", _gp_data.get("pct_chg", 0)),
+                    "rsi_14": _gp_data.get("rsi_14", 50),
+                    "signal_score": _gp_data.get("signal_score", 0),
+                    "ema_up": 0,
+                    "ema_dirs": [False, False, False, False, False, False, False],
+                    "ema_score": 0,
+                    "turnover_rate": _gp_data.get("turnover_rate", 0),
+                    "缠论买_日K": _gp_data.get("缠论买_日K", False),
+                    "缠论买_次数": _gp_data.get("缠论买_次数", 0),
+                    "金钻_黄柱": _gp_data.get("金钻_黄柱", False),
+                    "金钻_起涨": _gp_data.get("金钻_起涨", False),
+                    "四量图_机构变红": _gp_data.get("四量图_机构变红", False),
+                    "上涨趋势": _gp_data.get("上涨趋势", False),
+                    "三线共振": _gp_data.get("三线共振", False),
+                    "三足鼎立": _gp_data.get("三足鼎立", False),
+                    "signal_count": _gp_data.get("signal_count", 0),
+                    "当日涨停": _gp_data.get("当日涨停", False),
+                    "开盘_标签": _gp_data.get("开盘_标签", ""),
+                }
+                _wp_fallback += 1
+        _total_synced = _wp_updated + _wp_fallback
+        if _total_synced > 0:
+            print(f"  ▸ GOLD_POOL: 从扫描数据同步 {_wp_updated} 只 + fallback {_wp_fallback} 只 = {_total_synced} 只补全latest")
+        # 总是写回（日期不同+确保最新EMA落盘）
         _old_ut = gold_pool.get("update_time", "")
         _new_ut = time.strftime("%Y-%m-%d %H:%M:%S")
         gold_pool["update_time"] = _new_ut
-        _need_save = _wp_updated > 0
+        _need_save = _total_synced > 0
         if _old_ut != _new_ut[:10]:  # 日期不同就需要写回
             _need_save = True
         if _need_save:
