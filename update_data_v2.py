@@ -396,6 +396,13 @@ def main():
                 _wp_updated += 1
         if _wp_updated:
             print(f"  ▸ GOLD_POOL: 从 watch_result 同步了 {_wp_updated} 只股票的 latest(含EMA)数据")
+            # 写回 gold_pool.json，确保下次扫描前持久化
+            try:
+                with open(os.path.join(DATA_DIR, "gold_pool.json"), "w", encoding="utf-8") as _f:
+                    json.dump(gold_pool, _f, ensure_ascii=False, indent=2)
+                print(f"  ▸ GOLD_POOL: 已写回磁盘 ({_wp_updated}只EMA已持久化)")
+            except Exception as _e:
+                print(f"  ⚠ GOLD_POOL 写回失败: {_e}")
 
     # 精监数据中的新增三线合并到 scan_data（全扫不计算新增，精监才计算）
     if watch_data.get("new_triple_count", 0) > 0:
