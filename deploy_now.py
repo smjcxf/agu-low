@@ -380,11 +380,10 @@ def main():
                             f.write(c)
         log(f"   Build stamp: {now_stamp}")
 
-        # 1.6. 注入真实密码（替换源码中的 __PWD__ / __GUEST_PWD__ / __FQZ_PWD__ 占位符）
+        # 1.6. 注入真实密码（替换源码中的 __PWD__ / __GUEST_PWD__ 占位符）
         # 优先从环境变量读取，否则使用默认值
         REAL_PWD = os.environ.get("QB_PWD", "cat999")
         REAL_GUEST_PWD = os.environ.get("QB_GUEST_PWD", "hjd666")
-        REAL_FQZ_PWD = os.environ.get("QB_FQZ_PWD", "fqz666")
         for fname in ["index.html", "index_master.html"]:
             fpath = os.path.join(DIST_DIR, fname)
             if os.path.exists(fpath):
@@ -399,14 +398,10 @@ def main():
                 if m > 0:
                     c = c.replace("__GUEST_PWD__", REAL_GUEST_PWD)
                     replaced = True
-                fqz = c.count("__FQZ_PWD__")
-                if fqz > 0:
-                    c = c.replace("__FQZ_PWD__", REAL_FQZ_PWD)
-                    replaced = True
                 if replaced:
                     with open(fpath, "w", encoding="utf-8") as f:
                         f.write(c)
-                    log(f"   ✓ 密码已注入 {fname} (admin:{n} 处, guest:{m} 处, fqz:{fqz} 处)")
+                    log(f"   ✓ 密码已注入 {fname} (admin:{n} 处, guest:{m} 处)")
 
         # 2. Copy dist/ to temp dir
         log("2. Copying dist/ ...")
