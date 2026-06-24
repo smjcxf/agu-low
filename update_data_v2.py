@@ -353,6 +353,50 @@ def main():
     gold_pool   = load_json(os.path.join(DATA_DIR, "gold_pool.json"))
     stock_names = load_json(os.path.join(DATA_DIR, "stock_names.json"), [])
 
+    # 【EMA修复】从 watch_result 同步 latest 到 gold_pool（解决金股池卡片 EMA 0/7 问题）
+    if gold_pool and watch_data:
+        _wp_stocks = gold_pool.get("stocks", {})
+        _wp_updated = 0
+        # 构建 watch 代码索引
+        _watch_idx = {}
+        for _s in watch_data.get("double_signals", []) + watch_data.get("triple_signals", []):
+            _c = _s.get("code", "")
+            # 纯数字代码：去掉sh_/sz_/hk_前缀后存入索引
+            _clean = _c.split("_")[-1] if "_" in _c else _c
+            _watch_idx[_clean] = _s
+            _watch_idx[_c] = _s  # 原始格式也存一份
+        for _gp_code, _gp_data in _wp_stocks.items():
+            if "latest" in _gp_data and _gp_data["latest"].get("ema_up") is not None:
+                continue
+            # 清理gold_pool的代码
+            _norm = _gp_code.split("_")[-1] if "_" in _gp_code else _gp_code
+            _ws = _watch_idx.get(_norm) or _watch_idx.get(_gp_code)
+            if _ws and isinstance(_ws, dict) and _ws.get("ema_up") is not None:
+                _gp_data["latest"] = {
+                    "close": _ws.get("close", 0),
+                    "pct_chg": _ws.get("pct_chg", 0),
+                    "rsi_14": _ws.get("rsi_14", 50),
+                    "signal_score": _ws.get("signal_score", 0),
+                    "ema_up": _ws.get("ema_up"),
+                    "ema_dirs": _ws.get("ema_dirs"),
+                    "ema_score": _ws.get("ema_score"),
+                    "turnover_rate": _ws.get("turnover_rate", 0),
+                    "缠论买_日K": _ws.get("缠论买_日K"),
+                    "缠论买_次数": _ws.get("缠论买_次数"),
+                    "金钻_黄柱": _ws.get("金钻_黄柱"),
+                    "金钻_起涨": _ws.get("金钻_起涨"),
+                    "四量图_机构变红": _ws.get("四量图_机构变红"),
+                    "上涨趋势": _ws.get("上涨趋势"),
+                    "三线共振": _ws.get("三线共振"),
+                    "三足鼎立": _ws.get("三足鼎立"),
+                    "signal_count": _ws.get("signal_count"),
+                    "当日涨停": _ws.get("当日涨停"),
+                    "开盘_标签": _ws.get("开盘_标签"),
+                }
+                _wp_updated += 1
+        if _wp_updated:
+            print(f"  ▸ GOLD_POOL: 从 watch_result 同步了 {_wp_updated} 只股票的 latest(含EMA)数据")
+
     # 精监数据中的新增三线合并到 scan_data（全扫不计算新增，精监才计算）
     if watch_data.get("new_triple_count", 0) > 0:
         scan_data["new_triple_count"] = watch_data["new_triple_count"]
