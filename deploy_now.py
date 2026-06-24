@@ -182,7 +182,17 @@ def _ensure_dist_fresh():
     
     第二次血的教训：手动 cp 到 dist 绕过了 freshness 检测，JS 语法错误没拦截。
     改为每次部署前强制 --fast 重建，确保数据注入 + JS 验证都过一遍。
+    
+    【双机冲突修复】部署前再做一次 git pull，防止坚果云在 batch 流程中覆盖模板。
     """
+    # 快速拉取最新模板（stash + pull + pop，保护本地未提交改动）
+    log("   🔄 同步远程最新模板...")
+    run("git stash", cwd=PROJECT_ROOT)
+    r = run("git pull --rebase origin main", cwd=PROJECT_ROOT)
+    if r.returncode != 0:
+        log(f"   ⚠️ git pull 失败: {r.stderr[:120] if r.stderr else 'unknown'}")
+    run("git stash pop", cwd=PROJECT_ROOT)
+
     log("   🔄 强制重建 dist（确保数据注入+JS验证）...")
     _rebuild_dist()
 
@@ -401,6 +411,18 @@ def _auto_push_source():
         log(f"      {f}")
     if len(dirty) > 5:
         log(f"      ... 共 {len(dirty)} 个")
+
+    # 【双机冲突修复】先拉取对端最新代码再推送，避免覆盖别人刚推的模板变更
+    log("   🔄 拉取远程最新代码...")
+    stash_done = run("git stash", cwd=git_root)
+    r_pull = run("git pull --rebase origin main", cwd=git_root)
+    if r_pull.returncode != 0:
+        log(f"   ⚠️ git pull 失败: {r_pull.stderr[:150] if r_pull.stderr else 'unknown'}")
+    else:
+        log("   ✓ 已同步远程最新代码")
+    # 恢复本地未提交改动
+    if stash_done.returncode == 0 and "No local changes" not in (stash_done.stdout + stash_done.stderr):
+        run("git stash pop", cwd=git_root)
 
     # 统一 git add（依赖 .gitignore 排除 data/ dist/）
     r = run("git add -A", cwd=git_root)
