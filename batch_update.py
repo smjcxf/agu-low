@@ -55,6 +55,8 @@ MODES = {
     "pre_market": {
         "desc": "盘前全量 (09:15)",
         "steps": [
+            ("fetch_worldcup.py --auto", 120),
+            ("fetch_overnight_brief.py", 120),
             ("guanlan_extractor.py", 300),
             ("fetch_mahoro_signals.py --non-interactive", 120),
             ("scanner.py full", 600),
@@ -67,6 +69,7 @@ MODES = {
     "morning_scan": {
         "desc": "盘中快速扫描 (09:45)",
         "steps": [
+            ("fetch_overnight_brief.py --news-only", 90),
             ("scanner.py", 300),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
@@ -76,6 +79,7 @@ MODES = {
     "morning_plus": {
         "desc": "盘中扫描+三卡刷新 (10:00/10:30)",
         "steps": [
+            ("fetch_overnight_brief.py --news-only", 90),
             ("fetch_sector_fund_flow.py", 120),
             ("fetch_etf_subscription.py", 120),
             ("fetch_market_alerts.py", 120),
@@ -89,6 +93,7 @@ MODES = {
     "morning_report": {
         "desc": "午间研报+扫描 (11:45)",
         "steps": [
+            ("fetch_overnight_brief.py --news-only", 90),
             ("guanlan_extractor.py", 300),
             ("fetch_mahoro_signals.py --non-interactive", 120),
             ("scanner.py", 300),
@@ -103,6 +108,7 @@ MODES = {
     "afternoon": {
         "desc": "午后扫描 (13:30/14:30/16:30)",
         "steps": [
+            ("fetch_overnight_brief.py --news-only", 90),
             ("scanner.py", 300),
             ("fetch_concept_ranking.py", 180),
             ("fetch_market_alerts.py", 180),
@@ -116,6 +122,8 @@ MODES = {
     "close": {
         "desc": "收盘后全量 (19:30)",
         "steps": [
+            ("fetch_worldcup.py --auto", 120),
+            ("fetch_overnight_brief.py", 120),
             ("guanlan_extractor.py", 300),
             ("fetch_mahoro_signals.py --non-interactive", 120),
             ("fetch_nt_data.py", 120),
