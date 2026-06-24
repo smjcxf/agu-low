@@ -157,6 +157,7 @@ MODES = {
             ("update_triple_resonance_daily.py", 120),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("check_syntax.py", 30),
             ("deploy_now.py", 180),
             ("push_notify.py", 120),
         ],
