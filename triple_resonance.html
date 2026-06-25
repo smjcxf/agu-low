@@ -500,9 +500,15 @@ function renderRank() {
         h += '<td style="color:' + maxColor + ';font-weight:700;padding:6px 8px;">' + maxStr + '</td>';
         // 当前累计（从触发价到现在）
         var nowGain = r.ret21;
-        var nowStr = nowGain !== null ? ((nowGain >= 0 ? '+' : '') + nowGain.toFixed(1) + '%') : '<span style="color:#999;">—</span>';
-        var nowColor = nowGain !== null ? (nowGain >= 0 ? '#ff9800' : '#2e7d32') : '#999';
-        h += '<td style="color:' + nowColor + ';font-weight:700;padding:6px 8px;">' + nowStr + '</td>';
+        // 如果最新价等于触发价且窗口内有涨幅，说明价格数据没更新
+        var priceStale = (Math.abs(r.latest - r.triggerPrice) < 0.001 && r.maxGainPct !== null && Math.abs(r.maxGainPct) > 0.5);
+        if (priceStale) {
+          h += '<td style="color:#999;font-size:11px;padding:6px 8px;">🔄待更新</td>';
+        } else {
+          var nowStr = nowGain !== null ? ((nowGain >= 0 ? '+' : '') + nowGain.toFixed(1) + '%') : '<span style="color:#999;">—</span>';
+          var nowColor = nowGain !== null ? (nowGain >= 0 ? '#ff9800' : '#2e7d32') : '#999';
+          h += '<td style="color:' + nowColor + ';font-weight:700;padding:6px 8px;">' + nowStr + '</td>';
+        }
       } else {
         h += '<td style="color:' + ret5Color + ';font-weight:600;padding:6px 8px;">' + ret5Str + '</td>';
         h += '<td style="padding:6px 8px;font-weight:600;">¥' + r.latest.toFixed(2) + '</td>';
