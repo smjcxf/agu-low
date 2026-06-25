@@ -180,25 +180,68 @@ def sync_remote_data():
 
 def _ensure_dist_fresh():
     """源码模板比 dist 新则自动重建，防止部署旧版 UI。
-    
+
     这是今晚血的教训：改了 index_master.html 但不跑 update_data_v2.py，
     deploy_now.py 推的是旧版 dist，所有 UI 改动白改。
-    
-    第二次血的教训：手动 cp 到 dist 绕过了 freshness 检测，JS 语法错误没拦截。
-    改为每次部署前强制 --fast 重建，确保数据注入 + JS 验证都过一遍。
-    
+
+    第二次血的教训：_rebuild_dist() 失败仍继续部署，导致旧版上线。
+    改为：重建失败 → 阻塞部署，打印详细错误。
+
     【双机冲突修复】部署前再做一次 git pull，防止坚果云在 batch 流程中覆盖模板。
+
+    【2026-06-25 修复】git stash 不 stash 未跟踪文件（-u 参数），
+    导致 git pull 因"unstaged changes"失败但静默继续。
+    改为 git stash push -u（含未跟踪文件），并严格检查 pull 返回值。
     """
-    # 快速拉取最新模板（stash + pull + pop，保护本地未提交改动）
+    # 1. stash 所有改动（含未跟踪文件）
     log("   🔄 同步远程最新模板...")
-    run("git stash", cwd=PROJECT_ROOT)
+    r = run("git stash -u -m 'deploy-stash'", cwd=PROJECT_ROOT)
+    stashed = (r.returncode == 0)
+    if stashed:
+        log("   ✓ 本地改动已 stash")
+    else:
+        log("   ℹ️ 无本地改动需 stash")
+
+    # 2. pull 最新模板（严格检查返回值）
     r = run("git pull --rebase origin main", cwd=PROJECT_ROOT)
     if r.returncode != 0:
-        log(f"   ⚠️ git pull 失败: {r.stderr[:120] if r.stderr else 'unknown'}")
-    run("git stash pop", cwd=PROJECT_ROOT)
+        err = r.stderr.strip()[:200] if r.stderr else r.stdout.strip()[:200]
+        log(f"   ❌ git pull 失败，阻塞部署: {err}")
+        # 恢复 stash
+        if stashed:
+            run("git stash pop", cwd=PROJECT_ROOT)
+        return False
 
+    # 3. 恢复本地未提交改动
+    if stashed:
+        r_pop = run("git stash pop", cwd=PROJECT_ROOT)
+        if r_pop.returncode != 0:
+            log(f"   ⚠️ git stash pop 失败（可能有冲突）: {r_pop.stderr.strip()[:150]}")
+            log("   ⚠️ 继续部署，但 dist 可能不是最新")
+
+    # 4. 强制重建 dist
     log("   🔄 强制重建 dist（确保数据注入+JS验证）...")
-    _rebuild_dist()
+    ok = _rebuild_dist()
+    if not ok:
+        log("   ❌ dist 重建失败，阻塞部署")
+        return False
+
+    # 5. 验证关键 JS 变量已注入
+    log("   🔍 验证 dist/index.html 数据注入...")
+    dist_html = os.path.join(DIST_DIR, "index.html")
+    if not os.path.exists(dist_html):
+        log("   ❌ dist/index.html 不存在，阻塞部署")
+        return False
+    with open(dist_html, "r", encoding="utf-8") as f:
+        content = f.read()
+    required_vars = ["LHB_DATA", "HERRING_DATA", "NORTH_FUND_DATA", "MAIN_STOCK_DATA"]
+    missing = [v for v in required_vars if f"window.{v}" not in content and f"var {v}" not in content]
+    if missing:
+        log(f"   ❌ 关键变量未注入，阻塞部署: {missing}")
+        return False
+    log(f"   ✓ 验证通过: {', '.join(required_vars)}")
+
+    return True
 
 
 def _rebuild_dist():
@@ -208,18 +251,26 @@ def _rebuild_dist():
         log("   ⚠️ update_data_v2.py 不存在，无法重建")
         return
 
-    python_exe = sys.executable
-    log(f"   执行: python update_data_v2.py --fast")
-    result = subprocess.run(
-        [python_exe, updater, "--fast"],
-        capture_output=True, text=True, timeout=300,
-        cwd=PROJECT_ROOT
-    )
-    if result.returncode == 0:
-        log("   ✓ dist 重建成功")
-    else:
-        log(f"   ⚠️ 重建失败: {result.stderr[:200] if result.stderr else 'unknown'}")
-        # 不阻断部署，dist 可能已足够
+        python_exe = sys.executable
+        log(f"   执行: python update_data_v2.py --fast")
+        result = subprocess.run(
+            [python_exe, updater, "--fast"],
+            capture_output=True, text=True, timeout=300,
+            cwd=PROJECT_ROOT
+        )
+        # 打印 update_data_v2.py 的最后几行输出（方便排查）
+        lines = [l for l in result.stdout.strip().split('\n') if l.strip()]
+        for line in lines[-8:]:
+            log(f"   {line}")
+        if result.returncode == 0:
+            log("   ✓ dist 重建成功")
+        else:
+            err = result.stderr.strip()[:300] if result.stderr else 'unknown'
+            log(f"   ❌ 重建失败，阻塞部署: {err}")
+            log(f"   stdout: {result.stdout.strip()[-200:] if result.stdout else '(空)'}")
+            # 阻断部署，返回非零
+            return False
+        return True
 
 
 def _acquire_deploy_lock():
@@ -332,7 +383,9 @@ def main():
             log("   WARN --force: skipping pre-deploy audit")
 
         # 0.5. 自动重建 dist（模板改了必须重生成，防止部署旧版）
-        _ensure_dist_fresh()
+        if not _ensure_dist_fresh():
+            log("\nERROR deploy aborted: dist 重建或验证失败")
+            return 1
 
         # Use temp dir for gh-pages
         tmpdir = tempfile.mkdtemp(prefix="gh-pages-deploy-")
@@ -512,14 +565,15 @@ def _auto_push_source():
 
     # 【双机冲突修复】先拉取对端最新代码再推送，避免覆盖别人刚推的模板变更
     log("   🔄 拉取远程最新代码...")
-    stash_done = run("git stash", cwd=git_root)
+    r_stash = run("git stash -u", cwd=git_root)
     r_pull = run("git pull --rebase origin main", cwd=git_root)
     if r_pull.returncode != 0:
-        log(f"   ⚠️ git pull 失败: {r_pull.stderr[:150] if r_pull.stderr else 'unknown'}")
+        err = r_pull.stderr.strip()[:150] if r_pull.stderr else r_pull.stdout.strip()[:150]
+        log(f"   ⚠️ git pull 失败: {err}")
     else:
         log("   ✓ 已同步远程最新代码")
     # 恢复本地未提交改动
-    if stash_done.returncode == 0 and "No local changes" not in (stash_done.stdout + stash_done.stderr):
+    if r_stash.returncode == 0 and "No local changes" not in (r_stash.stdout + r_stash.stderr):
         run("git stash pop", cwd=git_root)
 
     # 统一 git add（依赖 .gitignore 排除 data/ dist/）
