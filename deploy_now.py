@@ -252,28 +252,19 @@ def _rebuild_dist():
     updater = os.path.join(PROJECT_ROOT, "update_data_v2.py")
     if not os.path.exists(updater):
         log("   ⚠️ update_data_v2.py 不存在，无法重建")
-        return
+        return False
 
     python_exe = sys.executable
     log(f"   执行: python update_data_v2.py --fast")
-    log(f"   [debug] sys.executable = {python_exe}")
-    log(f"   [debug] updater = {updater}")
     result = subprocess.run(
         [python_exe, updater, "--fast"],
         capture_output=True, text=True, timeout=300,
         cwd=PROJECT_ROOT
     )
-    # 打印 update_data_v2.py 的全部输出（方便排查）
+    # 打印最后几行输出（方便确认数据注入成功）
     lines = [l for l in result.stdout.strip().split('\n') if l.strip()]
-    if lines:
-        log(f"   [debug] update_data_v2.py 输出 {len(lines)} 行:")
-        for line in lines:
-            log(f"      {line}")
-    else:
-        log("   [debug] update_data_v2.py 无 stdout 输出")
-    if result.stderr:
-        log(f"   [debug] stderr: {result.stderr.strip()[:300]}")
-    log(f"   [debug] returncode = {result.returncode}")
+    for line in lines[-6:]:
+        log(f"   {line}")
     if result.returncode == 0:
         log("   ✓ dist 重建成功")
     else:
