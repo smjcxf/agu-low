@@ -22,7 +22,47 @@
   update_schedule.json  → 手动创建 (不更新)
   guanlan_watchlist.json → guanlan_extractor.py (每日09:25/17:00)
 """
-import os, sys, json, time
+import os, sys, json, time, re
+
+# 拼音首字母（Python端预计算，替代JS端脆弱硬编码字典）
+try:
+    from pypinyin import pinyin, Style
+    def _py_abbr(name):
+        # 只保留中文字符做拼音转换，忽略英文数字空格等
+        clean = ''.join(c for c in name if '\u4e00' <= c <= '\u9fff' or '\u3400' <= c <= '\u4dbf')
+        if not clean:
+            return ''.join(c.lower() for c in name if c.isalnum())
+        return ''.join(p[0] for p in pinyin(clean, style=Style.FIRST_LETTER)).lower()
+except ImportError:
+    # 回退：简易部首映射（仅覆盖常见单字，兜底用）
+    _FALLBACK_MAP = {
+        '建':'j','滔':'t','集':'j','团':'t','层':'c','板':'b','积':'j',
+        '维':'w','信':'x','通':'t','讯':'x','惠':'h','科':'k','创':'c',
+        '医':'y','药':'y','疗':'l','器':'q','械':'x','光':'g','伏':'f',
+        '汽':'q','车':'c','零':'l','部':'b','件':'j','地':'d','产':'c',
+        '银':'y','行':'x','半':'b','导':'d','体':'t','电':'d','力':'l',
+        '军':'j','工':'g','家':'j','华':'h','为':'w','海':'h','博':'b',
+        '尔':'e','康':'k','港':'g','龙':'l','金':'j','属':'s','铝':'l',
+        '铜':'t','钢':'g','铁':'t','煤':'m','炭':'t','石':'s','油':'y',
+        '化':'h','材':'c','料':'l','新':'x','能':'n','源':'y','网':'w',
+        '络':'l','科':'k','技':'j','数':'s','字':'z','软':'r','件':'j',
+        '人':'r','智':'z','机':'j','器':'q','元':'y','宇':'y','宙':'z',
+        '区':'q','块':'k','链':'l','基':'j','础':'c','设':'s','施':'s',
+        '农':'n','牧':'m','渔':'y','食':'s','品':'p','饮':'y','料':'l',
+        '服':'f','装':'z','纺':'f','织':'z','家':'j','居':'j','建':'j',
+        '造':'z','环':'h','保':'b','水':'s','公':'g','交':'j','运':'y',
+        '航':'h','空':'k','港':'g','口':'k','铁':'t','路':'l','机':'j',
+        '器':'q','人':'r','微':'w','霄':'x','鼎':'d','盛':'s','锐':'r',
+    }
+    def _py_abbr(name):
+        abbr = ''
+        for c in name:
+            if re.match(r'[a-zA-Z0-9]', c):
+                abbr += c.lower()
+            elif c in _FALLBACK_MAP:
+                abbr += _FALLBACK_MAP[c]
+            # 空格/全角字符跳过
+        return abbr
 try:
     import requests
 except ImportError:
@@ -560,7 +600,7 @@ def main():
         except Exception as e:
             print(f"  ⚠️ 持久化 scan_result.json 失败: {e}")
 
-    stock_list = [{"code": s["code"], "name": s["name"]}
+    stock_list = [{"code": s["code"], "name": s["name"], "py": _py_abbr(s["name"])}
                   for s in stock_names if "code" in s and "name" in s]
     # 加载上证指数斐波那契数据
     sh_fib      = load_json(os.path.join(DATA_DIR, "sh_index_fib.json"))
