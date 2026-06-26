@@ -161,7 +161,7 @@ def fetch_from_neodata():
     # 修复：分两次查询（流入+流出），合并结果
     # ═══════════════════════════════════════════════════════
     def _parse_neodata_response(api_recall):
-        """解析 neodata 返回的板块资金流表格"""
+        """解析 neodata 返回的板块资金流表格（含5日/20日累计）"""
         results = []
         seen_local = set()
         for item in api_recall:
@@ -179,14 +179,20 @@ def fetch_from_neodata():
                 name = cols[5]
                 try:
                     net_wan = float(cols[12])
+                    net5_wan = float(cols[13]) if cols[13] else 0
+                    net20_wan = float(cols[14]) if cols[14] else 0
                 except (ValueError, TypeError):
                     continue
                 net_yi = round(net_wan / 10000, 2)
+                net5_yi = round(net5_wan / 10000, 2)
+                net20_yi = round(net20_wan / 10000, 2)
                 if name and net_yi != 0 and name not in seen_local:
                     seen_local.add(name)
                     results.append({
                         "name": name,
                         "net": net_yi,
+                        "net_5d": net5_yi,
+                        "net_20d": net20_yi,
                         "type": "行业" if "行业" in pt_type else "概念"
                     })
         return results
@@ -357,6 +363,19 @@ def fetch_sector_flow():
     top_list = list(seen.values())
     top_list.sort(key=lambda x: x["net"], reverse=True)
     result["top_list"] = top_list[:15]
+    
+    # 【2026-06-26新增】5日和20日趋势（用于资金流向追踪面板）
+    # 从top_list中提取有5日/20日数据的板块，分别按净流入降序
+    trend_5d = sorted(
+        [x for x in top_list if x.get("net_5d") != 0],
+        key=lambda x: x.get("net_5d", 0), reverse=True
+    )
+    trend_20d = sorted(
+        [x for x in top_list if x.get("net_20d") != 0],
+        key=lambda x: x.get("net_20d", 0), reverse=True
+    )
+    result["trend_5d"] = trend_5d[:12]
+    result["trend_20d"] = trend_20d[:12]
     
     # 加载历史数据
     history = load_history()
