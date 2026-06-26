@@ -104,6 +104,8 @@ def get_mock_data():
         top_list.append({
             "name": name,
             "net": net,
+            "net_5d": 0,   # mock数据无5日/20日
+            "net_20d": 0,
             "type": stype
         })
     
@@ -307,6 +309,8 @@ def fetch_sector_flow():
                         top_list.append({
                             "name": name,
                             "net": round(net, 2),
+                            "net_5d": 0,   # akshare不支持5日/20日，标注为0
+                            "net_20d": 0,
                             "type": "行业"
                         })
                 print(f"    ✅ 获取到 {len(top_list)} 个行业板块")
@@ -333,6 +337,8 @@ def fetch_sector_flow():
                             top_list.append({
                                 "name": name,
                                 "net": round(net, 2),
+                                "net_5d": 0,   # akshare不支持5日/20日，标注为0
+                                "net_20d": 0,
                                 "type": "概念"
                             })
                 print(f"    ✅ 获取到 {len(top_list)} 个板块（含概念）")
