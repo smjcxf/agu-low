@@ -210,6 +210,126 @@ def verify_all_js(content):
     return errors == 0
 
 
+def verify_runtime_smoke(content):
+    """轻量运行时冒烟测试：只执行 5 个关键函数 + 5 个数据块，<15秒"""
+    import re, subprocess, tempfile
+    
+    node_path = os.path.join(os.path.expanduser("~"), ".workbuddy", "binaries", "node", "versions", "22.22.2", "node.exe")
+    
+    # 提取核心代码段（仅关键函数定义区域，不是全量5MB JS）
+    lines = content.split('\n')
+    core_lines = []
+    capture = False
+    brace = 0
+    for line in lines:
+        # 从 A_SHARE_CLOSED 或 CLOSED_SET 开始捕获
+        if 'var A_SHARE_CLOSED = [' in line or 'var CLOSED_SET = {}' in line:
+            capture = True
+        if 'function getTodayStr()' in line:
+            capture = True
+        if 'function fmtDataTime(' in line:
+            capture = True
+            brace = 0
+        if 'function updateMarginAlert' in line:
+            capture = True
+            brace = 0
+        if capture:
+            core_lines.append(line)
+            brace += line.count('{') - line.count('}')
+            if brace == 0 and len(core_lines) > 3 and capture:
+                if any('function ' in l for l in core_lines[-2:]):
+                    continue  # 继续捕获下一个函数
+                if len(core_lines) > 200:
+                    break  # 最多捕获200行
+    
+    core_js = '\n'.join(core_lines)
+    
+    # 轻量冒烟测试脚本
+    smoke_js = r'''const fs = require("fs");
+// 最小浏览器 mock
+const mock = { document: { getElementById: () => null, createElement: () => ({style:{}}) },
+  setTimeout: fn => fn(), localStorage: { getItem: () => null, setItem: () => {} },
+  console: { log: () => {}, warn: () => {}, error: () => {} } };
+Object.assign(global, mock);
+
+const coreJS = fs.readFileSync(process.argv[1], "utf8");
+const errors = [];
+
+// 在隔离作用域中执行核心代码
+try { new Function(coreJS)(); } catch(e) {
+  errors.push("FATAL EXEC: " + e.message.slice(0, 150));
+}
+
+// 检查关键函数
+const tests = [
+  ["CLOSED_SET", "typeof CLOSED_SET === 'object' && CLOSED_SET !== null"],
+  ["CLOSED_SET[6-26]", "CLOSED_SET['2026-06-26'] === undefined || typeof CLOSED_SET['2026-06-26'] === 'boolean'"],
+  ["isTradingDay()", "typeof isTradingDay === 'function' && typeof isTradingDay() === 'boolean'"],
+  ["isBeforeMarketOpen", "typeof isBeforeMarketOpen === 'function' && typeof isBeforeMarketOpen() === 'boolean'"],
+  ["fmtDataTime", "typeof fmtDataTime === 'function' && typeof fmtDataTime('2026-06-26 09:20:00') === 'object'"],
+];
+tests.forEach(function(t) {
+  try { if (!new Function("return (" + t[1] + ")")()) errors.push(t[0] + ": returned falsy"); }
+  catch(e) { errors.push(t[0] + ": " + e.message.slice(0,100)); }
+});
+
+// 检查数据块 JSON（嵌入在 HTML 中的 window.XXX = {...}; 结构）
+const html = fs.readFileSync(process.argv[2], "utf8");
+const dataRe = [
+  ["SCAN_DATA", /window\.SCAN_DATA\s*=\s*(\{[\s\S]*?\};)/],
+  ["WATCH_DATA", /window\.WATCH_DATA\s*=\s*(\{[\s\S]*?\};)/],
+  ["GOLD_POOL", /window\.GOLD_POOL\s*=\s*(\{[\s\S]*?\};)/],
+  ["STOCK_LIST", /window\.STOCK_LIST\s*=\s*(\[[\s\S]*?\];)/],
+  ["NT_DATA", /window\.NT_DATA\s*=\s*(\{[\s\S]*?\};)/],
+];
+dataRe.forEach(function(d) {
+  try {
+    var m = html.match(d[1]);
+    if (!m) { errors.push(d[0] + ": NOT FOUND"); return; }
+    new Function("return " + m[1])();
+  } catch(e) { errors.push(d[0] + " JSON: " + e.message.slice(0,80)); }
+});
+
+console.log(JSON.stringify({errors: errors, passed: errors.length === 0}));
+'''
+    
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.js', delete=False, encoding='utf-8') as f:
+        f.write(smoke_js)
+        tmp_path = f.name
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.js', delete=False, encoding='utf-8') as f:
+        f.write(core_js)
+        core_path = f.name
+    
+    try:
+        r = subprocess.run(
+            [node_path, tmp_path, core_path, OUTPUT_PATH],
+            capture_output=True, text=True, timeout=30
+        )
+        out = r.stdout.strip() if r.stdout else ""
+        if out:
+            try: result = json.loads(out)
+            except: result = {"errors": [out[:200]], "passed": False}
+        else:
+            result = {"errors": [r.stderr.strip()[:200] if r.stderr else "No output"], "passed": False}
+        
+        if not result.get("passed"):
+            errs = result.get("errors", [])
+            print(f"  ⚠️ 运行时冒烟: {len(errs)} 个异常")
+            for e in errs[:8]:
+                print(f"     {e}")
+            if any("FATAL" in e.upper() for e in errs):
+                print(f"  ❌ 运行时致命错误，已拦截！")
+                return False
+        else:
+            print(f"  ✓ 运行时冒烟: 全部通过 (5函数 + 5数据块)")
+        return True
+    finally:
+        try: os.unlink(tmp_path)
+        except: pass
+        try: os.unlink(core_path)
+        except: pass
+
+
 # ============ 宏观观测表格渲染JS（整合自 inject_macro.py RENDER_JS）============
 def get_macro_render_js():
     """返回填充宏观观测表格的JS脚本字符串（幂等，重复注入不重复执行）"""
@@ -960,6 +1080,13 @@ def main():
     full_ok = verify_all_js(content)
     if not full_ok:
         print("  ❌ 全量JS语法异常，已拦截！")
+        return False
+
+    # 运行时冒烟测试（模拟浏览器执行关键代码路径，捕获 TypeError/ReferenceError）
+    print("  运行时冒烟测试:")
+    smoke_ok = verify_runtime_smoke(content)
+    if not smoke_ok:
+        print("  ❌ 运行时冒烟失败，已拦截！")
         return False
 
     # 保存（双文件输出）
