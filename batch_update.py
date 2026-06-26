@@ -92,6 +92,7 @@ MODES = {
             ("fetch_etf_subscription.py", 120),
             ("fetch_market_alerts.py", 120),
             ("fetch_concept_ranking.py", 120),
+            ("fetch_sector_rs.py", 90),
             ("scanner.py", 300),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
