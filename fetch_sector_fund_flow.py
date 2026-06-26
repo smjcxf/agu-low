@@ -424,6 +424,13 @@ def fetch_sector_flow():
     for item in result["top_list"]:
         name = item["name"]
         hist = history.get(name, [])
+        # 5日/20日/60日累计（从历史数据累加）
+        net_5d_val = round(sum(h["net"] for h in hist[-5:]), 2) if len(hist) >= 3 else 0
+        net_20d_val = round(sum(h["net"] for h in hist[-20:]), 2) if len(hist) >= 5 else 0
+        if net_5d_val != 0:
+            item["net_5d"] = net_5d_val
+        if net_20d_val != 0:
+            item["net_20d"] = net_20d_val
         if len(hist) >= 30:
             item["net_60d"] = round(sum(h["net"] for h in hist[-60:]), 2)
         else:

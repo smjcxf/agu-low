@@ -24,6 +24,10 @@ import os
 
 WORKSPACE = os.path.dirname(os.path.abspath(__file__))
 
+# 停更数据源：每周只运行一次，节省资源
+WEEKLY_ONLY_COMMANDS = {"fetch_main_stock.py", "fetch_north_fund.py"}
+WEEKLY_RUN_WEEKDAY = 0  # 周一（0=Mon, 6=Sun）
+
 # 查找系统 Python 3.14（避免 managed Python 的 py_mini_racer 崩溃）
 def _find_system_python():
     # 尝试 py launcher
@@ -425,8 +429,19 @@ def main():
 
     # ── Phase 1: 首轮执行 ──
     start_idx = resume_from
+    import datetime as _dt
+    _today_wd = _dt.date.today().weekday()
     for i in range(start_idx, len(cfg["steps"])):
         cmd, tmo = cfg["steps"][i]
+        cmd_name = cmd.split()[0]
+
+        # 停更数据源：仅每周指定日运行
+        if cmd_name in WEEKLY_ONLY_COMMANDS and _today_wd != WEEKLY_RUN_WEEKDAY:
+            print(f"  [{i + 1}/{len(cfg['steps'])}] {cmd:<35s} ⏭ 停更源(仅周{WEEKLY_RUN_WEEKDAY+1})")
+            results[i] = (cmd, True, 0, "SKIPPED_WEEKLY")
+            _write_heartbeat(i + 1, len(cfg["steps"]), start_ts)
+            continue
+
         label = f"[{i + 1}/{len(cfg['steps'])}]"
         print(f"  {label} {cmd:<35s} ", end="", flush=True)
         ok, elapsed, detail = run_step(cmd, tmo)
