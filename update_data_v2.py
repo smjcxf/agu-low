@@ -746,6 +746,9 @@ def main():
     inst_trade = load_json(os.path.join(DATA_DIR, "inst_trade.json"), {})
     overnight_brief = load_json(os.path.join(DATA_DIR, "overnight_timeline.json"), [])
     worldcup = load_json(os.path.join(DATA_DIR, "worldcup.json"), {})
+    w52_high = load_json(os.path.join(DATA_DIR, "52w_high.json"), {"update_time": "", "total": 0, "top_sectors": [], "top_gainers": [], "stocks": []})
+    analyst_ratings = load_json(os.path.join(DATA_DIR, "analyst_ratings.json"), {"update_time": "", "upgrades": [], "hot_stocks": []})
+    policy_density = load_json(os.path.join(DATA_DIR, "policy_density.json"), {"update_time": "", "density": 0, "level": "低", "signals": []})
     # 计算龙虎榜连续买入天数（依赖 lhb_history.json）
     try:
         subprocess.run([sys.executable, os.path.join(BASE_DIR, "compute_lhb_consecutive.py")],
@@ -893,11 +896,14 @@ def main():
         ("INST_TRADE",     "window.INST_TRADE = ",     "{", "}"),
         ("OVERNIGHT_BRIEF","window.OVERNIGHT_TIMELINE = ","[", "]"),
         ("WORLD_CUP",     "window.WORLD_CUP = ",      "{", "}"),
+        ("W52_HIGH",      "window.W52_HIGH = ",       "{", "}"),
+        ("ANALYST_RATINGS", "window.ANALYST_RATINGS = ", "{", "}"),
+        ("POLICY_DENSITY", "window.POLICY_DENSITY = ",  "{", "}"),
     ]
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
                  concept_ranking, market_alerts, margin_data, etf_subscription, macro_data,                  herding_data,
-                 sector_rs, ipo_score, lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, stock_deviation, fomc_summary, cffex_holdings, inst_trade, overnight_brief, worldcup]
+                 sector_rs, ipo_score, lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, stock_deviation, fomc_summary, cffex_holdings, inst_trade, overnight_brief, worldcup, w52_high, analyst_ratings, policy_density]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):
