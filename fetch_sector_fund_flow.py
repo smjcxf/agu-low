@@ -414,6 +414,20 @@ def fetch_sector_flow():
         item["trend"] = trend
         result["consecutive"][name] = {"days": days, "trend": trend}
     
+    # 【2026-06-26新增】60日累计净流入（从history累加，至少30天数据才有效）
+    for item in result["top_list"]:
+        name = item["name"]
+        hist = history.get(name, [])
+        if len(hist) >= 30:
+            item["net_60d"] = round(sum(h["net"] for h in hist[-60:]), 2)
+        else:
+            item["net_60d"] = None  # 数据不足，前端显示"积累中"
+    trend_60d = sorted(
+        [x for x in result["top_list"] if x.get("net_60d") is not None and x["net_60d"] != 0],
+        key=lambda x: x.get("net_60d", 0), reverse=True
+    )
+    result["trend_60d"] = trend_60d[:12]
+    
     # 保存历史
     save_history(history)
     
