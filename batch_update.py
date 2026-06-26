@@ -69,6 +69,7 @@ MODES = {
             ("generate_recommend.py", 120),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查（防旧版覆盖）
             ("deploy_now.py --force", 180),
         ],
     },
@@ -79,6 +80,7 @@ MODES = {
             ("scanner.py", 300),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查
             ("deploy_now.py --force", 180),
         ],
     },
@@ -93,6 +95,7 @@ MODES = {
             ("scanner.py", 300),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查
             ("deploy_now.py --force", 180),
         ],
     },
@@ -108,6 +111,7 @@ MODES = {
             ("fetch_sector_fund_flow.py", 180),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查
             ("deploy_now.py --force", 180),
         ],
     },
@@ -121,6 +125,7 @@ MODES = {
             ("fetch_sector_fund_flow.py", 180),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查
             ("deploy_now.py --force", 180),
         ],
     },
@@ -136,6 +141,7 @@ MODES = {
             ("fetch_up_down_stats.py", 120),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查
             ("deploy_now.py --force", 180),
         ],
     },
@@ -173,6 +179,7 @@ MODES = {
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
             ("check_syntax.py", 30),
+            ("sync_check.py", 30),      # 坚果云同步检查（收盘关键部署）
             ("deploy_now.py", 180),
             ("push_notify.py", 120),
         ],
@@ -230,6 +237,10 @@ def _sync_dual_machine_code(workspace):
       - 代码（py/html/js/css）走 Git 同步
       - 数据（data/*.json）走坚果云实时同步，不进 Git
       - 只需 git pull 拉取代码变更，不再 commit/push 数据
+    
+    v3（2026-06-26 坚果云防旧版）：
+      - 同步后检查关键代码版本标记，防止坚果云延迟导致部署旧版
+      - 自动清理坚果云冲突文件
     """
     print("  [0/1] 🔄 双机代码同步（仅拉代码，数据走坚果云）...", end="", flush=True)
     start = time.time()
@@ -254,6 +265,59 @@ def _sync_dual_machine_code(workspace):
         "git stash pop", shell=True, cwd=workspace,
         capture_output=True, timeout=30
     )
+
+    # ── v3: 关键代码版本检查 + 坚果云冲突清理 ──
+    _check_code_version(workspace)
+
+
+def _check_code_version(workspace):
+    """检查关键文件是否包含最新版本的代码标记。
+    如果没有，说明坚果云可能还没同步完成，当前用的可能是旧版代码。
+    """
+    # 关键代码标记（不匹配 = 旧版）
+    import glob as _glob
+    
+    SAFETY_MARKERS = {
+        "index_master.html": [
+            ("typeof CLOSED_SET !== 'undefined'", "CLOSED_SET防御检查"),
+        ],
+        "fetch_sector_fund_flow.py": [
+            ("neodata流入+流出完整", "neodata双查询修复"),
+        ],
+    }
+    
+    issues = []
+    for fname, markers in SAFETY_MARKERS.items():
+        fpath = os.path.join(workspace, fname)
+        if not os.path.exists(fpath):
+            continue
+        try:
+            with open(fpath, "r", encoding="utf-8") as f:
+                content = f.read()
+            for marker, desc in markers:
+                if marker not in content:
+                    issues.append(f"{fname} 缺少 {desc}")
+        except Exception:
+            pass
+    
+    if issues:
+        print(f"\n  ⚠️ 坚果云版本检查异常（可能是同步延迟导致使用旧版代码）:")
+        for issue in issues:
+            print(f"     ❌ {issue}")
+        print(f"     风险：部署旧版代码可能导致网站崩溃或数据异常")
+        print(f"     建议：检查坚果云是否正在同步，等待完成后再部署")
+    
+    # 清理坚果云冲突文件
+    for pattern in [
+        os.path.join(workspace, "**", "*冲突*"),
+        os.path.join(workspace, "**", "*conflict*"),
+    ]:
+        for f in _glob.glob(pattern, recursive=True):
+            try:
+                os.remove(f)
+                print(f"  🧹 清理坚果云冲突文件: {os.path.relpath(f, workspace)}")
+            except Exception:
+                pass
 
 
 def print_header(title):

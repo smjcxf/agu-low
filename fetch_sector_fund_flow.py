@@ -155,75 +155,100 @@ def fetch_from_neodata():
         print("  ℹ️ neodata token 不可用或已过期")
         return []
     
-    print("  🔍 调用 neodata 接口获取板块资金流...")
-    
-    try:
-        resp = req.post(
-            "https://copilot.tencent.com/agenttool/v1/neodata",
-            json={
-                "query": "今日A股行业板块和概念板块主力资金净流入TOP10，按净流入降序",
-                "channel": "neodata",
-                "sub_channel": "workbuddy"
-            },
-            headers={
-                "Authorization": f"Bearer {token}",
-                "Content-Type": "application/json"
-            },
-            timeout=30
-        )
-        if resp.status_code != 200:
-            print(f"  ❌ neodata HTTP {resp.status_code}")
-            return []
-        
-        data = resp.json()
-        if not data.get("suc"):
-            print(f"  ❌ neodata 返回失败: {data.get('msg','')}")
-            return []
-        
-        # 解析表格数据
-        api_recall = data.get("data", {}).get("apiData", {}).get("apiRecall", [])
-        top_list = []
-        seen = set()
-        
+    # ═══════════════════════════════════════════════════════
+    # 【2026-06-26 修复】neodata 需要同时查询流入+流出
+    # 旧版只查"净流入TOP10"，导致流出板块数据缺失
+    # 修复：分两次查询（流入+流出），合并结果
+    # ═══════════════════════════════════════════════════════
+    def _parse_neodata_response(api_recall):
+        """解析 neodata 返回的板块资金流表格"""
+        results = []
+        seen_local = set()
         for item in api_recall:
             if item.get("type") != "板块当日资金主力统计":
                 continue
             content = item.get("content", "")
             for line in content.strip().split("\n"):
                 cols = [c.strip() for c in line.split("|")]
-                # 跳过表头行、分隔行、空行（至少15列数据行：1+主力类型|排序|天数|代码|名称|涨幅|成交额|换手率|涨股比|流入|流出|净流入|5日|20日|领涨股）
                 if len(cols) < 15:
                     continue
                 hdr_keywords = ["近N天数据", "板块名称", "板块代码", ":---:"]
                 if any(k in cols[2] for k in hdr_keywords):
                     continue
-                
-                pt_type = cols[1]  # 概念主力/行业主力
-                name = cols[5]      # 板块名称
+                pt_type = cols[1]
+                name = cols[5]
                 try:
-                    net_wan = float(cols[12])  # 主力净流入（万元）
+                    net_wan = float(cols[12])
                 except (ValueError, TypeError):
-                    continue  # 非数字行跳过
-                net_yi = round(net_wan / 10000, 2)  # 万元→亿元
-                
-                if name and net_yi != 0 and name not in seen:
-                    seen.add(name)
-                    sector_type = "行业" if "行业" in pt_type else "概念"
-                    top_list.append({
+                    continue
+                net_yi = round(net_wan / 10000, 2)
+                if name and net_yi != 0 and name not in seen_local:
+                    seen_local.add(name)
+                    results.append({
                         "name": name,
                         "net": net_yi,
-                        "type": sector_type
+                        "type": "行业" if "行业" in pt_type else "概念"
                     })
-        
-        if top_list:
-            top_list.sort(key=lambda x: x["net"], reverse=True)
-            return top_list
-        else:
-            print("  ⚠️ neodata 未返回有效板块数据")
+        return results
+
+    def _call_neodata(query_desc, query_text):
+        """调用 neodata API，返回板块列表"""
+        try:
+            resp = req.post(
+                "https://copilot.tencent.com/agenttool/v1/neodata",
+                json={
+                    "query": query_text,
+                    "channel": "neodata",
+                    "sub_channel": "workbuddy"
+                },
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Content-Type": "application/json"
+                },
+                timeout=30
+            )
+            if resp.status_code != 200:
+                print(f"    ❌ {query_desc} HTTP {resp.status_code}")
+                return []
+            data = resp.json()
+            if not data.get("suc"):
+                print(f"    ❌ {query_desc} 返回失败: {data.get('msg','')[:80]}")
+                return []
+            api_recall = data.get("data", {}).get("apiData", {}).get("apiRecall", [])
+            result = _parse_neodata_response(api_recall)
+            print(f"    ✓ {query_desc}: {len(result)}只板块")
+            return result
+        except Exception as e:
+            print(f"    ❌ {query_desc}: {e}")
             return []
-            
-    except Exception as e:
-        print(f"  ❌ neodata 调用失败: {e}")
+
+    # 两次查询：流入+流出
+    print("  🔍 调用 neodata 接口获取板块资金流（流入+流出）...")
+    inflow_list = _call_neodata(
+        "流入TOP10",
+        "今日A股行业板块和概念板块主力资金净流入TOP10，按净流入降序"
+    )
+    outflow_list = _call_neodata(
+        "流出TOP10",
+        "今日A股行业板块和概念板块主力资金净流出TOP10，按净流出降序"
+    )
+    
+    # 合并结果（以名称去重，优先保留首次出现的值）
+    seen = set()
+    top_list = []
+    for item in inflow_list + outflow_list:
+        if item["name"] not in seen:
+            seen.add(item["name"])
+            top_list.append(item)
+    
+    if top_list:
+        top_list.sort(key=lambda x: x["net"], reverse=True)
+        in_cnt = sum(1 for x in top_list if x["net"] > 0)
+        out_cnt = sum(1 for x in top_list if x["net"] < 0)
+        print(f"  ✅ neodata 汇总: {len(top_list)}只板块（流入{in_cnt} 流出{out_cnt}）")
+        return top_list
+    else:
+        print("  ⚠️ neodata 未返回有效板块数据")
         return []
 
 
@@ -304,8 +329,19 @@ def fetch_sector_flow():
         print("⚠️ akshare数据获取失败，尝试 neodata 备选...")
         top_list = fetch_from_neodata()
         if top_list:
-            print(f"✅ neodata 获取到 {len(top_list)} 个板块")
+            in_cnt = sum(1 for x in top_list if x["net"] > 0)
+            out_cnt = sum(1 for x in top_list if x["net"] < 0)
+            print(f"✅ neodata 获取到 {len(top_list)} 个板块（流入{in_cnt} 流出{out_cnt}）")
             result["data_type"] = "neodata"
+            # 【2026-06-26 认证】数据完整性检查：须同时有流入和流出
+            if out_cnt == 0 and len(top_list) > 3:
+                print(f"  ⚠️ neodata 仅返回流入板块（缺少流出数据），净流入数字可能虚高！")
+                result["data_note"] = "neodata仅返回流入"
+            elif in_cnt == 0:
+                print(f"  ⚠️ neodata 仅返回流出板块（缺少流入数据），净流出数字可能虚高！")
+                result["data_note"] = "neodata仅返回流出"
+            else:
+                result["data_note"] = "neodata流入+流出完整"
         else:
             print("⚠️ neodata 也失败，使用模拟数据（标注为模拟）")
             top_list = get_mock_data()

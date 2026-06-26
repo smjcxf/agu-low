@@ -33,6 +33,9 @@ pwd.yaml
 backups/2026-06-18/
 *.bak
 *.bak.*
+# 坚果云冲突文件（双机同步产生，不应进入版本控制）
+*-冲突-*
+*-conflict-*
 dist/data/.enhance_log.txt
 dist/data/zsxq_selenium_snapshot.txt
 !enhanced_backup.py
