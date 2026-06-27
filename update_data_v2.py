@@ -1041,6 +1041,30 @@ def main():
         except Exception as e:
             print(f"  ⚠️ triple_resonance 注入失败: {e}")
 
+    # 注入多维共振历史数据到 multi_resonance.html
+    multi_resonance_html_path = os.path.join(BASE_DIR, "multi_resonance.html")
+    multi_resonance_out_path = os.path.join(DIST_DIR, "multi_resonance.html")
+    multi_resonance_json_path = os.path.join(DATA_DIR, "multi_resonance_history.json")
+    if os.path.exists(multi_resonance_html_path) and os.path.exists(multi_resonance_json_path):
+        try:
+            with open(multi_resonance_json_path, "r", encoding="utf-8") as f:
+                mrh_data = json.load(f)
+            with open(multi_resonance_html_path, "r", encoding="utf-8") as f:
+                mrh = f.read()
+            embedded = json.dumps(mrh_data, ensure_ascii=False)
+            if 'MULTI_RESONANCE_HISTORY' in mrh:
+                mrh = _re.sub(
+                    r'<script>\s*\n\s*var MULTI_RESONANCE_HISTORY\s*=.*?\n\s*</script>',
+                    '', mrh, flags=_re.DOTALL
+                )
+            mrh = mrh.replace('</head>',
+                f'<script>\nvar MULTI_RESONANCE_HISTORY = {embedded};\n</script>\n</head>')
+            with open(multi_resonance_out_path, "w", encoding="utf-8") as f:
+                f.write(mrh)
+            print(f"  ✓ multi_resonance.html 已嵌入历史数据")
+        except Exception as e:
+            print(f"  ⚠️ multi_resonance 注入失败: {e}")
+
     # 保存（双文件输出：index.html + index_master.html）
     with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
         f.write(content)

@@ -186,6 +186,7 @@ MODES = {
             ("fetch_52w_high.py", 120),
             ("fetch_analyst_ratings.py", 60),
             ("update_triple_resonance_daily.py", 120),
+            ("update_multi_resonance_daily.py", 60),
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
             ("check_syntax.py", 30),
