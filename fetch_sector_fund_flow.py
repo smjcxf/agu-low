@@ -379,19 +379,6 @@ def fetch_sector_flow():
     top_list.sort(key=lambda x: x["net"], reverse=True)
     result["top_list"] = top_list[:40]  # 扩大取数，覆盖当日+20日趋势板块
     
-    # 【2026-06-26新增】5日和20日趋势（用于资金流向追踪面板）
-    # 从top_list中提取有5日/20日数据的板块，分别按净流入降序
-    trend_5d = sorted(
-        [x for x in top_list if x.get("net_5d") != 0],
-        key=lambda x: x.get("net_5d", 0), reverse=True
-    )
-    trend_20d = sorted(
-        [x for x in top_list if x.get("net_20d") != 0],
-        key=lambda x: x.get("net_20d", 0), reverse=True
-    )
-    result["trend_5d"] = trend_5d[:12]
-    result["trend_20d"] = trend_20d[:12]
-    
     # 加载历史数据
     history = load_history()
     
@@ -435,6 +422,20 @@ def fetch_sector_flow():
             item["net_60d"] = round(sum(h["net"] for h in hist[-60:]), 2)
         else:
             item["net_60d"] = None  # 数据不足，前端显示"积累中"
+    
+    # 【2026-06-26新增】5日和20日趋势（用于资金流向追踪面板）
+    # 必须在 net_5d/net_20d 从历史数据注入之后再排序！
+    trend_5d = sorted(
+        [x for x in result["top_list"] if x.get("net_5d") is not None and x["net_5d"] != 0],
+        key=lambda x: x.get("net_5d", 0), reverse=True
+    )
+    trend_20d = sorted(
+        [x for x in result["top_list"] if x.get("net_20d") is not None and x["net_20d"] != 0],
+        key=lambda x: x.get("net_20d", 0), reverse=True
+    )
+    result["trend_5d"] = trend_5d[:12]
+    result["trend_20d"] = trend_20d[:12]
+    
     trend_60d = sorted(
         [x for x in result["top_list"] if x.get("net_60d") is not None and x["net_60d"] != 0],
         key=lambda x: x.get("net_60d", 0), reverse=True
