@@ -243,6 +243,31 @@ def main():
             analyst_detail_name = name  # just use name
             inst_detail.append("分析师转向")
 
+        # ── 止损位 / 目标价 ──
+        close_price = latest.get("close") or s.get("close") or 0
+        # 近5日最低/最高收盘价（用于辅助计算）
+        recent_closes = []
+        sorted_hist_all = sorted(hist, key=lambda h: h.get("date", ""), reverse=False)
+        for h in sorted_hist_all:
+            hc = h.get("close", 0)
+            if hc and hc > 0:
+                recent_closes.append(hc)
+        recent5 = recent_closes[-5:] if len(recent_closes) >= 5 else recent_closes
+        recent20 = recent_closes[-20:] if len(recent_closes) >= 20 else recent_closes
+
+        if close_price and close_price > 0:
+            # 止损 = 收盘价×0.93 与 近5日最低价 取更紧者
+            pct_stop = round(close_price * 0.93, 2)
+            low5 = round(min(recent5), 2) if recent5 else pct_stop
+            stop_loss = min(pct_stop, low5)
+            # 目标 = 收盘价×1.12 与 近20日最高价 取更高者
+            pct_target = round(close_price * 1.12, 2)
+            high20 = round(max(recent20), 2) if recent20 else pct_target
+            target_price = max(pct_target, high20)
+        else:
+            stop_loss = 0
+            target_price = 0
+
         # ── 总分 ──
         total = base + enhance + fund + sector_score + inst
 
@@ -257,6 +282,9 @@ def main():
             "pct_chg": latest.get("pct_chg") or s.get("pct_chg") or 0,
             "pct_chg_20d": pct20 or 0,
             "total_score": total,
+            "sectors": stock_sectors[:8] if isinstance(stock_sectors, list) else [],
+            "stop_loss": stop_loss,
+            "target_price": target_price,
             "breakdown": {
                 "base": base,
                 "enhance": enhance,
@@ -297,6 +325,9 @@ def main():
             "pct_chg": s["pct_chg"],
             "pct_chg_20d": s["pct_chg_20d"],
             "total_score": s["total_score"],
+            "sectors": s["sectors"],
+            "stop_loss": s["stop_loss"],
+            "target_price": s["target_price"],
             "score_base": bd["base"],
             "score_enhance": bd["enhance"],
             "score_fund": bd["fund"],
