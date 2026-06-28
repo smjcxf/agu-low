@@ -51,47 +51,88 @@ def main():
     result = {"update_time": now_str, "density": 0, "level": "低", "signals": [],
               "summary": "", "note": "数据源: akshare(财联社电报) + 关键词匹配"}
 
+    success = False
+    
+    # ── 主数据源：akshare 同花顺全球财经（更稳定）──
     try:
         import akshare as ak
-        df = ak.stock_info_global_cls()
-        if df is None or df.empty:
-            result["note"] = "akshare返回空数据"
-            log("  ⚠️ 财联社电报返回空")
-        else:
-            # 取最近50条电报
+        df = ak.stock_info_global_ths()
+        if df is not None and not df.empty:
             recent = df.head(50)
-            text_all = " ".join(recent["content"].fillna("").astype(str))
-            
-            # 计算密度
+            text_all = " ".join(recent.astype(str).apply(lambda x: " ".join(x.values.astype(str)), axis=1))
             density_info = calc_density(text_all)
             result.update(density_info)
-            
-            # 提取信号
-            signals = []
-            for _, row in recent.head(20).iterrows():
-                content = str(row.get("content", "")).strip()
-                if content and len(content) > 5:
-                    # 过滤出含政策关键词的
-                    has_policy = False
-                    for kw in POLICY_KEYWORDS:
-                        if kw in content:
-                            has_policy = True
-                            break
-                    if has_policy:
-                        signals.append({"event": content[:200]})
-            
-            result["signals"] = signals[:20]
             result["summary"] = text_all[:2000]
-            log(f"  ✓ 密度={result['density']} 级别={result['level']} 信号{len(signals)}条")
-
+            result["note"] = "数据源: akshare(同花顺全球财经)"
+            log(f"  ✓ 密度={result['density']} 级别={result['level']}")
+            success = True
+        else:
+            log("  ⚠️ 同花顺返回空，尝试备用接口...")
     except Exception as e:
-        result["note"] = f"akshare查询失败: {e}"
-        log(f"  ❌ {e}")
+        log(f"  ⚠️ 同花顺接口失败: {e}")
 
+    # ── 备用数据源：akshare 财联社电报 ──
+    if not success:
+        try:
+            import akshare as ak
+            df = ak.stock_info_global_cls()
+            if df is None or df.empty:
+                log("  ⚠️ 财联社电报返回空")
+            else:
+                recent = df.head(50)
+                text_all = " ".join(recent["content"].fillna("").astype(str))
+                density_info = calc_density(text_all)
+                result.update(density_info)
+
+                signals = []
+                for _, row in recent.head(20).iterrows():
+                    content = str(row.get("content", "")).strip()
+                    if content and len(content) > 5:
+                        has_policy = any(kw in content for kw in POLICY_KEYWORDS)
+                        if has_policy:
+                            signals.append({"event": content[:200]})
+                result["signals"] = signals[:20]
+                result["summary"] = text_all[:2000]
+                result["note"] = "数据源: akshare(财联社电报·备用)"
+                log(f"  ✓ 备用接口成功 密度={result['density']} 级别={result['level']} 信号{len(signals)}条")
+                success = True
+        except Exception as e:
+            log(f"  ❌ 备用接口失败: {e}")
+
+    # ── 最终兜底：缓存昨日数据 ──
+    if not success:
+        cache_path = OUT.replace(".json", "_cache.json")
+        if os.path.exists(cache_path):
+            try:
+                with open(cache_path, 'r', encoding='utf-8') as f:
+                    cached = json.load(f)
+                if cached.get("density", 0) > 0:
+                    result["density"] = cached.get("density", 0)
+                    result["level"] = cached.get("level", "低")
+                    result["signals"] = cached.get("signals", [])
+                    result["summary"] = cached.get("summary", "")
+                    result["note"] = "数据源: 缓存(昨日·接口均失败)"
+                    log(f"  📦 已加载缓存 密度={result['density']}")
+                    success = True
+                else:
+                    log("  ⚠️ 缓存数据也为空")
+            except Exception as e:
+                log(f"  ⚠️ 缓存加载失败: {e}")
+
+        if not success:
+            result["note"] = "akshare财联社+同花顺均失败，缓存为空"
+
+    # ── 写入正式输出 ──
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     log(f"✅ 已保存: {OUT} (密度{result.get('density',0)}, 级别{result.get('level','低')})")
+
+    # ── 更新缓存 ──
+    if success and result.get("density", 0) > 0:
+        cache_path = OUT.replace(".json", "_cache.json")
+        with open(cache_path, 'w', encoding='utf-8') as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
     main()

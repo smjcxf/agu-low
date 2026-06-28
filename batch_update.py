@@ -185,7 +185,7 @@ MODES = {
             ("fetch_limit_up_heatmap.py", 120),
             ("fetch_52w_high.py", 120),
             ("fetch_analyst_ratings.py", 60),
-            ("fetch_policy_density.py", 60),
+            ("fetch_policy_density.py", 120),
             ("update_triple_resonance_daily.py", 120),
             ("update_multi_resonance_daily.py", 60),
             ("update_data_v2.py", 300),
