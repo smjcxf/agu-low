@@ -338,9 +338,11 @@ def main():
             "inst_detail": dt["inst"],
         })
 
+    count_80plus = sum(1 for s in scored if s.get("total_score", 0) >= 80)
     result = {
         "update_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total_scored": len(scored),
+        "count_80plus": count_80plus,
         "top10": top10,
     }
 
