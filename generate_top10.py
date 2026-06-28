@@ -185,10 +185,8 @@ def main():
             fund += 3
             fund_detail.append(f"龙虎榜+{lhb_info['inst_net']:.0f}万")
 
-        # 北向(通过板块匹配简略处理，有北向数据时加分)
-        if north_fund.get("data_date"):
-            fund += 2
-            fund_detail.append("北向覆盖")
+        # 北向资金：2024年5月起港交所不再披露明细，仅data_date空壳，不再加分
+        # 铁律：宁可空着也不用假数据
 
         # 板块共振 (0 ~ +10)
         sector_score = 0
