@@ -454,6 +454,30 @@ def check_main_stock():
                  f"流入{len(top_in)}只 流出{len(top_out)}只", issues)
 
 
+def _try_akshare_fund_flow(flow_type="industry"):
+    """兼容 akshare 新旧版 API 获取资金流数据"""
+    import akshare as ak
+    try:
+        if flow_type == "industry":
+            return ak.stock_fund_flow_industry()
+        elif flow_type == "concept":
+            return ak.stock_fund_flow_concept()
+    except AttributeError:
+        pass
+    # 降级尝试旧版
+    if flow_type == "industry":
+        try:
+            return ak.stock_board_industry_flow_em(symbol="今日")
+        except AttributeError:
+            return None
+    elif flow_type == "concept":
+        try:
+            return ak.stock_board_concept_flow_em(symbol="今日")
+        except AttributeError:
+            return None
+    return None
+
+
 def check_sector_fund_flow():
     """验证 sector_fund_flow.json — 用 akshare 重新获取板块资金流对比"""
     print("\n" + "=" * 60)
@@ -498,16 +522,22 @@ def check_sector_fund_flow():
         print(f"  ⚠️  {msg}")
 
     # 用 akshare 重新获取做对比
+    # 注意：新版akshare已移除 stock_board_industry_flow_em，改用 stock_fund_flow_industry
     try:
         import akshare as ak
 
-        df = ak.stock_board_industry_flow_em(symbol="今日")
+        df = _try_akshare_fund_flow("industry")
         api_sectors = []
         if df is not None and len(df) > 0:
             for _, row in df.iterrows():
-                name = str(row.get("名称", "")).strip()
+                name = str(row.get("行业", "")).strip()
+                # 兼容新旧列名
+                has_main_net_col = "主力净流入" in df.columns
                 try:
-                    net = float(row.get("主力净流入", 0)) / 1e8
+                    if has_main_net_col:
+                        net = float(row.get("主力净流入", 0)) / 1e8
+                    else:
+                        net = float(row.get("净额", 0) or 0)
                 except (ValueError, TypeError):
                     net = 0
                 if name and net != 0:

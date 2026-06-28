@@ -74,6 +74,39 @@ def calc_consecutive_days(records):
     
     return days, trend
 
+def _try_stock_fund_flow(flow_type):
+    """
+    兼容 akshare 新旧版 API：
+    - 新版: stock_fund_flow_industry() / stock_fund_flow_concept()
+    - 旧版: stock_board_industry_flow_em(symbol="今日") / stock_board_concept_flow_em(symbol="今日")
+    """
+    if flow_type == "industry":
+        # 尝试新版
+        try:
+            return ak.stock_fund_flow_industry()
+        except AttributeError:
+            pass
+        # 降级到旧版
+        try:
+            return ak.stock_board_industry_flow_em(symbol="今日")
+        except AttributeError:
+            return None
+    elif flow_type == "concept":
+        try:
+            return ak.stock_fund_flow_concept()
+        except AttributeError:
+            pass
+        try:
+            return ak.stock_concept_fund_flow_hist() if hasattr(ak, 'stock_concept_fund_flow_hist') else None
+        except (AttributeError, Exception):
+            pass
+        try:
+            return ak.stock_board_concept_flow_em(symbol="今日")
+        except AttributeError:
+            return None
+    return None
+
+
 def fetch_with_retry(func, max_retries=3, delay=2):
     """带重试的抓取函数"""
     for i in range(max_retries):
@@ -291,25 +324,29 @@ def fetch_sector_flow():
     if ak is not None:
         print("📊 正在抓取板块资金流向...")
         
-        # 方法1: 行业板块
+        # 方法1: 行业资金流向
+        # 注意：akshare 新版已将 stock_board_industry_flow_em 移除，
+        #       改用 stock_fund_flow_industry（返回相同数据格式）
         try:
             print("  📊 方法1: 行业板块资金流...")
             df = fetch_with_retry(
-                lambda: ak.stock_board_industry_flow_em(symbol="今日"),
+                lambda: _try_stock_fund_flow("industry"),
                 max_retries=2
             )
             if df is not None and len(df) > 0:
+                # 确定列名格式
+                has_main_net_col = "主力净流入" in df.columns
                 for _, row in df.iterrows():
-                    name = str(row.get("名称", "")).strip()
-                    try:
-                        net = float(row.get("主力净流入", 0)) / 100000000  # 转为亿元
-                    except:
-                        net = 0
-                    if name and net != 0:
+                    name = str(row.get("行业", "")).strip()
+                    if has_main_net_col:
+                        net_val = float(row.get("主力净流入", 0)) / 100000000
+                    else:
+                        net_val = float(row.get("净额", 0) or 0)
+                    if name and net_val != 0:
                         top_list.append({
                             "name": name,
-                            "net": round(net, 2),
-                            "net_5d": 0,   # akshare不支持5日/20日，标注为0
+                            "net": round(net_val, 2),
+                            "net_5d": 0,
                             "net_20d": 0,
                             "type": "行业"
                         })
@@ -317,26 +354,29 @@ def fetch_sector_flow():
         except Exception as e:
             print(f"    ⚠️ 方法1失败: {e}")
         
-        # 方法2: 概念板块
+        # 方法2: 概念板块资金流向
+        # 注意：akshare 新版已将 stock_board_concept_flow_em 移除，
+        #       改用 stock_fund_flow_concept（返回相同数据格式）
         try:
             print("  📊 方法2: 概念板块资金流...")
             df2 = fetch_with_retry(
-                lambda: ak.stock_board_concept_flow_em(symbol="今日"),
+                lambda: _try_stock_fund_flow("concept"),
                 max_retries=2
             )
             if df2 is not None and len(df2) > 0:
+                has_main_net_col_2 = "主力净流入" in df2.columns
                 for _, row in df2.iterrows():
-                    name = str(row.get("名称", "")).strip()
-                    try:
-                        net = float(row.get("主力净流入", 0)) / 100000000
-                    except:
-                        net = 0
-                    if name and net != 0:
+                    name = str(row.get("行业", "")).strip()  # 概念也用"行业"字段
+                    if has_main_net_col_2:
+                        net_val = float(row.get("主力净流入", 0)) / 100000000
+                    else:
+                        net_val = float(row.get("净额", 0) or 0)
+                    if name and net_val != 0:
                         # 去重
                         if not any(x["name"] == name for x in top_list):
                             top_list.append({
                                 "name": name,
-                                "net": round(net, 2),
+                                "net": round(net_val, 2),
                                 "net_5d": 0,   # akshare不支持5日/20日，标注为0
                                 "net_20d": 0,
                                 "type": "概念"
