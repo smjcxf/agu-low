@@ -113,6 +113,102 @@ def fetch_stock_concepts(code, market="sh"):
         print("  [WARN] 获取 {} 概念失败: {}".format(code, e))
         return []
 
+def _build_hidden_data_bundle(data_dir):
+    """聚合后端隐藏追踪数据→注入隐藏数据管理页"""
+    import os
+    def load_json(path, default=None):
+        try:
+            with open(os.path.join(data_dir, path), 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            return default if default is not None else {}
+
+    def load_txt(path):
+        try:
+            with open(os.path.join(data_dir, path), 'r', encoding='utf-8') as f:
+                return f.read().strip()
+        except Exception:
+            return ""
+
+    bundle = {}
+
+    # 1. 扫描执行记录（signal_log.json — 最多20条）
+    raw_log = load_json("signal_log.json", [])
+    signal_log = []
+    for entry in raw_log[-20:]:
+        signal_log.append({
+            "scan_time": entry.get("scan_time", ""),
+            "mode": entry.get("mode", ""),
+            "total_scanned": entry.get("total_scanned", 0),
+            "triple_count": entry.get("triple_count", 0),
+            "double_count": entry.get("double_count", 0),
+            "new_triple_count": entry.get("new_triple_count", 0),
+        })
+    bundle["signal_log"] = signal_log
+
+    # 2. 信号回测统计（signal_backtest.json）
+    bt = load_json("signal_backtest.json", {})
+    bundle["backtest"] = {
+        "calc_time": bt.get("calc_time", ""),
+        "total_count": bt.get("total_count", 0),
+        "win_count": bt.get("win_count", 0),
+        "loss_count": bt.get("loss_count", 0),
+        "win_rate": round(bt.get("win_rate", 0), 1),
+        "avg_return": round(bt.get("avg_return", 0), 1),
+    }
+
+    # 3. 部署审计记录（audit_summary.json）
+    audit = load_json("audit_summary.json", {})
+    bundle["audit"] = {
+        "timestamp": audit.get("timestamp", ""),
+        "errors": audit.get("errors", 0),
+        "warnings": audit.get("warnings", 0),
+        "ok": audit.get("ok", 0),
+        "details": audit.get("details", {"errors": [], "warnings": []}),
+    }
+
+    # 4. 增强日志（.enhance_log.txt）
+    bundle["enhance_log"] = load_txt(".enhance_log.txt")
+
+    # 5. 历史追踪数据量
+    tr = load_json("triple_resonance_history.json", {})
+    tr_dates = sorted(tr.keys()) if isinstance(tr, dict) else []
+    bundle["triple_history_meta"] = {
+        "days": len(tr_dates),
+        "first": tr_dates[0] if tr_dates else "",
+        "last": tr_dates[-1] if tr_dates else "",
+    }
+    mr = load_json("multi_resonance_history.json", {})
+    mr_dates = sorted(mr.keys()) if isinstance(mr, dict) else []
+    bundle["multi_history_meta"] = {
+        "days": len(mr_dates),
+        "first": mr_dates[0] if mr_dates else "",
+        "last": mr_dates[-1] if mr_dates else "",
+    }
+
+    # 6. 当前扫描统计（scan_result.json精简）
+    scan = load_json("scan_result.json", {})
+    bundle["scan_stats"] = {
+        "scan_time": scan.get("scan_time", ""),
+        "total_scanned": scan.get("total_scanned", 0),
+        "mode": scan.get("mode", scan.get("_mode", "")),
+        "scan_duration": scan.get("_scan_duration", ""),
+    }
+
+    # 7. 金股池元数据
+    gp = load_json("gold_pool.json", {})
+    stocks = gp.get("stocks", {}) if isinstance(gp, dict) else {}
+    bundle["gold_pool_meta"] = {
+        "count": len(stocks) if isinstance(stocks, dict) else 0,
+        "update_time": gp.get("update_time", gp.get("last_update", "")),
+    }
+
+    # 8. 更新调度表（update_schedule.json）
+    us = load_json("update_schedule.json", {})
+    bundle["update_schedule"] = us
+
+    return bundle
+
 def find_block_end(content, marker_start, open_ch, close_ch):
     """精确查找 JS 数据块的边界：(start_pos, end_pos)"""
     start = content.find(marker_start)
@@ -752,6 +848,8 @@ def main():
     w52_high = load_json(os.path.join(DATA_DIR, "52w_high.json"), {"update_time": "", "total": 0, "top_sectors": [], "top_gainers": [], "stocks": []})
     analyst_ratings = load_json(os.path.join(DATA_DIR, "analyst_ratings.json"), {"update_time": "", "upgrades": [], "hot_stocks": []})
     policy_density = load_json(os.path.join(DATA_DIR, "policy_density.json"), {"update_time": "", "density": 0, "level": "低", "signals": []})
+    # 🔒 隐藏数据页：聚合后端追踪数据
+    hidden_data_bundle = _build_hidden_data_bundle(DATA_DIR)
     # 计算龙虎榜连续买入天数（依赖 lhb_history.json）
     try:
         subprocess.run([sys.executable, os.path.join(BASE_DIR, "compute_lhb_consecutive.py")],
@@ -905,11 +1003,12 @@ def main():
         ("POLICY_DENSITY", "window.POLICY_DENSITY = ",  "{", "}"),
         ("TOP10_DAILY",   "window.TOP10_DAILY = ",    "{", "}"),
         ("INDUSTRY_MAP",  "window.INDUSTRY_MAP = ",   "{", "}"),
+        ("HIDDEN_DATA",  "window.HIDDEN_DATA = ",    "{", "}"),
     ]
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
                  concept_ranking, market_alerts, margin_data, etf_subscription, macro_data,                  herding_data,
-                 sector_rs, ipo_score, lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, stock_deviation, fomc_summary, cffex_holdings, inst_trade, overnight_brief, worldcup, limit_up_heatmap, w52_high, analyst_ratings, policy_density, top10_daily, industry_map_data]
+                 sector_rs, ipo_score, lhb_data, main_stock, main_week, north_fund, mahoro_coverage, suspension_alert, stock_deviation, fomc_summary, cffex_holdings, inst_trade, overnight_brief, worldcup, limit_up_heatmap, w52_high, analyst_ratings, policy_density, top10_daily, industry_map_data, hidden_data_bundle]
     replacements = []
 
     for (name, marker, open_ch, close_ch), data in zip(markers, data_objs):
