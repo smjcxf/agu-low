@@ -1049,6 +1049,58 @@ def main():
             if not data.get("update_time") and not data.get("available", True):
                 is_empty = True
                 print(f"  ⚠️  {name} 无新数据且不可用，跳过替换")
+        # 通用空数据保护：检查核心数组是否为空
+        if not is_empty and isinstance(data, dict):
+            # SECTOR_FUND_FLOW: 检查 sectors_in/out
+            if name == "SECTOR_FUND_FLOW":
+                if not data.get("sectors_in") and not data.get("sectors_out"):
+                    if not data.get("update_time"):
+                        is_empty = True
+                        print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # SECTOR_RS: 检查 strong_5d/strong_20d/strong_52w
+            elif name == "SECTOR_RS":
+                strong_5d = data.get("strong_5d") or []
+                strong_20d = data.get("strong_20d") or []
+                if len(strong_5d) == 0 and len(strong_20d) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # TOP10_DAILY: 检查 top10
+            elif name == "TOP10_DAILY":
+                top10 = data.get("top10") or []
+                if len(top10) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # ANALYST_RATINGS: 检查 upgrades/hot_stocks
+            elif name == "ANALYST_RATINGS":
+                upgrades = data.get("upgrades") or []
+                hot = data.get("hot_stocks") or []
+                if len(upgrades) == 0 and len(hot) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # POLICY_DENSITY: 检查 signals
+            elif name == "POLICY_DENSITY":
+                signals = data.get("signals") or []
+                if len(signals) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # CONCEPT_RANKING: 检查 concepts
+            elif name == "CONCEPT_RANKING":
+                concepts = data.get("concepts") or []
+                if len(concepts) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # MARKET_ALERTS: 检查 alerts
+            elif name == "MARKET_ALERTS":
+                alerts = data.get("alerts") or []
+                if len(alerts) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
+            # W52_HIGH: 检查 stocks
+            elif name == "W52_HIGH":
+                stocks = data.get("stocks") or []
+                if len(stocks) == 0 and not data.get("update_time"):
+                    is_empty = True
+                    print(f"  ⚠️  {name} 数据全空，跳过替换")
         if is_empty:
             print(f"  ⚠️  {name} 数据为空，跳过替换（保留旧数据）")
             continue
