@@ -379,8 +379,6 @@ const dataBlocks = [
   ["GOLD_POOL",        /window\.GOLD_POOL\s*=\s*(\{[\s\S]*?\})\s*;/],
   ["STOCK_LIST",        /window\.STOCK_LIST\s*=\s*(\[[\s\S]*?\])\s*;/],
   ["NT_DATA",           /window\.NT_DATA\s*=\s*(\{[\s\S]*?\})\s*;/],
-  ["HIDDEN_DATA",      /window\.HIDDEN_DATA\s*=\s*(\{[\s\S]*?\})\s*;/],
-  ["OVERNIGHT_TIMELINE", /window\.OVERNIGHT_TIMELINE\s*=\s*(\[[\s\S]*?\])\s*;/],
   ["MACRO_DATA",        /window\.MACRO_DATA\s*=\s*(\{[\s\S]*?\})\s*;/],
 ];
 dataBlocks.forEach(function(d) {
@@ -409,7 +407,7 @@ dataBlocks.forEach(function(d) {
 });
 
 // ===== 测试2: 关键函数定义可解析（不执行）=====
-var funcNames = ["fmtDataTime", "getTodayStr", "isTradingDay", "isBeforeMarketOpen", "renderHiddenData"];
+var funcNames = ["fmtDataTime", "getTodayStr", "isTradingDay", "isBeforeMarketOpen"];
 funcNames.forEach(function(name) {
   if (new RegExp("function " + name + "\\s*\\(").test(html)) {
     // 函数存在，尝试解析整个函数体（检查语法）
@@ -1140,7 +1138,6 @@ def main():
         ("FOMC_SUMMARY",   "window.FOMC_SUMMARY = ",  "{", "}"),
         ("CFFEX_HOLDINGS", "window.CFFEX_HOLDINGS = ", "{", "}"),
         ("INST_TRADE",     "window.INST_TRADE = ",     "{", "}"),
-        ("OVERNIGHT_BRIEF","window.OVERNIGHT_TIMELINE = ","[", "]"),
         ("WORLD_CUP",     "window.WORLD_CUP = ",      "{", "}"),
         ("LIMIT_UP_HEATMAP","window.LIMIT_UP_HEATMAP = ","{", "}"),
         ("W52_HIGH",      "window.W52_HIGH = ",       "{", "}"),
@@ -1149,7 +1146,6 @@ def main():
         ("TOP10_DAILY",   "window.TOP10_DAILY = ",    "{", "}"),
         ("MULTI_RESONANCE", "window.MULTI_RESONANCE = ", "[", "]"),
         ("INDUSTRY_MAP",  "window.INDUSTRY_MAP = ",   "{", "}"),
-        ("HIDDEN_DATA",  "window.HIDDEN_DATA = ",    "{", "}"),
     ]
     data_objs = [scan_data, watch_data, gold_pool, stock_list, recommend,
                  sh_fib, sz_fib, sector_flow, sh_sz_history, nt_data,
