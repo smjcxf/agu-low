@@ -284,5 +284,12 @@ def main():
         print(f"  [{n['source']}] {n['text']}")
     print(f"\n✅ 时间轴: {len(timeline)}条 (保留{MAX_HOURS}h)")
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    from fetch_logger import record_success, record_failure
+    try:
+        main()
+        record_success(__file__)
+    except Exception as e:
+        record_failure(__file__, str(e))
+        raise
+
