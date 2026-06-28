@@ -1439,19 +1439,32 @@ def check_scoring_integrity():
 
 
 def main():
+    fast_mode = "--fast" in sys.argv
+
     print("=" * 60)
-    print("  数据源同源对比 + 数据质量审计 v6")
+    mode_label = "  数据源同源对比 + 数据质量审计 v6" + (" [快速模式]" if fast_mode else "")
+    print(mode_label)
     print(f"  时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 60)
 
     t0 = time.time()
 
-    # 依次执行9个数据源验证
+    # 第1-4项：核心同源对比（快速模式也跑）
     check_north_fund()
     check_herding_data()
     check_main_stock()
     check_sector_fund_flow()
-    check_all_cross_validation()
+
+    # 第5项：27项全量交叉验证（仅完整模式）
+    if fast_mode:
+        record_check("全量同源交叉验证", "SKIP", "快速模式跳过（约5分钟）")
+        print("\n" + "=" * 60)
+        print("🔍 [5/10] 全量同源API交叉验证（⏭️ 快速模式跳过）")
+        print("=" * 60)
+    else:
+        check_all_cross_validation()
+
+    # 第6-10项：实质/完整性/源码/日志（始终执行）
     check_all_data_substance()
     check_north_fund_integrity()
     check_top10_daily_quality()
