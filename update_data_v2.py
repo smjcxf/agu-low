@@ -1291,16 +1291,31 @@ def main():
         if m > 0:
             c = c.replace("__GUEST_PWD__", REAL_GUEST_PWD)
         if n > 0 or m > 0:
+            written = False
             for attempt in range(3):
                 try:
                     with open(fpath, "w", encoding="utf-8") as f:
                         f.write(c)
+                    # 回读验证：确认占位符已被替换
+                    with open(fpath, "r", encoding="utf-8") as vf:
+                        vc = vf.read()
+                    if "__PWD__" in vc or "__GUEST_PWD__" in vc:
+                        if attempt < 2:
+                            time.sleep(0.5)
+                            continue  # 写入可能被锁，重试
+                        else:
+                            print(f"  ❌ 密码注入写入验证失败！{os.path.basename(fpath)} 仍含占位符")
+                            return False
+                    written = True
                     break
                 except PermissionError:
                     if attempt < 2:
-                        time.sleep(0.3)
+                        time.sleep(0.5)
                     else:
                         raise
+            if not written:
+                print(f"  ❌ 密码注入失败！{os.path.basename(fpath)} 写入不成功")
+                return False
             print(f"  ✓ 密码已注入 {os.path.basename(fpath)} (admin:{n} 处, guest:{m} 处)")
 
     # 验证 JS 语法（无论模式，必须执行）
