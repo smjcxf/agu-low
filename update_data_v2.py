@@ -309,7 +309,13 @@ def verify_all_js(content):
 
 
 def verify_runtime_smoke(content):
-    """运行时冒烟测试：验证数据块 JSON 合法性 + 关键函数可解析，<15秒"""
+    """运行时冒烟测试：验证数据块 JSON 合法性 + 关键函数可解析，<15秒
+
+    改进（2026-06-28）：
+    - 移除合并冲突检测（对生成HTML无意义，且可能误报）
+    - 增强 Mock 环境（更完整的浏览器API模拟）
+    - 添加括号匹配检查（检测常见JS语法错误）
+    """
     import re, subprocess, tempfile, json as json_mod
 
     node_path = os.path.join(os.path.expanduser("~"), ".workbuddy", "binaries", "node", "versions", "22.22.2", "node.exe")
@@ -335,7 +341,7 @@ if (!htmlPath || !fs.existsSync(htmlPath)) {
 const html = fs.readFileSync(htmlPath, "utf8");
 const errors = [];
 
-// ===== Mock 浏览器环境（不崩溃）=====
+// ===== Mock 浏览器环境（更完整）=====
 const noop = () => ({});
 const mockEl = new Proxy({}, { get: () => (...args) => mockEl, set: () => true });
 global.document = {
@@ -345,11 +351,26 @@ global.document = {
   querySelectorAll: () => [],
   addEventListener: () => {},
   body: mockEl,
+  documentElement: mockEl,
+  head: mockEl,
+  title: "test",
+  cookie: "",
+  readyState: "complete",
 };
 global.setTimeout = (fn) => { try { fn(); } catch(e) {} };
+global.setInterval = () => 0;
+global.requestAnimationFrame = (fn) => { try { fn(); } catch(e) {} };
 global.localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
+global.sessionStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} };
 global.window = global;
-global.console = { log: () => {}, warn: () => {}, error: () => {} };
+global.console = { log: () => {}, warn: () => {}, error: () => {}, info: () => {} };
+global.navigator = { userAgent: "node", platform: "win32" };
+global.location = { href: "http://localhost", search: "", hash: "" };
+global.history = { pushState: () => {}, replaceState: () => {} };
+global.fetch = () => Promise.resolve({ json: () => ({}), text: () => "" });
+global.alert = () => {};
+global.confirm = () => true;
+global.prompt = () => null;
 
 // ===== 测试1: 数据块 JSON 合法性 =====
 const dataBlocks = [
@@ -410,16 +431,39 @@ funcNames.forEach(function(name) {
   }
 });
 
-// ===== 测试3: 检查 HTML 中有合并冲突标记 =====
-// 只在行首（允许空白）检测，不误判 CSS 注释中的 ======
-var conflictRe = /^\s*<<<<<<<\s*$|^\s*=======\s*$|^\s*>>>>>>>\s*$/m;
-if (conflictRe.test(html)) {
-  var lines = html.split('\n');
-  lines.forEach(function(line, idx) {
-    if (/^\s*<<<<<<</.test(line) || /^\s*=======/.test(line) || /^\s*>>>>>>>/.test(line)) {
-      errors.push("Merge conflict marker at line " + (idx+1) + ": " + line.trim().slice(0, 50));
+// ===== 测试3: 括号匹配检查（检测常见JS语法错误）=====
+// 只检查 <script> 标签内的内容
+var scriptRe = /<script[\s\S]*?>([\s\S]*?)<\/script>/gi;
+var scriptMatch;
+while ((scriptMatch = scriptRe.exec(html)) !== null) {
+  var scriptContent = scriptMatch[1];
+  // 跳过外部脚本（src=...）
+  if (scriptMatch[0].indexOf("src=") >= 0) continue;
+
+  var stack = [];
+  var lineNum = 1;
+  for (var i = 0; i < scriptContent.length; i++) {
+    var ch = scriptContent[i];
+    if (ch === '\n') lineNum++;
+    if (ch === '(' || ch === '[' || ch === '{') {
+      stack.push({ ch: ch, line: lineNum });
+    } else if (ch === ')' || ch === ']' || ch === '}') {
+      if (stack.length === 0) {
+        errors.push("Unmatched closing '" + ch + "' at script line ~" + lineNum);
+        break;
+      }
+      var top = stack.pop();
+      var expected = ch === ')' ? '(' : (ch === ']' ? '[' : '{');
+      if (top.ch !== expected) {
+        errors.push("Mismatched bracket: '" + top.ch + "' (line ~" + top.line + ") vs '" + ch + "' (line ~" + lineNum + ")");
+        break;
+      }
     }
-  });
+  }
+  if (stack.length > 0) {
+    var unclosed = stack[stack.length - 1];
+    errors.push("Unclosed '" + unclosed.ch + "' at script line ~" + unclosed.line);
+  }
 }
 
 output({ errors: errors, passed: errors.length === 0 });
