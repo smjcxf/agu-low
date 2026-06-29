@@ -161,6 +161,7 @@ MODES = {
             ("fetch_suspension_alert.py", 120),
             ("fetch_stock_deviation.py", 180),
             ("fetch_sector_fund_flow.py", 180),
+            ("fetch_sector_rs.py", 90),           # 相对强度（板块连续强势）
             ("fetch_main_week.py", 120),
             ("fetch_market_alerts.py", 180),
             ("fetch_concept_ranking.py", 180),
@@ -178,6 +179,7 @@ MODES = {
             ("fetch_up_down_stats.py", 120),
             ("fetch_sh_index_fib.py", 60),
             ("scanner.py full", 600),
+            ("fetch_overnight_brief.py", 120),     # 全球隔夜速报（完整版，非--news-only）
             ("generate_recommend.py", 120),
             ("generate_top10.py", 60),
             ("fetch_industry_map.py", 300),
