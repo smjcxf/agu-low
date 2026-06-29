@@ -222,7 +222,7 @@ def main():
 
     result = {
         "update_time": now_str,
-        "data_date": datetime.datetime.now().strftime("%Y-%m-%d"),
+        "data_date": None,  # 北向净买额已停更(2024.5起)，无有效数据日期
         "south_flow": {
             "total": 0, "unit": "亿", "direction": "—",
             "sh_net": 0, "sz_net": 0

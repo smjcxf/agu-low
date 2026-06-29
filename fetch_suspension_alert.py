@@ -160,4 +160,10 @@ def main():
     print(f"  停牌: {len(suspended)} 只 | 近触发: {len(near)} 只")
 
 if __name__ == "__main__":
-    main()
+    from fetch_logger import record_success, record_failure
+    try:
+        main()
+        record_success(__file__)
+    except Exception as e:
+        record_failure(__file__, str(e))
+        raise
