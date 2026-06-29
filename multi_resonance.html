@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>多维共振历史追踪 - 九宝量化 v6.0</title>
+<title>70分以上历史追踪 - 九宝量化 v6.0</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Microsoft YaHei','微软雅黑',sans-serif; background:#f5f7fa; color:#333; }
@@ -53,8 +53,8 @@ select { padding:6px 12px; border:1px solid #ddd; border-radius:5px; font-size:1
 <body>
 <div class="header">
   <div>
-    <h1>🧬 多维共振 · 每日TOP10历史追踪</h1>
-    <div class="subtitle">五维评分（基+增+资+板+机）实时排名变化</div>
+    <h1>🧬 多维共振 · 70分以上历史追踪</h1>
+    <div class="subtitle">五维评分（基+增+资+板+机）70分以上精选排名变化</div>
   </div>
   <a href="index.html" class="nav-back">← 返回主页</a>
 </div>
@@ -136,6 +136,8 @@ function prepData() {
   stockMap = {};
   datesAll.forEach(function(d) {
     var picks = (historyData[d] || {}).top10 || [];
+    // 只统计70分以上
+    picks = picks.filter(function(p){ return (p.total_score || 0) >= 70; });
     picks.forEach(function(p) {
       var key = p.code;
       if (!stockMap[key]) stockMap[key] = { code: p.code, name: p.name, history: {} };
@@ -157,7 +159,7 @@ function renderTimeline() {
 
   dates.forEach(function(d, di) {
     var snap = historyData[d];
-    var picks = snap.top10 || [];
+    var picks = (snap.top10 || []).filter(function(p){ return (p.total_score || 0) >= 70; });
     var isToday = di === 0;
 
     html += '<div style="position:relative;margin-bottom:16px;">';
@@ -355,8 +357,8 @@ function renderCompare() {
   var yesterday = datesAll[datesAll.length-2];
   var todaySnap = historyData[today] || {};
   var yesterdaySnap = historyData[yesterday] || {};
-  var todayPicks = todaySnap.top10 || [];
-  var yesterdayPicks = yesterdaySnap.top10 || [];
+  var todayPicks = (todaySnap.top10 || []).filter(function(p){ return (p.total_score || 0) >= 70; });
+  var yesterdayPicks = (yesterdaySnap.top10 || []).filter(function(p){ return (p.total_score || 0) >= 70; });
 
   var todayCodeSet = {}; todayPicks.forEach(function(p) { todayCodeSet[p.code] = p; });
   var yesterdayCodeSet = {}; yesterdayPicks.forEach(function(p) { yesterdayCodeSet[p.code] = p; });
@@ -426,12 +428,13 @@ function renderStats() {
   prepData();
   var totalDays = datesAll.length;
   var latest = datesAll.length ? historyData[datesAll[datesAll.length-1]] : null;
-  var latestCount = latest ? (latest.top10 || []).length : 0;
+  var latest70 = latest ? (latest.top10 || []).filter(function(p){ return (p.total_score || 0) >= 70; }) : [];
+  var latestCount = latest70.length;
   var totalStocks = Object.keys(stockMap).length;
 
   var championMap = {};
   datesAll.forEach(function(d) {
-    var picks = historyData[d].top10 || [];
+    var picks = (historyData[d].top10 || []).filter(function(p){ return (p.total_score || 0) >= 70; });
     if (picks.length) championMap[picks[0].name] = (championMap[picks[0].name] || 0) + 1;
   });
   var champions = Object.entries(championMap).sort(function(a, b) { return b[1] - a[1]; });
