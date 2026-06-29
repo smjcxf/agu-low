@@ -216,10 +216,4 @@ def main():
     log(f"✅ 已保存: {OUT} ({len(sectors)}板块, 相对强度: {len(strong_relative_5d)}个领跑, {len(anti_drop)}个抗跌)")
 
 if __name__ == "__main__":
-    from fetch_logger import record_success, record_failure
-    try:
-        main()
-        record_success(__file__)
-    except Exception as e:
-        record_failure(__file__, str(e))
-        raise
+    main()
