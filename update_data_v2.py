@@ -1153,13 +1153,9 @@ def main():
             continue
         new_json = json.dumps(data, ensure_ascii=False, indent=0)
         new_block = marker + new_json + ";"
-        replacements.append((s, e, new_block))
-        print(f"  ✓ {name}: {e-s:,} → {len(new_block):,} 字符")
-
-    # 从后往前替换
-    replacements.sort(key=lambda x: x[0], reverse=True)
-    for s, e, new_block in replacements:
+        # 立即替换（不收集后排序，防止位置偏移导致串行）
         content = content[:s] + new_block + content[e:]
+        print(f"  ✓ {name}: {e-s:,} → {len(new_block):,} 字符")
 
     # ===== 注入 NT_DATA.calendar（使用最新 fetch_nt_data.py 生成的日历）=====
     nt_json_path = os.path.join(BASE_DIR, "data", "nt_data.json")
