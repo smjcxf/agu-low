@@ -285,12 +285,8 @@ def calculate_scores(candidates, sector_flow):
             tag_color = "#c62828"
             bg_color = "#ffebee"
         
-        # 亮点文案
+        # 亮点文案（PE折价已在dims行显示，此处不再重复）
         highlights = []
-        if pe_discount > 20:
-            highlights.append(f"PE折价{int(pe_discount)}%")
-        elif 0 < pe_discount <= 20:
-            highlights.append(f"PE小幅折价{int(pe_discount)}%")
         if c.get("lottery_rate", 0) > 0:
             highlights.append(f"中签率{c['lottery_rate']}%")
         if heat_score >= 20:
@@ -359,7 +355,7 @@ def generate_summary(results):
             parts.append("当前主板新股估值优势明显")
             sentiment = "建议积极参与"
     
-    return f"打新研判：{'，'.join(parts)}。{sentiment}。"
+    return f"{'，'.join(parts)}。{sentiment}。"
 
 def main():
     print("=" * 50)
