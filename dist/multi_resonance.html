@@ -120,7 +120,7 @@ var datesAll = [];
 var stockMap = {}; // code -> {name, history: {date: rank}}
 var activeTab = 'timeline';
 var HISTORY_URL = window.location.href.replace(/multi_resonance\.html.*$/, '') + 'data/multi_resonance_history.json';
-var rankColors = ['#4527a0','#5e35b1','#7e57c2','#9575cd','#b39ddb','#7b1fa2','#8e24aa','#ab47bc','#ce93d8','#e1bee7'];
+var rankColors = ['#4527a0','#5e35b1','#7e57c2','#9575cd','#a98fd9','#bbb0e5','#cdc4ef','#ded7f5','#ece6fa','#f5f0ff'];
 
 // ===== Tab 切换 =====
 function switchTab(name) {
@@ -385,7 +385,7 @@ function renderCompare() {
   var html = '<div style="font-size:13px;color:#666;margin-bottom:14px;"><b>今日</b>：' + today.replace('2026-','') + ' <b>昨日</b>：' + yesterday.replace('2026-','') + '</div>';
 
   // 新进
-  html += '<div style="margin-bottom:14px;"><div style="font-weight:600;color:#2e7d32;margin-bottom:6px;">🔥 新进TOP10</div>';
+  html += '<div style="margin-bottom:14px;"><div style="font-weight:600;color:#2e7d32;margin-bottom:6px;">🔥 新进70分+</div>';
   if (newEntries.length) {
     html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
     newEntries.forEach(function(p) {
@@ -398,7 +398,7 @@ function renderCompare() {
   html += '</div>';
 
   // 掉榜
-  html += '<div style="margin-bottom:14px;"><div style="font-weight:600;color:#c62828;margin-bottom:6px;">❄️ 掉出TOP10</div>';
+  html += '<div style="margin-bottom:14px;"><div style="font-weight:600;color:#c62828;margin-bottom:6px;">❄️ 掉出70分+</div>';
   if (dropped.length) {
     html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
     dropped.forEach(function(p) {
