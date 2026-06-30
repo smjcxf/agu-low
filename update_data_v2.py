@@ -710,27 +710,25 @@ def main():
         _wp_stocks = gold_pool.get("stocks", {})
         _wp_updated = 0
         _wp_fallback = 0
-        
-        # 构建扫描代码索引（先 scan_result，后 watch_result）
+
+        # 构建扫描代码索引：覆盖 watch 的 all_results + signals，以及 full 模式的 signals
+        # 关键：必须包含 watch_result.all_results（康强电子就是只走 watch 模式的典型）
         _scan_idx = {}
         for _src in [scan_data, watch_data]:
             if not _src: continue
-            for _s in _src.get("double_signals", []) + _src.get("triple_signals", []):
+            for _s in (_src.get("all_results") or []) \
+                    + (_src.get("double_signals") or []) \
+                    + (_src.get("triple_signals") or []):
                 _c = str(_s.get("code", ""))
+                if not _c: continue
                 _clean = _c.split("_")[-1] if "_" in _c else _c
+                # 同一 code 后写覆盖前写（watch_data 后于 scan_data）
                 _scan_idx[_clean] = _s
                 _scan_idx[_c] = _s
         
         for _gp_code, _gp_data in _wp_stocks.items():
-            # 已有真实EMA数据 (ema_up >= 0 且 ema_dirs 非全False → 说明来自真实扫描)
-            _has_real_ema = (
-                "latest" in _gp_data and isinstance(_gp_data["latest"], dict)
-                and _gp_data["latest"].get("ema_up", 0) > 0
-            )
-            if _has_real_ema:
-                continue  # 保留历史有效EMA，不覆盖
             _norm = _gp_code.split("_")[-1] if "_" in _gp_code else _gp_code
-            
+
             # 尝试从扫描数据匹配
             _ms = _scan_idx.get(_norm) or _scan_idx.get(_gp_code)
             if _ms and isinstance(_ms, dict):
