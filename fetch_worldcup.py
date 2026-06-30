@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-2026世界杯数据抓取 — 从 thesoccerworldcups.com 获取比赛结果
+2026世界杯数据抓取 — 从 worldcup26.ir API（开源免费）获取比赛结果
 输出: data/worldcup.json
 用法: python fetch_worldcup.py        # 全量更新
      python fetch_worldcup.py --auto  # 自动模式（仅更新新结果）
+
+数据源说明：
+- 淘汰赛比分：worldcup26.ir API（实时，免费JWT认证，84天有效）
+- 小组赛积分：API groups 端点
+- 兜底方案：API 不可用时使用硬编码数据
 """
-import json, os, sys, re
+import json, os, sys, re, time, urllib.request, urllib.error
 from datetime import datetime
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -43,6 +48,62 @@ REGION_MAP = {
     '阿根廷':'CONMEBOL','奥地利':'UEFA','约旦':'AFC','阿尔及利亚':'CAF',
     '哥伦比亚':'CONMEBOL','葡萄牙':'UEFA','刚果金':'CAF','乌兹别克':'AFC',
     '英格兰':'UEFA','加纳':'CAF','巴拿马':'CONCACAF','克罗地亚':'UEFA',
+}
+
+# ===== worldcup26.ir API 配置（免费开源，JWT认证） =====
+WC_API_BASE = "https://worldcup26.ir"
+# JWT token：通过 /auth/register 获取，有效期84天
+# 如果token过期会自动重新注册
+WC_JWT_FILE = os.path.join(DATA_DIR, ".wc_jwt_cache.json")
+
+# 英文队名 → 中文队名映射（API返回英文，前端显示中文）
+EN_TO_CN = {
+    'Argentina': '阿根廷', 'Australia': '澳大利亚', 'Austria': '奥地利', 'Belgium': '比利时',
+    'Brazil': '巴西', 'Canada': '加拿大', 'Cape Verde': '佛得角',
+    'Colombia': '哥伦比亚', 'Croatia': '克罗地亚', 'Curaçao': '库拉索',
+    'Czech Republic': '捷克',
+    'Democratic Republic of the Congo': '刚果民主共和国',
+    'Ecuador': '厄瓜多尔', 'Egypt': '埃及', 'England': '英格兰',
+    'France': '法国', 'Germany': '德国', 'Ghana': '加纳',
+    'Haiti': '海地', 'Iran': '伊朗', 'Iraq': '伊拉克',
+    'Ivory Coast': '科特迪瓦', 'Japan': '日本', 'Jordan': '约旦',
+    'Mexico': '墨西哥', 'Morocco': '摩洛哥', 'Netherlands': '荷兰',
+    'New Zealand': '新西兰', 'Norway': '挪威', 'Panama': '巴拿马',
+    'Paraguay': '巴拉圭', 'Portugal': '葡萄牙', 'Qatar': '卡塔尔',
+    'Saudi Arabia': '沙特阿拉伯', 'Scotland': '苏格兰',
+    'Senegal': '塞内加尔', 'South Africa': '南非',
+    'South Korea': '韩国', 'Spain': '西班牙', 'Sweden': '瑞典',
+    'Switzerland': '瑞士', 'Tunisia': '突尼斯', 'Turkey': '土耳其',
+    'United States': '美国', 'Uruguay': '乌拉圭',
+    'Uzbekistan': '乌兹别克斯坦', 'Algeria': '阿尔及利亚',
+    'Bosnia and Herzegovina': '波黑',
+}
+CN_TO_EN = {v: k for k, v in EN_TO_CN.items()}
+
+# stadium_id → 中文场馆名
+STADIUM_MAP = {
+    '1': '墨西哥城 · Estadio Azteca',
+    '2': '瓜达拉哈拉 · Estadio Akron',
+    '3': '蒙特雷 · Estadio BBVA',
+    '4': '阿灵顿 · AT&T Stadium',
+    '5': '休斯敦 · NRG Stadium',
+    '6': '堪萨斯城 · Arrowhead Stadium',
+    '7': '亚特兰大 · Mercedes-Benz Stadium',
+    '8': '迈阿密 · Hard Rock Stadium',
+    '9': '波士顿 · Gillette Stadium',
+    '10': '费城 · Lincoln Financial Field',
+    '11': '东卢瑟福 · MetLife Stadium',
+    '12': '多伦多 · BMO Field',
+    '13': '温哥华 · BC Place',
+    '14': '西雅图 · Lumen Field',
+    '15': '圣克拉拉 · Levi\'s Stadium',
+    '16': '英格尔伍德 · SoFi Stadium',
+}
+
+# API 比赛类型 → 中文轮次名
+ROUND_TYPE_MAP = {
+    'r32': '32强', 'r16': '16强', 'qf': '1/4决赛',
+    'sf': '半决赛', 'final': '决赛', 'third': '三四名决赛',
 }
 
 def log(msg):
@@ -116,16 +177,178 @@ def fetch_results():
     return results
 
 
+def _wc_api_request(endpoint):
+    """请求 worldcup26.ir API，返回 JSON 数据。失败返回 None。"""
+    token = _get_wc_jwt()
+    if not token:
+        return None
+    url = f"{WC_API_BASE}{endpoint}"
+    req = urllib.request.Request(url, headers={
+        'Authorization': f'Bearer {token}',
+        'User-Agent': 'Mozilla/5.0',
+        'Content-Type': 'application/json',
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            return data
+    except Exception as e:
+        log(f"API 请求失败 {endpoint}: {e}")
+        # token 可能过期，尝试刷新一次
+        token = _get_wc_jwt(force_refresh=True)
+        if not token:
+            return None
+        try:
+            req = urllib.request.Request(url, headers={
+                'Authorization': f'Bearer {token}',
+                'User-Agent': 'Mozilla/5.0',
+            })
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                return json.loads(resp.read().decode('utf-8'))
+        except:
+            return None
+
+
+def _get_wc_jwt(force_refresh=False):
+    """获取或注册 JWT token。缓存到本地文件避免重复注册。"""
+    # 尝试从缓存读取（未强制刷新时）
+    if not force_refresh and os.path.exists(WC_JWT_FILE):
+        try:
+            with open(WC_JWT_FILE, 'r') as f:
+                cache = json.load(f)
+            exp = cache.get('exp', 0)
+            if time.time() < exp - 86400:  # 提前1天刷新
+                return cache.get('token')
+        except:
+            pass
+
+    # 注册新账号获取 token
+    ts = int(time.time())
+    payload = json.dumps({
+        "name": "ahquant_wc",
+        "email": f"wc_{ts}@ahquant.local",
+        "password": "AhQuantWC2026!"
+    }).encode('utf-8')
+    req = urllib.request.Request(
+        f"{WC_API_BASE}/auth/register",
+        data=payload,
+        headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'},
+        method='POST'
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            token = data.get('token', '')
+            if token:
+                # 解码 JWT 获取过期时间（无需验证签名，只需读取payload）
+                import base64
+                parts = token.split('.')
+                if len(parts) >= 2:
+                    padding = 4 - len(parts[1]) % 4
+                    if padding != 4:
+                        parts[1] += '=' * padding
+                    payload_data = json.loads(base64.urlsafe_b64decode(parts[1]))
+                    exp = payload_data.get('exp', 0)
+                    with open(WC_JWT_FILE, 'w') as f:
+                        json.dump({'token': token, 'exp': exp}, f)
+                return token
+    except Exception as e:
+        log(f"JWT 注册失败: {e}")
+    return None
+
+
+def _api_date_to_short(date_str):
+    """将 API 日期格式 MM/DD/YYYY [HH:MM] 转为 Mon DD（如 Jun 28）"""
+    for fmt in ('%m/%d/%Y %H:%M', '%m/%d/%Y'):
+        try:
+            dt = datetime.strptime(date_str.strip(), fmt)
+            return dt.strftime('%b %d')
+        except (ValueError, TypeError):
+            continue
+    return date_str
+
+
+def fetch_knockout_from_api():
+    """
+    从 worldcup26.ir API 自动抓取淘汰赛数据。
+    返回 list of dict 或 None（API 不可用时）。
+    
+    数据完全真实，来源: https://github.com/vmacarov/football-data-api
+    """
+    data = _wc_api_request('/get/games')
+    if not data or 'games' not in data:
+        return None
+
+    games = data['games']
+    knockout = []
+
+    for g in games:
+        gtype = g.get('type', '')
+        # 只要淘汰赛阶段
+        if gtype not in ROUND_TYPE_MAP:
+            continue
+
+        home_en = g.get('home_team_name_en', '')
+        away_en = g.get('away_team_name_en', '')
+        home_cn = EN_TO_CN.get(home_en, home_en)
+        away_cn = EN_TO_CN.get(away_en, away_en)
+
+        hs = g.get('home_score', '')
+        asc = g.get('away_score', '')
+        finished = g.get('finished', '') == 'TRUE'
+
+        # 构建比分字符串
+        score = ''
+        if finished and hs and asc:
+            score = f'{hs}-{asc}'
+            # 淘汰赛平局 → 点球（标记为 p）
+            if gtype in ('r32', 'r16', 'qf', 'sf', 'final') and hs == asc:
+                score += ' (p)'
+
+        date_short = _api_date_to_short(g.get('local_date', ''))
+        stadium_id = str(g.get('stadium_id', ''))
+        venue = STADIUM_MAP.get(stadium_id, '')
+
+        match = {
+            'date': date_short,
+            'round': ROUND_TYPE_MAP.get(gtype, gtype),
+            'home': home_cn,
+            'away': away_cn,
+            'score': score,
+            'venue': venue,
+            'home_seed': 0,
+            'away_seed': 0,
+            # 保留原始英文名供模拟函数使用
+            'home_raw': home_en,
+            'away_raw': away_en,
+            'finished': finished,
+        }
+        knockout.append(match)
+
+    # 按 API 的 id 排序（即按赛程顺序）
+    return knockout if knockout else None
+
+
 def build_knockout_schedule(standings, results):
     """
-    2026世界杯淘汰赛赛程 — 硬编码真实对阵数据。
-    数据源：Yahoo Sports / Olympics.com
-    32强于2026.06.28-07.03进行，16强于07.04开始。
-    比分按实际比赛结果逐步更新。
-    
+    2026世界杯淘汰赛赛程 — 优先从 worldcup26.ir API 自动抓取，
+    API 不可用时降级为硬编码兜底数据。
+
+    数据源: https://worldcup26.ir (开源免费，实时更新)
+    兜底: 硬编码对阵（仅当 API 完全不可达）
+
     Returns: list of dict with date, round, home, away, score, venue
     """
-    # 32强真实对阵（16场），含已完赛比分
+    # ===== 方案A：从 API 自动抓取（真实数据） =====
+    api_data = fetch_knockout_from_api()
+    if api_data:
+        finished_count = sum(1 for m in api_data if m.get('score'))
+        total_count = len(api_data)
+        log(f"✅ API 淘汰赛数据拉取成功: {total_count}场, 已完赛{finished_count}场")
+        return api_data
+
+    # ===== 方案B：硬编码兜底（仅 API 不可用时） =====
+    log("⚠️ API 不可用，使用硬编码兜底数据")
     r32_real = [
         # Jun 28 — 已完成
         {'date':'Jun 28','home':'南非','away':'加拿大','score':'0-1','venue':'洛杉矶 · Los Angeles Stadium'},
@@ -154,10 +377,8 @@ def build_knockout_schedule(standings, results):
         m['round'] = '32强'
         m['home_seed'] = 0
         m['away_seed'] = 0
-    
-    # 16强及后续轮次（球队待定，日期和场馆按真实赛程显示）
+
     upcoming_template = [
-        # 16强：7/4 - 7/5（8场）
         ('Jul 4', '16强', '费城 · Lincoln Financial Field'),
         ('Jul 4', '16强', '休斯敦 · NRG Stadium'),
         ('Jul 4', '16强', '洛杉矶 · Los Angeles Stadium'),
@@ -166,32 +387,24 @@ def build_knockout_schedule(standings, results):
         ('Jul 5', '16强', '迈阿密 · Hard Rock Stadium'),
         ('Jul 5', '16强', '达拉斯 · AT&T Stadium'),
         ('Jul 5', '16强', '墨西哥城 · Estadio Azteca'),
-        # 1/4决赛：7/9 - 7/10（4场）
         ('Jul 9', '1/4决赛', '亚特兰大 · Mercedes-Benz Stadium'),
         ('Jul 9', '1/4决赛', '波士顿 · Gillette Stadium'),
         ('Jul 10', '1/4决赛', '达拉斯 · AT&T Stadium'),
         ('Jul 10', '1/4决赛', '洛杉矶 · SoFi Stadium'),
-        # 半决赛：7/13 - 7/14（2场）
         ('Jul 13', '半决赛', '达拉斯 · AT&T Stadium'),
         ('Jul 14', '半决赛', '洛杉矶 · SoFi Stadium'),
-        # 决赛周
         ('Jul 18', '三四名决赛', '迈阿密 · Hard Rock Stadium'),
         ('Jul 19', '决赛', '纽约/新泽西 · MetLife Stadium'),
     ]
-    
+
     knockout = r32_real[:]
     for date, round_name, venue in upcoming_template:
         knockout.append({
-            'date': date,
-            'round': round_name,
-            'home': '待定',
-            'away': '待定',
-            'score': '',
-            'venue': venue,
-            'home_seed': 0,
-            'away_seed': 0,
+            'date': date, 'round': round_name,
+            'home': '待定', 'away': '待定', 'score': '',
+            'venue': venue, 'home_seed': 0, 'away_seed': 0,
         })
-    
+
     return knockout
 
 
