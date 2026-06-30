@@ -3030,7 +3030,20 @@ def scan_jy共振(target_date=None):
 # ============== 入口 ==============
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
+    # ── 锁文件防重复：已有 scanner 在跑则跳过 ──
+    import pathlib
+    LOCK_FILE = pathlib.Path(__file__).parent / ".scanner.lock"
+    LOCK_TIMEOUT = 1200  # 20分钟，超过则认为僵死锁可覆盖
+    if LOCK_FILE.exists():
+        lock_age = time.time() - LOCK_FILE.stat().st_mtime
+        if lock_age < LOCK_TIMEOUT:
+            print(f"  ⚠️ scanner 锁文件存在({int(lock_age)}秒前)，另一实例可能正在运行，跳过")
+            sys.exit(0)
+        else:
+            print(f"  ℹ️ 锁文件已过期({int(lock_age)}秒)，覆盖继续")
+    LOCK_FILE.write_text(str(time.time()))
+    try:
+        if len(sys.argv) > 1:
         cmd = sys.argv[1]
         if cmd == "full":
             # 盘后扫描活跃股池(创业板Top100+科创板Top100+主板Top100+港股Top50)
@@ -3117,3 +3130,6 @@ if __name__ == "__main__":
         print("  python scanner.py test   - 测试(少量股票)")
         print("  python scanner.py single 000001 平安银行 sh  - 单只股票")
         print("  python scanner.py lhb [20260602]           - 机游共振扫描")
+    finally:
+        if LOCK_FILE.exists():
+            LOCK_FILE.unlink()
