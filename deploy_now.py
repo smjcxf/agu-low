@@ -381,6 +381,9 @@ def main():
     project_root = os.path.dirname(os.path.abspath(__file__))
     os.chdir(project_root)
 
+    # 0.0 清理未合并文件（合并冲突状态），防止后续 git commit/pull 失败
+    _fix_unmerged_files()
+
     # 0. Deploy lock: only one machine deploys at a time
     if not _acquire_deploy_lock():
         return 0  # lock held by other machine, skip gracefully
