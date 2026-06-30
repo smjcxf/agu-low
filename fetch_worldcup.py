@@ -124,7 +124,7 @@ def build_knockout_schedule(standings, results):
     - 每组前2名直接晋级（24队）
     - 12个小组第3中成绩最好的8队晋级
     - 32队按排名排序后，1 vs 32, 2 vs 31 ... 16 vs 17 配对
-    - 后续轮次由模拟晋级填充（高排名球队胜出），实际开赛后可更新真实比分
+    - 后续轮次（16强及以后）待真实比赛结果确定后逐步更新
     
     Returns: list of dict with date, round, home, away, score, venue
     """
@@ -160,9 +160,8 @@ def build_knockout_schedule(standings, results):
     for i, t in enumerate(all_32, 1):
         t['seed'] = i
     
-    # 赛程模板：日期 + 轮次 + 场馆（按2026世界杯实际场地）
+    # 赛程模板：仅32强（16场，后续轮次待真实比赛后逐步更新）
     schedule_template = [
-        # 32强：6/28 - 7/3（16场，每天2-3场）
         ('Jun 28', '32强', '西雅图 · Lumen Field'),
         ('Jun 28', '32强', '旧金山 · Levi\'s Stadium'),
         ('Jun 29', '32强', '温哥华 · BC Place'),
@@ -179,26 +178,6 @@ def build_knockout_schedule(standings, results):
         ('Jul 4', '32强', '奥兰多 · Camping World Stadium'),
         ('Jul 5', '32强', '夏洛特 · Bank of America Stadium'),
         ('Jul 5', '32强', '巴尔的摩 · M&T Bank Stadium'),
-        # 16强：7/6 - 7/7（8场）
-        ('Jul 6', '16强', '迈阿密 · Hard Rock Stadium'),
-        ('Jul 6', '16强', '洛杉矶 · SoFi Stadium'),
-        ('Jul 6', '16强', '达拉斯 · AT&T Stadium'),
-        ('Jul 6', '16强', '波士顿 · Gillette Stadium'),
-        ('Jul 7', '16强', '纽约/新泽西 · MetLife Stadium'),
-        ('Jul 7', '16强', '亚特兰大 · Mercedes-Benz Stadium'),
-        ('Jul 7', '16强', '西雅图 · Lumen Field'),
-        ('Jul 7', '16强', '旧金山 · Levi\'s Stadium'),
-        # 1/4决赛：7/9 - 7/11（4场）
-        ('Jul 9', '1/4决赛', '亚特兰大 · Mercedes-Benz Stadium'),
-        ('Jul 9', '1/4决赛', '波士顿 · Gillette Stadium'),
-        ('Jul 10', '1/4决赛', '达拉斯 · AT&T Stadium'),
-        ('Jul 11', '1/4决赛', '洛杉矶 · SoFi Stadium'),
-        # 半决赛：7/14 - 7/15（2场）
-        ('Jul 14', '半决赛', '达拉斯 · AT&T Stadium'),
-        ('Jul 15', '半决赛', '洛杉矶 · SoFi Stadium'),
-        # 决赛周
-        ('Jul 18', '三四名决赛', '迈阿密 · Hard Rock Stadium'),
-        ('Jul 19', '决赛', '纽约/新泽西 · MetLife Stadium'),
     ]
     
     # 32强对阵：按种子 1v32, 2v31 ... 16v17
@@ -208,42 +187,9 @@ def build_knockout_schedule(standings, results):
         t2 = all_32[31 - i]
         r32.append((t1, t2))
     
-    # 模拟晋级：高种子胜出（仅用于后续轮次占位，开赛后用真实数据替换）
-    def winner_of(t1, t2):
-        return t1 if t1['seed'] < t2['seed'] else t2
-    
-    # 16强：R32-1胜者 vs R32-16胜者，依此类推（相邻配对）
-    r16 = []
-    for i in range(0, 16, 2):
-        w1 = winner_of(r32[i][0], r32[i][1])
-        w2 = winner_of(r32[i+1][0], r32[i+1][1])
-        r16.append((w1, w2))
-    
-    # 1/4决赛
-    qf = []
-    for i in range(0, 8, 2):
-        w1 = winner_of(r16[i][0], r16[i][1])
-        w2 = winner_of(r16[i+1][0], r16[i+1][1])
-        qf.append((w1, w2))
-    
-    # 半决赛
-    sf = []
-    for i in range(0, 4, 2):
-        w1 = winner_of(qf[i][0], qf[i][1])
-        w2 = winner_of(qf[i+1][0], qf[i+1][1])
-        sf.append((w1, w2))
-    
-    # 决赛 + 三四名
-    final_w1 = winner_of(sf[0][0], sf[0][1])
-    final_w2 = winner_of(sf[1][0], sf[1][1])
-    third_l1 = sf[0][0] if sf[0][1] == final_w1 else sf[0][1]
-    third_l2 = sf[1][0] if sf[1][1] == final_w2 else sf[1][1]
-    
-    all_matches = r32 + r16 + qf + sf + [(third_l1, third_l2), (final_w1, final_w2)]
-    
-    # 合并到模板
+    # 合并到模板（后续轮次待真实比赛结果逐步更新）
     knockout = []
-    for (t1, t2), (date, round_name, venue) in zip(all_matches, schedule_template):
+    for (t1, t2), (date, round_name, venue) in zip(r32, schedule_template):
         knockout.append({
             'date': date,
             'round': round_name,

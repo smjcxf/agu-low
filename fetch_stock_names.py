@@ -7,6 +7,29 @@ from datetime import datetime
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 OUTPUT = os.path.join(DATA_DIR, "stock_names.json")
 
+def _fetch_a_share_via_eastmoney():
+    """东方财富全量 A 股代码→名称（akshare stock_zh_a_spot_em 经常超时丢数据时的兜底）"""
+    import requests
+    url = "https://push2.eastmoney.com/api/qianlong/clist/get?pn=1&pz=10000&po=1&np=1&fltt=2&invt=2&fs=m:0+t:6+f:!2,m:0+t:13+f:!2,m:0+t:80+f:!2,m:1+t:2+f:!2,m:1+t:23+f:!2&fields=f12,f14"
+    try:
+        r = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
+        data = r.json().get("data") or {}
+        diff = data.get("diff") or []
+        result = []
+        for item in diff:
+            code = str(item.get("f12", "")).strip()
+            name = str(item.get("f14", "")).strip()
+            if not code or not name:
+                continue
+            if not (code.startswith(("0", "3", "6")) and len(code) == 6):
+                continue
+            prefix = "sz" if code.startswith(("0", "3")) else "sh"
+            result.append({"code": code, "name": name, "full_code": prefix + code})
+        return result
+    except Exception as e:
+        print(f"  ⚠️ 东方财富 A股接口失败: {e}")
+        return []
+
 def main():
     print("=" * 50)
     print("  A 股 + 港股全量股票名称列表更新")
@@ -14,27 +37,33 @@ def main():
 
     all_stocks = []
 
-    # ── A 股 ──
-    try:
-        import akshare as ak
-        df = ak.stock_zh_a_spot_em()
-        if df is None or df.empty:
-            print("  ⚠️ A股无数据，跳过")
-        else:
-            for _, row in df.iterrows():
-                code = str(row.get("代码", "")).strip()
-                name = str(row.get("名称", "")).strip()
-                if not code or not name:
-                    continue
-                prefix = "sz" if code.startswith(("0", "3")) else "sh"
-                all_stocks.append({
-                    "code": code,
-                    "name": name,
-                    "full_code": prefix + code,
-                })
-            print(f"  ✅ A股: {len(all_stocks)} 只")
-    except Exception as e:
-        print(f"  ⚠️ A股获取失败: {e}")
+    # ── A 股（东方财富兜底优先，akshare 经常超时丢数据）──
+    a_stocks = _fetch_a_share_via_eastmoney()
+    if a_stocks:
+        all_stocks.extend(a_stocks)
+        print(f"  ✅ A股(东财): {len(a_stocks)} 只")
+    else:
+        # 退而求其次用 akshare
+        try:
+            import akshare as ak
+            df = ak.stock_zh_a_spot_em()
+            if df is None or df.empty:
+                print("  ⚠️ A股无数据，跳过")
+            else:
+                for _, row in df.iterrows():
+                    code = str(row.get("代码", "")).strip()
+                    name = str(row.get("名称", "")).strip()
+                    if not code or not name:
+                        continue
+                    prefix = "sz" if code.startswith(("0", "3")) else "sh"
+                    all_stocks.append({
+                        "code": code,
+                        "name": name,
+                        "full_code": prefix + code,
+                    })
+                print(f"  ✅ A股(akshare): {len(all_stocks)} 只")
+        except Exception as e:
+            print(f"  ⚠️ A股获取失败: {e}")
 
     # ── 港股 ──
     try:

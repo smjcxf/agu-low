@@ -650,6 +650,59 @@ def main():
     gold_pool   = load_json(os.path.join(DATA_DIR, "gold_pool.json"))
     stock_names = load_json(os.path.join(DATA_DIR, "stock_names.json"), [])
 
+    # === 兜底补全：stock_names.json 偶发只有港股（akshare A股接口超时/失败），
+    # 从 gold_pool + scan_result + watch_result + industry_map 提取 (code→name) 合并 ===
+    try:
+        _im = load_json(os.path.join(DATA_DIR, "industry_map.json"), {})
+        _im_codes = set(_im.keys()) if isinstance(_im, dict) else set()
+    except Exception:
+        _im_codes = set()
+
+    _fallback_names = {}  # code -> name
+    # 1) gold_pool.stocks
+    try:
+        for _code, _info in (gold_pool.get("stocks") or {}).items():
+            if isinstance(_info, dict) and _info.get("name"):
+                _fallback_names[_code] = _info["name"]
+    except Exception:
+        pass
+    # 2) scan_result.all_results + triple_signals
+    try:
+        for _r in (scan_data.get("all_results") or []):
+            if _r.get("code") and _r.get("name"):
+                _fallback_names[_r["code"]] = _r["name"]
+        for _r in (scan_data.get("triple_signals") or []):
+            if _r.get("code") and _r.get("name"):
+                _fallback_names[_r["code"]] = _r["name"]
+    except Exception:
+        pass
+    # 3) watch_result.all_results
+    try:
+        for _r in (watch_data.get("all_results") or []):
+            if _r.get("code") and _r.get("name"):
+                _fallback_names[_r["code"]] = _r["name"]
+    except Exception:
+        pass
+    # 4) industry_map 关联到的代码（兜底），如 002155 等 A 股
+    # industry_map 是 {code: [板块...]}，没有 name 字段 → 必须从其它来源取
+    # 已有 _fallback_names，则 industry_map 里的 A 股代码现在已在金股池
+    # 额外：watchlist 港股可能与 industry_map 重叠
+
+    # 构建已有 code 集合
+    _existing_codes = {s.get("code") for s in stock_names if s.get("code")}
+    _missing_in_stock_list = 0
+    for _code, _name in _fallback_names.items():
+        if _code not in _existing_codes:
+            stock_names.append({
+                "code": _code,
+                "name": _name,
+                "full_code": ("sz" if _code.startswith(("0", "3")) else "sh" if _code.startswith("6") else "hk" if _code.startswith("0") else "") + _code
+            })
+            _existing_codes.add(_code)
+            _missing_in_stock_list += 1
+    if _missing_in_stock_list:
+        print(f"  ▸ 兜底补全 STOCK_LIST: +{_missing_in_stock_list} 只（来自金股池+扫描+监控+行业）")
+
     # 【EMA修复】从 scan_result + watch_result 同步 latest 到 gold_pool
     # 根因：scanner.py full 模式只扫描信号子集（~237只），gold_pool 有 517 只
     # 策略：优先从扫描数据匹配，无匹配则用 gold_pool 自身字段构建基础 latest
