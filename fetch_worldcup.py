@@ -299,6 +299,118 @@ def simulate_group_qualification(standings):
     return result
 
 
+def simulate_championship(knockout, all_teams, standings):
+    """Monte Carlo 模拟：基于球队实力的夺冠概率
+
+    策略：
+    1. 32强赛：已完赛的真实结果，未完赛的用 team_strength 模拟
+    2. 16强/8强/4强/决赛：从晋级者中自动配对，继续模拟到冠军
+    """
+    import random, re
+    ITER = 5000
+    champ_count = {}
+
+    # 别名映射
+    ALIAS_MAP = {'象牙海岸': '科特迪瓦', '刚果民主共和国': '刚果(金)'}
+
+    def std_name(name):
+        return ALIAS_MAP.get(name, name)
+
+    # 构建球队实力字典（all_teams 用 'n' 字段）
+    strength_map = {}
+    for t in all_teams:
+        name = t.get('name', t.get('n', ''))
+        for g_id, tlist in TEAMS.items():
+            if name in tlist:
+                s = standings.get(g_id, {}).get(name, {'w':0,'d':0,'l':0,'gf':0,'ga':0})
+                strength_map[name] = team_strength(s)
+                break
+        if name not in strength_map:
+            strength_map[name] = team_strength({'w':t['w'],'d':t['d'],'l':t['l'],'gf':t['gf'],'ga':t['ga']})
+
+    # 补齐淘汰赛专属球队默认实力
+    for m in knockout:
+        for key in ('home', 'away'):
+            n = m[key]
+            raw = m.get('home_raw', '') if key == 'home' else ''
+            for candidate in (n, raw):
+                if candidate and candidate != '待定' and std_name(candidate) not in strength_map:
+                    strength_map[std_name(candidate)] = 0.5
+
+    def get_str(name):
+        return strength_map.get(std_name(name), strength_map.get(name, 0.5))
+
+    def sim_winner(home, away):
+        """纯实力模拟：返回胜者"""
+        sh, sa = get_str(home), get_str(away)
+        diff = sh - sa
+        p = 0.50 + diff * 0.12 + 0.15
+        p = max(0.10, min(0.85, p))
+        r = random.random()
+        if r < p: return std_name(home)
+        r2 = r - p
+        pk_p = 0.50 + diff * 0.08
+        if r2 < 0.25:  # 平局→点球
+            return std_name(home) if random.random() < pk_p else std_name(away)
+        return std_name(away)
+
+    def resolve_real_result(match):
+        """解析已完赛比赛的真实胜者，无结果则返回 None"""
+        score = (match.get('score') or '').strip()
+        home, away = match['home'], match['away']
+        if not score or score.startswith('TBD') or home == '待定':
+            return None
+        parts = score.split()[0]
+        if '-' not in parts:
+            return None
+        try:
+            hg, ag = int(parts.split('-')[0]), int(parts.split('-')[1])
+        except ValueError:
+            return None
+        rh, ra = std_name(home), std_name(away)
+        if hg > ag: return rh
+        if hg < ag: return ra
+        # 平局看点球
+        pm = re.search(r'\((\d+)-(\d+)\s*p', score)
+        if pm:
+            return rh if int(pm.group(1)) > int(pm.group(2)) else ra
+        return None
+
+    # 32强赛列表（只取有具体队名的）
+    r32_matches = [m for m in knockout if m.get('round') == '32强'
+                   and m.get('home') != '待定' and m.get('away') != '待定']
+
+    for _ in range(ITER):
+        # === 第一步：32强赛 ===
+        round16 = []
+        for m in r32_matches:
+            real_winner = resolve_real_result(m)
+            if real_winner:
+                round16.append(real_winner)
+            else:
+                round16.append(sim_winner(m['home'], m['away']))
+
+        # === 第二步：16强 → 决赛（自动配对淘汰）===
+        alive = list(round16)
+        while len(alive) > 1:
+            next_round = []
+            random.shuffle(alive)  # 随机配对模拟抽签不确定性
+            for i in range(0, len(alive) - 1, 2):
+                next_round.append(sim_winner(alive[i], alive[i + 1]))
+            if len(alive) % 2 == 1:
+                next_round.append(alive[-1])  # 奇数轮空
+            alive = next_round
+
+        if alive:
+            champ_count[alive[0]] = champ_count.get(alive[0], 0) + 1
+
+    result = []
+    for name, count in sorted(champ_count.items(), key=lambda x: -x[1]):
+        prob = round(count / ITER * 100, 1)
+        result.append({'n': name, 'prob': prob})
+    return result
+
+
 def calculate_adj_efficiency(all_teams, standings):
     """加权净胜球效率：进球含金量×对手积分系数"""
     adj_data = {}
@@ -490,13 +602,10 @@ def main():
         t['adj_ga'] = ae.get('adj_ga', t['ga'])
         t['opp_strength'] = ae.get('opponent_strength', 0)
 
-    # 赔率（阶段更新）
-    odds = [
-        {'n':'法国','prob':22.2},{'n':'西班牙','prob':14.3},{'n':'英格兰','prob':14.3},{'n':'阿根廷','prob':11.1},
-        {'n':'葡萄牙','prob':9.1},{'n':'巴西','prob':7.7},{'n':'德国','prob':6.7},{'n':'荷兰','prob':4.8},
-        {'n':'挪威','prob':3.8},{'n':'摩洛哥','prob':2.4},{'n':'比利时','prob':2.4},{'n':'哥伦比亚','prob':2.4},
-        {'n':'美国','prob':2.4},{'n':'日本','prob':2.0},{'n':'墨西哥','prob':2.0},{'n':'乌拉圭','prob':1.5},
-    ]
+    # 夺冠概率（Monte Carlo 5000次模拟，基于球队实力+淘汰赛对阵）
+    log('  模拟夺冠概率 (5000 iterations)...')
+    odds = simulate_championship(knockout, all_teams, standings)
+    log(f'    TOP3: {odds[0]["n"]} {odds[0]["prob"]}% / {odds[1]["n"]} {odds[1]["prob"]}% / {odds[2]["n"]} {odds[2]["prob"]}%')
     
     output = {
         'update_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
