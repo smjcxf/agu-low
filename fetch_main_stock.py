@@ -92,16 +92,6 @@ def parse_asfund_batch(output):
                 continue
     return results
 
-def load_old_data():
-    """加载旧数据，用于增量更新"""
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            pass
-    return None
-
 def compute_consecutive(flows, direction="in"):
     """计算连续净流入/流出天数（从最新日期往前数）"""
     if not flows:
@@ -205,35 +195,29 @@ def main():
     top_out = top_out[:8]
 
     # 构建结果
+    data_available = bool(top_in or top_out)
     result = {
         "update_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "data_available": data_available,
         "top_main_in": top_in,
         "top_main_out": top_out,
     }
 
-    # 空数据保护：从旧数据补充
-    if not top_in and not top_out:
-        old = load_old_data()
-        if old and (old.get("top_main_in") or old.get("top_main_out")):
-            print(f"\n  ⚠️ 今日无有效主力数据，保留旧数据")
-            result["top_main_in"] = old.get("top_main_in", [])
-            result["top_main_out"] = old.get("top_main_out", [])
-            result["update_time"] = old.get("update_time", result["update_time"])
+    if not data_available:
+        print(f"\n  ⚠️ 今日无有效主力数据，写入空数据（数据更新中）")
 
-    # 保存
-    if result.get("top_main_in") and result.get("top_main_out"):
-        os.makedirs(DATA_DIR, exist_ok=True)
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
-        print(f"\n✅ 已保存: {OUTPUT_FILE}")
+    # 保存：全失败也写入，不保留旧数据（避免误导用户）
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+    print(f"\n✅ 已保存: {OUTPUT_FILE}")
+    if data_available:
         print(f"   主力净流入: {len(top_in)} 只")
         for s in top_in[:5]:
             print(f"     {s['name']} +{s['net_in']}{s['unit']} 连{s['day_count']}日")
         print(f"   主力净流出: {len(top_out)} 只")
         for s in top_out[:5]:
             print(f"     {s['name']} -{s['net_out']}{s['unit']} 连{s['day_count']}日")
-    else:
-        print("\n  ⚠️ 主力资金数据为空，保留旧文件不覆盖")
     print(f"   更新时间: {result['update_time']}")
 
     return result

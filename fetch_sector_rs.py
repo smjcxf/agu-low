@@ -136,17 +136,13 @@ def main():
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     
     if not token:
-        log("⚠️ neodata token 未找到，板块相对强度暂不可用")
-        # 铁律：宁可空着也不造假。尝试保留旧数据。
-        if os.path.exists(OUT):
-            log("✓ 保留已有数据，不覆盖")
-        else:
-            result = {"update_time": now_str, "sectors": [], "strong_5d": [], "strong_20d": [], "strong_52w": [],
-                      "weak_5d": [], "strong_relative_5d": [], "strong_relative_20d": [], "anti_drop": [],
-                      "index": {}}
-            with open(OUT, 'w', encoding='utf-8') as f:
-                json.dump(result, f, ensure_ascii=False, indent=2)
-            log(f"⚠️ 无历史数据，写入空结构: {OUT}")
+        log("⚠️ neodata token 未找到，板块相对强度暂不可用，写入空数据")
+        result = {"update_time": now_str, "data_available": False, "sectors": [], "strong_5d": [], "strong_20d": [], "strong_52w": [],
+                  "weak_5d": [], "strong_relative_5d": [], "strong_relative_20d": [], "anti_drop": [],
+                  "index": {}}
+        with open(OUT, 'w', encoding='utf-8') as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+        log(f"✓ 已写入空结构: {OUT}")
         return
 
     # 查涨幅

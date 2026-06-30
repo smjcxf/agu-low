@@ -10,7 +10,7 @@
 - 北向成交总额仍每日发布（收盘后），从 eastmoney 页面抓取
 - 南向资金数据完整可用（净买额+成交额+历史）
 
-原则: 不构造数据，API无数据时保留旧数据
+原则: 不构造数据，API全失败时写入空数据（不保留旧数据，避免误导用户）
 """
 import os, sys, json, re, datetime, urllib.request
 
@@ -288,17 +288,12 @@ def main():
     else:
         print("    WARN 无数据")
 
-    # 5. 数据完整性判断
+    # 5. 数据完整性判断：全失败时写入空数据，不保留旧数据（避免误导用户）
     if has_any_data:
         result["data_available"] = True
     else:
-        if old_data:
-            print("\n  ⚠️ 所有API均无数据，保留最近一次有效数据")
-            # 只保留旧数据，但更新时间戳
-            old_data["update_time"] = now_str
-            result = old_data
-        else:
-            print("\n  ⚠️ 无数据且无旧数据可回退")
+        print("\n  ⚠️ 所有API均无数据，写入空数据（数据更新中）")
+        result["data_available"] = False
 
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:

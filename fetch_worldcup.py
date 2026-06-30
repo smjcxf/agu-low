@@ -160,8 +160,9 @@ def build_knockout_schedule(standings, results):
     for i, t in enumerate(all_32, 1):
         t['seed'] = i
     
-    # 赛程模板：仅32强（16场，后续轮次待真实比赛后逐步更新）
+    # 赛程模板：全部轮次（后续轮次待真实比赛后逐步更新，球队标为待定）
     schedule_template = [
+        # 32强：6/28 - 7/5（16场，每天2-3场）
         ('Jun 28', '32强', '西雅图 · Lumen Field'),
         ('Jun 28', '32强', '旧金山 · Levi\'s Stadium'),
         ('Jun 29', '32强', '温哥华 · BC Place'),
@@ -178,6 +179,26 @@ def build_knockout_schedule(standings, results):
         ('Jul 4', '32强', '奥兰多 · Camping World Stadium'),
         ('Jul 5', '32强', '夏洛特 · Bank of America Stadium'),
         ('Jul 5', '32强', '巴尔的摩 · M&T Bank Stadium'),
+        # 16强：7/6 - 7/7（8场，待真实比赛后更新）
+        ('Jul 6', '16强', '迈阿密 · Hard Rock Stadium'),
+        ('Jul 6', '16强', '洛杉矶 · SoFi Stadium'),
+        ('Jul 6', '16强', '达拉斯 · AT&T Stadium'),
+        ('Jul 6', '16强', '波士顿 · Gillette Stadium'),
+        ('Jul 7', '16强', '纽约/新泽西 · MetLife Stadium'),
+        ('Jul 7', '16强', '亚特兰大 · Mercedes-Benz Stadium'),
+        ('Jul 7', '16强', '西雅图 · Lumen Field'),
+        ('Jul 7', '16强', '旧金山 · Levi\'s Stadium'),
+        # 1/4决赛：7/9 - 7/11（4场，待真实比赛后更新）
+        ('Jul 9', '1/4决赛', '亚特兰大 · Mercedes-Benz Stadium'),
+        ('Jul 9', '1/4决赛', '波士顿 · Gillette Stadium'),
+        ('Jul 10', '1/4决赛', '达拉斯 · AT&T Stadium'),
+        ('Jul 11', '1/4决赛', '洛杉矶 · SoFi Stadium'),
+        # 半决赛：7/14 - 7/15（2场，待真实比赛后更新）
+        ('Jul 14', '半决赛', '达拉斯 · AT&T Stadium'),
+        ('Jul 15', '半决赛', '洛杉矶 · SoFi Stadium'),
+        # 决赛周
+        ('Jul 18', '三四名决赛', '迈阿密 · Hard Rock Stadium'),
+        ('Jul 19', '决赛', '纽约/新泽西 · MetLife Stadium'),
     ]
     
     # 32强对阵：按种子 1v32, 2v31 ... 16v17
@@ -187,9 +208,16 @@ def build_knockout_schedule(standings, results):
         t2 = all_32[31 - i]
         r32.append((t1, t2))
     
-    # 合并到模板（后续轮次待真实比赛结果逐步更新）
+    # 后续轮次：球队标为“待定”，日期和场馆按真实赛程显示
+    # 16强（8场），1/4（4场），半（2场），三四名（1场），决赛（1场）= 16场
+    placeholder = {'name': '待定', 'seed': 0}
+    upcoming = [(placeholder, placeholder) for _ in range(16)]
+    
+    all_matches = r32 + upcoming
+    
+    # 合并到模板
     knockout = []
-    for (t1, t2), (date, round_name, venue) in zip(r32, schedule_template):
+    for (t1, t2), (date, round_name, venue) in zip(all_matches, schedule_template):
         knockout.append({
             'date': date,
             'round': round_name,

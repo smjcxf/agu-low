@@ -87,12 +87,7 @@ def main():
     }
 
     if not buy and not sell:
-        # 保留已有数据
-        if os.path.exists(OUTPUT_FILE):
-            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-                old = json.load(f)
-            print("  ⚠️ 无新数据，保留旧文件")
-            return
+        print("  ⚠️ 无新数据，写入空数据（数据更新中）")
         result["available"] = False
     else:
         result["available"] = True

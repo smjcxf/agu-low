@@ -72,26 +72,12 @@ def fetch_concept_flow():
         return [], []
 
 
-def load_old_data():
-    """加载旧数据，API空数据时回退"""
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-                old = json.load(f)
-            if old.get("current_clusters"):
-                return old
-        except:
-            pass
-    return None
-
-
 def main():
     print("=" * 50)
     print("  主力资金抱团（行业+概念资金流向）")
     print("=" * 50)
 
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    old_data = load_old_data()
 
     print("\n[1/2] 行业资金流向...")
     ind_in, ind_out = fetch_industry_flow()
@@ -138,12 +124,11 @@ def main():
             "sector": item['name'], "reason": f"主力净流出{item['net']}亿"
         })
 
-    # 空数据保护
+    # 空数据保护：全失败时写入空数据，不保留旧数据（避免误导用户）
     has_data = bool(result["current_clusters"] or result["high_prob"])
-    if not has_data and old_data:
-        print("\n  WARN 数据为空，保留旧数据")
-        result = old_data
-        result["update_time"] = now_str
+    if not has_data:
+        print("\n  ⚠️ 数据为空，写入空数据（数据更新中）")
+        result["data_available"] = False
 
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:

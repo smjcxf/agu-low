@@ -1125,17 +1125,25 @@ def main():
         # 额外检查：即使有update_time，如果核心数据数组全空，也视为无效（防止API空结果覆盖已有数据）
         if not is_empty and isinstance(data, dict):
             if name == "HERRING_DATA":
-                clusters = data.get("current_clusters") or []
-                high_prob = data.get("high_prob") or []
-                if len(clusters) == 0 and len(high_prob) == 0:
-                    is_empty = True
-                    print(f"  ⚠️  {name} 数据全空 (clusters=0, high_prob=0)，跳过替换")
+                # 如果明确标记 data_available=false（API全失败），放行空数据不拦截
+                if data.get("data_available") is False:
+                    pass  # 故意为空，允许替换旧数据
+                else:
+                    clusters = data.get("current_clusters") or []
+                    high_prob = data.get("high_prob") or []
+                    if len(clusters) == 0 and len(high_prob) == 0:
+                        is_empty = True
+                        print(f"  ⚠️  {name} 数据全空 (clusters=0, high_prob=0)，跳过替换")
             elif name == "MAIN_STOCK":
-                top_in = data.get("top_main_in") or []
-                top_out = data.get("top_main_out") or []
-                if len(top_in) == 0 and len(top_out) == 0:
-                    is_empty = True
-                    print(f"  ⚠️  {name} 数据全空 (top_in=0, top_out=0)，跳过替换")
+                # 如果明确标记 data_available=false（API全失败），放行空数据不拦截
+                if data.get("data_available") is False:
+                    pass  # 故意为空，允许替换旧数据
+                else:
+                    top_in = data.get("top_main_in") or []
+                    top_out = data.get("top_main_out") or []
+                    if len(top_in) == 0 and len(top_out) == 0:
+                        is_empty = True
+                        print(f"  ⚠️  {name} 数据全空 (top_in=0, top_out=0)，跳过替换")
             elif name == "IPO_DATA":
                 stocks = data.get("stocks") or []
                 if len(stocks) == 0 and not data.get("summary"):

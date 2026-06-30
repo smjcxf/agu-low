@@ -98,15 +98,12 @@ def main():
     now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     if not ranking:
-        log("⚠ 无数据，保留已有文件，不覆盖")
-        if os.path.exists(OUT):
-            log(f"✓ 已有数据保留: {OUT}")
-        else:
-            log("⚠ 无已有数据，写入空结构")
-            output = {'update_time': now_str, 'ranking': []}
-            os.makedirs(os.path.dirname(OUT), exist_ok=True)
-            with open(OUT, 'w', encoding='utf-8') as f:
-                json.dump(output, f, ensure_ascii=False, indent=2)
+        log("⚠ 全失败，写入空数据（数据更新中）")
+        output = {'update_time': now_str, 'data_available': False, 'ranking': []}
+        os.makedirs(os.path.dirname(OUT), exist_ok=True)
+        with open(OUT, 'w', encoding='utf-8') as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+        log(f"✓ 已写入空结构: {OUT}")
         return
 
     output = {

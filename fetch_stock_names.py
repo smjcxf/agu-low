@@ -30,6 +30,44 @@ def _fetch_a_share_via_eastmoney():
         print(f"  ⚠️ 东方财富 A股接口失败: {e}")
         return []
 
+def _fetch_a_share_via_sina():
+    """新浪全量 A 股代码→名称（分页拉沪A/深A/北A，更稳定的兜底）"""
+    import requests, json
+    result = []
+    nodes = [
+        ("sh", "sh_a", 2500),   # 沪A (沪市主板+科创板)
+        ("sz", "sz_a", 3000),   # 深A (深市主板+中小板+创业板)
+        ("bj", "hs_a", 300),    # 北A (北交所)
+    ]
+    for prefix, node, total in nodes:
+        for offset in range(0, total, 80):
+            try:
+                url = f"https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?node={node}&sort=symbol&asc=1&num=80&page={offset//80 + 1}&_s_r_a=page"
+                r = requests.get(url, timeout=15, headers={
+                    "User-Agent": "Mozilla/5.0",
+                    "Referer": "https://vip.stock.finance.sina.com.cn/"
+                })
+                txt = r.text.strip()
+                if not txt.startswith("["):
+                    break
+                items = json.loads(txt)
+                if not items:
+                    break
+                for item in items:
+                    code = str(item.get("symbol", "")).strip()
+                    name = str(item.get("name", "")).strip()
+                    if not code or not name:
+                        continue
+                    # 取纯 6 位代码
+                    code6 = code[2:] if len(code) > 6 else code
+                    if not (code6.startswith(("0", "3", "6")) and len(code6) == 6):
+                        continue
+                    result.append({"code": code6, "name": name, "full_code": prefix + code6})
+            except Exception as e:
+                print(f"  ⚠️ 新浪 {node} 第{offset//80+1}页失败: {e}")
+                break
+    return result
+
 def main():
     print("=" * 50)
     print("  A 股 + 港股全量股票名称列表更新")
@@ -37,33 +75,30 @@ def main():
 
     all_stocks = []
 
-    # ── A 股（东方财富兜底优先，akshare 经常超时丢数据）──
-    a_stocks = _fetch_a_share_via_eastmoney()
-    if a_stocks:
-        all_stocks.extend(a_stocks)
-        print(f"  ✅ A股(东财): {len(a_stocks)} 只")
-    else:
-        # 退而求其次用 akshare
+    # ── A 股（新浪优先，东财次之，akshare 最后）──
+    a_stocks = _fetch_a_share_via_sina()
+    if not a_stocks:
+        a_stocks = _fetch_a_share_via_eastmoney()
+    if not a_stocks:
         try:
             import akshare as ak
             df = ak.stock_zh_a_spot_em()
-            if df is None or df.empty:
-                print("  ⚠️ A股无数据，跳过")
-            else:
+            if df is not None and not df.empty:
                 for _, row in df.iterrows():
                     code = str(row.get("代码", "")).strip()
                     name = str(row.get("名称", "")).strip()
                     if not code or not name:
                         continue
                     prefix = "sz" if code.startswith(("0", "3")) else "sh"
-                    all_stocks.append({
-                        "code": code,
-                        "name": name,
-                        "full_code": prefix + code,
-                    })
-                print(f"  ✅ A股(akshare): {len(all_stocks)} 只")
+                    a_stocks.append({"code": code, "name": name, "full_code": prefix + code})
         except Exception as e:
             print(f"  ⚠️ A股获取失败: {e}")
+
+    if a_stocks:
+        all_stocks.extend(a_stocks)
+        print(f"  ✅ A股: {len(a_stocks)} 只")
+    else:
+        print("  ⚠️ A股全失败，跳过")
 
     # ── 港股 ──
     try:

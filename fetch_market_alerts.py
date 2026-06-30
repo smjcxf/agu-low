@@ -246,17 +246,14 @@ def main():
 
     now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # ✅ 修复：全部失败时保留已有数据，不写空文件
+    # 全部失败时写入空数据，不保留旧数据（避免误导用户）
     if not indices and not top_sectors and not mood:
-        log("⚠ 全部获取失败，保留已有数据，不覆盖")
-        if os.path.exists(OUT):
-            log(f"✓ 已有数据保留: {OUT}")
-        else:
-            log("⚠ 无已有数据，写入空结构")
-            output = {'update_time': now_str, 'summary': '', 'indices': [], 'top_sectors': [], 'bottom_sectors': [], 'mood': {}}
-            os.makedirs(os.path.dirname(OUT), exist_ok=True)
-            with open(OUT, 'w', encoding='utf-8') as f:
-                json.dump(output, f, ensure_ascii=False, indent=2)
+        log("⚠ 全部获取失败，写入空数据（数据更新中）")
+        output = {'update_time': now_str, 'data_available': False, 'summary': '', 'indices': [], 'top_sectors': [], 'bottom_sectors': [], 'mood': {}}
+        os.makedirs(os.path.dirname(OUT), exist_ok=True)
+        with open(OUT, 'w', encoding='utf-8') as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+        log(f"✓ 已写入空结构: {OUT}")
         return
 
     summary = build_summary(indices, top_sectors, bottom_sectors, mood)

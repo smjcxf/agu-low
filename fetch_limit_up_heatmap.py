@@ -127,7 +127,12 @@ def main():
     # ── 2. 获取今日涨停 ──
     limit_stocks = get_limit_up_data()
     if not limit_stocks:
-        print("  ⚠️  今日无涨停数据（休市或API异常），保留已有数据")
+        print("  ⚠️  今日无涨停数据（休市或API异常），写入空数据")
+        output = {"dates": existing_dates or [], "sectors": existing_sectors or [], "data_available": False, "update_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
+        with open(OUTPUT, "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
+        print(f"  ✅ 已写入空结构: {OUTPUT}")
         return
 
     # ── 3. 按板块归类并统计 ──
