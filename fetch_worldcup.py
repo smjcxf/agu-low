@@ -118,115 +118,78 @@ def fetch_results():
 
 def build_knockout_schedule(standings, results):
     """
-    根据小组赛结果生成32强淘汰赛赛程表。
-    
-    规则：
-    - 每组前2名直接晋级（24队）
-    - 12个小组第3中成绩最好的8队晋级
-    - 32队按排名排序后，1 vs 32, 2 vs 31 ... 16 vs 17 配对
-    - 后续轮次（16强及以后）待真实比赛结果确定后逐步更新
+    2026世界杯淘汰赛赛程 — 硬编码真实对阵数据。
+    数据源：Yahoo Sports / Olympics.com
+    32强于2026.06.28-07.03进行，16强于07.04开始。
+    比分按实际比赛结果逐步更新。
     
     Returns: list of dict with date, round, home, away, score, venue
     """
-    # 按小组赛排名整理所有球队
-    all_ranked = []
-    for gid, teams in standings.items():
-        ranked = sorted(teams.items(), key=lambda x: (
-            x[1]['w'] * 3 + x[1]['d'],  # points
-            x[1]['gf'] - x[1]['ga'],     # goal difference
-            x[1]['gf']                   # goals for
-        ), reverse=True)
-        for rank, (name, s) in enumerate(ranked, 1):
-            all_ranked.append({
-                'name': name,
-                'group': gid,
-                'rank': rank,
-                'pts': s['w'] * 3 + s['d'],
-                'gd': s['gf'] - s['ga'],
-                'gf': s['gf'],
-                'ga': s['ga'],
-            })
+    # 32强真实对阵（16场），含已完赛比分
+    r32_real = [
+        # Jun 28 — 已完成
+        {'date':'Jun 28','home':'南非','away':'加拿大','score':'0-1','venue':'洛杉矶 · Los Angeles Stadium'},
+        # Jun 29 — 已完成
+        {'date':'Jun 29','home':'巴西','away':'日本','score':'2-1','venue':'休斯敦 · NRG Stadium'},
+        {'date':'Jun 29','home':'德国','away':'巴拉圭','score':'1-1 (3-4p)','venue':'波士顿 · Gillette Stadium'},
+        {'date':'Jun 29','home':'摩洛哥','away':'荷兰','score':'1-1 (3-2p)','venue':'蒙特雷 · Estadio BBVA'},
+        # Jun 30 — 待进行
+        {'date':'Jun 30','home':'科特迪瓦','away':'挪威','score':'','venue':'阿灵顿 · AT&T Stadium', 'home_raw':'象牙海岸'},
+        {'date':'Jun 30','home':'法国','away':'瑞典','score':'','venue':'东卢瑟福 · MetLife Stadium'},
+        {'date':'Jun 30','home':'墨西哥','away':'厄瓜多尔','score':'','venue':'墨西哥城 · Estadio Azteca'},
+        # Jul 1
+        {'date':'Jul 1','home':'英格兰','away':'刚果民主共和国','score':'','venue':'亚特兰大 · Mercedes-Benz Stadium'},
+        {'date':'Jul 1','home':'比利时','away':'塞内加尔','score':'','venue':'西雅图 · Lumen Field'},
+        {'date':'Jul 1','home':'美国','away':'波黑','score':'','venue':'圣克拉拉 · Levi\'s Stadium'},
+        # Jul 2
+        {'date':'Jul 2','home':'西班牙','away':'奥地利','score':'','venue':'英格尔伍德 · SoFi Stadium'},
+        {'date':'Jul 2','home':'葡萄牙','away':'克罗地亚','score':'','venue':'多伦多 · BMO Field'},
+        {'date':'Jul 2','home':'瑞士','away':'阿尔及利亚','score':'','venue':'温哥华 · BC Place'},
+        # Jul 3
+        {'date':'Jul 3','home':'澳大利亚','away':'埃及','score':'','venue':'阿灵顿 · AT&T Stadium'},
+        {'date':'Jul 3','home':'阿根廷','away':'佛得角','score':'','venue':'迈阿密 · Hard Rock Stadium'},
+        {'date':'Jul 3','home':'哥伦比亚','away':'加纳','score':'','venue':'堪萨斯城 · Arrowhead Stadium'},
+    ]
+    for m in r32_real:
+        m['round'] = '32强'
+        m['home_seed'] = 0
+        m['away_seed'] = 0
     
-    # 24个直接晋级 + 8个最佳第3
-    direct = [t for t in all_ranked if t['rank'] <= 2]
-    thirds = [t for t in all_ranked if t['rank'] == 3]
-    thirds.sort(key=lambda x: (x['pts'], x['gd'], x['gf']), reverse=True)
-    best_thirds = thirds[:8]
-    
-    # 32强种子排序：先按小组赛名次，再按积分、净胜球、进球（均为越高越好）
-    all_32 = direct + best_thirds
-    all_32.sort(key=lambda x: (x['rank'], -x['pts'], -x['gd'], -x['gf']))
-    # 赋予全局种子序号
-    for i, t in enumerate(all_32, 1):
-        t['seed'] = i
-    
-    # 赛程模板：全部轮次（后续轮次待真实比赛后逐步更新，球队标为待定）
-    schedule_template = [
-        # 32强：6/28 - 7/5（16场，每天2-3场）
-        ('Jun 28', '32强', '西雅图 · Lumen Field'),
-        ('Jun 28', '32强', '旧金山 · Levi\'s Stadium'),
-        ('Jun 29', '32强', '温哥华 · BC Place'),
-        ('Jun 29', '32强', '墨西哥城 · Estadio Azteca'),
-        ('Jun 30', '32强', '蒙特雷 · Estadio BBVA'),
-        ('Jun 30', '32强', '瓜达拉哈拉 · Estadio Akron'),
-        ('Jul 1', '32强', '多伦多 · BMO Field'),
-        ('Jul 1', '32强', '费城 · Lincoln Financial Field'),
-        ('Jul 2', '32强', '休斯敦 · NRG Stadium'),
-        ('Jul 2', '32强', '丹佛 · Empower Field'),
-        ('Jul 3', '32强', '堪萨斯城 · Arrowhead Stadium'),
-        ('Jul 3', '32强', '纳什维尔 · Geodis Park'),
-        ('Jul 4', '32强', '辛辛那提 · TQL Stadium'),
-        ('Jul 4', '32强', '奥兰多 · Camping World Stadium'),
-        ('Jul 5', '32强', '夏洛特 · Bank of America Stadium'),
-        ('Jul 5', '32强', '巴尔的摩 · M&T Bank Stadium'),
-        # 16强：7/6 - 7/7（8场，待真实比赛后更新）
-        ('Jul 6', '16强', '迈阿密 · Hard Rock Stadium'),
-        ('Jul 6', '16强', '洛杉矶 · SoFi Stadium'),
-        ('Jul 6', '16强', '达拉斯 · AT&T Stadium'),
-        ('Jul 6', '16强', '波士顿 · Gillette Stadium'),
-        ('Jul 7', '16强', '纽约/新泽西 · MetLife Stadium'),
-        ('Jul 7', '16强', '亚特兰大 · Mercedes-Benz Stadium'),
-        ('Jul 7', '16强', '西雅图 · Lumen Field'),
-        ('Jul 7', '16强', '旧金山 · Levi\'s Stadium'),
-        # 1/4决赛：7/9 - 7/11（4场，待真实比赛后更新）
+    # 16强及后续轮次（球队待定，日期和场馆按真实赛程显示）
+    upcoming_template = [
+        # 16强：7/4 - 7/5（8场）
+        ('Jul 4', '16强', '费城 · Lincoln Financial Field'),
+        ('Jul 4', '16强', '休斯敦 · NRG Stadium'),
+        ('Jul 4', '16强', '洛杉矶 · Los Angeles Stadium'),
+        ('Jul 4', '16强', '温哥华 · BC Place'),
+        ('Jul 5', '16强', '纽约/新泽西 · MetLife Stadium'),
+        ('Jul 5', '16强', '迈阿密 · Hard Rock Stadium'),
+        ('Jul 5', '16强', '达拉斯 · AT&T Stadium'),
+        ('Jul 5', '16强', '墨西哥城 · Estadio Azteca'),
+        # 1/4决赛：7/9 - 7/10（4场）
         ('Jul 9', '1/4决赛', '亚特兰大 · Mercedes-Benz Stadium'),
         ('Jul 9', '1/4决赛', '波士顿 · Gillette Stadium'),
         ('Jul 10', '1/4决赛', '达拉斯 · AT&T Stadium'),
-        ('Jul 11', '1/4决赛', '洛杉矶 · SoFi Stadium'),
-        # 半决赛：7/14 - 7/15（2场，待真实比赛后更新）
-        ('Jul 14', '半决赛', '达拉斯 · AT&T Stadium'),
-        ('Jul 15', '半决赛', '洛杉矶 · SoFi Stadium'),
+        ('Jul 10', '1/4决赛', '洛杉矶 · SoFi Stadium'),
+        # 半决赛：7/13 - 7/14（2场）
+        ('Jul 13', '半决赛', '达拉斯 · AT&T Stadium'),
+        ('Jul 14', '半决赛', '洛杉矶 · SoFi Stadium'),
         # 决赛周
         ('Jul 18', '三四名决赛', '迈阿密 · Hard Rock Stadium'),
         ('Jul 19', '决赛', '纽约/新泽西 · MetLife Stadium'),
     ]
     
-    # 32强对阵：按种子 1v32, 2v31 ... 16v17
-    r32 = []
-    for i in range(16):
-        t1 = all_32[i]
-        t2 = all_32[31 - i]
-        r32.append((t1, t2))
-    
-    # 后续轮次：球队标为“待定”，日期和场馆按真实赛程显示
-    # 16强（8场），1/4（4场），半（2场），三四名（1场），决赛（1场）= 16场
-    placeholder = {'name': '待定', 'seed': 0}
-    upcoming = [(placeholder, placeholder) for _ in range(16)]
-    
-    all_matches = r32 + upcoming
-    
-    # 合并到模板
-    knockout = []
-    for (t1, t2), (date, round_name, venue) in zip(all_matches, schedule_template):
+    knockout = r32_real[:]
+    for date, round_name, venue in upcoming_template:
         knockout.append({
             'date': date,
             'round': round_name,
-            'home': t1['name'],
-            'away': t2['name'],
+            'home': '待定',
+            'away': '待定',
             'score': '',
             'venue': venue,
-            'home_seed': t1['seed'],
-            'away_seed': t2['seed'],
+            'home_seed': 0,
+            'away_seed': 0,
         })
     
     return knockout

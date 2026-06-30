@@ -732,30 +732,44 @@ def main():
             # 尝试从扫描数据匹配
             _ms = _scan_idx.get(_norm) or _scan_idx.get(_gp_code)
             if _ms and isinstance(_ms, dict):
-                _gp_data["latest"] = {
-                    "close": _ms.get("close", 0),
-                    "pct_chg": _ms.get("pct_chg", 0),
-                    "pct_chg_5d": _ms.get("pct_chg_5d", _ms.get("pct_chg", 0)),
-                    "pct_chg_20d": _ms.get("pct_chg_20d", _ms.get("pct_chg", 0)),
-                    "rsi_14": _ms.get("rsi_14", 50),
-                    "signal_score": _ms.get("signal_score", 0),
-                    "ema_up": _ms.get("ema_up", 0),
-                    "ema_dirs": _ms.get("ema_dirs", [False]*7),
-                    "ema_score": _ms.get("ema_score", 0),
-                    "turnover_rate": _ms.get("turnover_rate", 0),
-                    "缠论买_日K": _ms.get("缠论买_日K", False),
-                    "缠论买_次数": _ms.get("缠论买_次数", 0),
-                    "金钻_黄柱": _ms.get("金钻_黄柱", False),
-                    "金钻_起涨": _ms.get("金钻_起涨", False),
-                    "四量图_机构变红": _ms.get("四量图_机构变红", False),
-                    "上涨趋势": _ms.get("上涨趋势", False),
-                    "三线共振": _ms.get("三线共振", False),
-                    "三足鼎立": _ms.get("三足鼎立", False),
-                    "signal_count": _ms.get("signal_count", 0),
-                    "当日涨停": _ms.get("当日涨停", False),
-                    "开盘_标签": _ms.get("开盘_标签", ""),
-                }
-                _wp_updated += 1
+                        # EMA 优先取顶层 ema_up/ema_score/ema_dirs（来自 scanner 写入 watch_result），其次 latest
+                        _ema_up = _ms.get("ema_up")
+                        if _ema_up is None:
+                            _ema_up = (_ms.get("latest") or {}).get("ema_up", 0)
+                        _ema_dirs = _ms.get("ema_dirs")
+                        if not _ema_dirs:
+                            _ema_dirs = (_ms.get("latest") or {}).get("ema_dirs", [False]*7)
+                        _ema_score = _ms.get("ema_score")
+                        if _ema_score is None:
+                            _ema_score = _ema_up
+                        _gp_data["latest"] = {
+                            "close": _ms.get("close", 0),
+                            "pct_chg": _ms.get("pct_chg", 0),
+                            "pct_chg_5d": _ms.get("pct_chg_5d", _ms.get("pct_chg", 0)),
+                            "pct_chg_20d": _ms.get("pct_chg_20d", _ms.get("pct_chg", 0)),
+                            "rsi_14": _ms.get("rsi_14", 50),
+                            "signal_score": _ms.get("signal_score", 0),
+                            "ema_up": _ema_up,
+                            "ema_dirs": _ema_dirs,
+                            "ema_score": _ema_score,
+                            "turnover_rate": _ms.get("turnover_rate", 0),
+                            "缠论买_日K": _ms.get("缠论买_日K", False),
+                            "缠论买_次数": _ms.get("缠论买_次数", 0),
+                            "金钻_黄柱": _ms.get("金钻_黄柱", False),
+                            "金钻_起涨": _ms.get("金钻_起涨", False),
+                            "四量图_机构变红": _ms.get("四量图_机构变红", False),
+                            "上涨趋势": _ms.get("上涨趋势", False),
+                            "三线共振": _ms.get("三线共振", False),
+                            "三足鼎立": _ms.get("三足鼎立", False),
+                            "signal_count": _ms.get("signal_count", 0),
+                            "当日涨停": _ms.get("当日涨停", False),
+                            "开盘_标签": _ms.get("开盘_标签", ""),
+                        }
+                        # 同步到金股池顶层（供 buildQueryExtras 读 entry.ema_score）
+                        _gp_data["ema_up"] = _ema_up
+                        _gp_data["ema_dirs"] = _ema_dirs
+                        _gp_data["ema_score"] = _ema_score
+                        _wp_updated += 1
             else:
                 # 无扫描数据匹配：保留已有的 latest（含历史EMA），不覆盖
                 _old_latest = _gp_data.get("latest")
