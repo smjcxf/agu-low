@@ -908,8 +908,19 @@ def main():
         except Exception as e:
             print(f"  ⚠️ 持久化 scan_result.json 失败: {e}")
 
-    stock_list = [{"code": s["code"], "name": s["name"], "py": _py_abbr(s["name"])}
-                  for s in stock_names if "code" in s and "name" in s]
+    stock_list = []
+    _seen_codes = set()
+    for s in stock_names:
+        if "code" in s and "name" in s:
+            code = s["code"]
+            if code in _seen_codes:
+                continue  # 去重：避免同名股票被多次列出
+            _seen_codes.add(code)
+            stock_list.append({
+                "code": code,
+                "name": s["name"],
+                "py": _py_abbr(s["name"]),
+            })
     # 加载上证指数斐波那契数据
     sh_fib      = load_json(os.path.join(DATA_DIR, "sh_index_fib.json"))
     # 加载深证成指斐波那契数据
