@@ -98,9 +98,8 @@ def main():
     now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     if not ranking:
-        log("⚠ 全失败，检查是否需要保留旧数据")
-        # 盘后(15:00后)不覆盖已有的有效数据
-        current_hour = datetime.datetime.now().hour
+        log("⚠ 获取失败，检查是否需要保留旧数据")
+        # 保护逻辑：只要旧数据有效就保留，不覆盖为空
         old_data = None
         if os.path.exists(OUT):
             try:
@@ -108,13 +107,9 @@ def main():
                     old_data = json.load(f)
             except:
                 pass
-        
-        if current_hour >= 15 and old_data and old_data.get('ranking') and len(old_data['ranking']) > 0:
-            log(f"✓ 盘后模式：保留上一份有效数据({len(old_data['ranking'])}条)，仅更新时间")
-            old_data['update_time'] = now_str
-            os.makedirs(os.path.dirname(OUT), exist_ok=True)
-            with open(OUT, 'w', encoding='utf-8') as f:
-                json.dump(old_data, f, ensure_ascii=False, indent=2)
+
+        if old_data and old_data.get('ranking') and len(old_data['ranking']) > 0:
+            log(f"✓ 保留上一份有效数据({len(old_data['ranking'])}条)，不覆盖")
             return
         else:
             output = {'update_time': now_str, 'data_available': False, 'ranking': []}
