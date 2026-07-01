@@ -243,63 +243,36 @@ def run_step(command, timeout):
 
 
 def _sync_dual_machine_code(workspace):
-    """双机代码同步：白名单模式，防止模板被旧版覆盖。
-
-    v4（2026-07-01 阿狸咪修复）：
-      - 不再 git pull 全量代码（会导致双机互相覆盖模板）
-      - 改为只从远程拉取代码文件白名单（.py脚本等）
-      - 模板文件（index_master.html等）由 deploy_now.py 负责同步
+    """双机代码同步：阿狸咪↔小九，每次任务执行前拉取对方最新代码。
+    
+    v2（代码数据分离后）：
+      - 代码（py/html/js/css）走 Git 同步
+      - 数据（data/*.json）走坚果云实时同步，不进 Git
+      - 只需 git pull 拉取代码变更，不再 commit/push 数据
     """
-    print("  [0/1] 🔄 双机代码同步（白名单模式）...", end="", flush=True)
+    print("  [0/1] 🔄 双机代码同步（仅拉代码，数据走坚果云）...", end="", flush=True)
     start = time.time()
 
-    # 保护名单：这些文件不从远程同步（由本地修改 + deploy_now.py 推送）
-    PROTECTED = {"index_master.html", "index.html", "multi_resonance.html",
-                 "triple_resonance.html"}
-
-    # 1. Fetch remote
+    # 拉取对端最新代码（自动 stash 本地未提交改动）
     r = subprocess.run(
-        "git fetch origin main --depth=1",
-        shell=True, cwd=workspace, capture_output=True, text=True, timeout=60
+        "git pull --autostash --no-rebase origin main",
+        shell=True, cwd=workspace, capture_output=True, text=True, timeout=120
     )
-    if r.returncode != 0:
-        print(f"⚠ (fetch失败, 使用本地代码)")
-        return
 
-    # 2. 获取远程 main 的全部文件列表，过滤掉模板/data/dist
-    r = subprocess.run(
-        "git ls-tree --name-only origin/main",
-        shell=True, cwd=workspace, capture_output=True, text=True, timeout=30
+    if r.returncode == 0:
+        elapsed = time.time() - start
+        print(f"✓  {elapsed:.1f}s")
+    else:
+        # pull 失败：用本地版继续，不阻塞流程
+        err = r.stderr.strip()[-150:] if r.stderr else "未知错误"
+        print(f"⚠  ({err[:80]})")
+        print(f"    继续使用本地代码，不影响本次执行")
+
+    # 恢复 stash（如果有未跟踪文件也被 stash 了）
+    subprocess.run(
+        "git stash pop", shell=True, cwd=workspace,
+        capture_output=True, timeout=30
     )
-    if r.returncode != 0:
-        print(f"⚠ (ls-tree失败)")
-        return
-
-    remote_files = []
-    for f in r.stdout.strip().split('\n'):
-        if not f:
-            continue
-        if f in PROTECTED:
-            continue
-        if f.startswith("data/") or f.startswith("dist/"):
-            continue
-        if f.startswith("backup_"):
-            continue
-        remote_files.append(f)
-
-    # 3. 逐个从远程 checkout（覆盖本地）
-    synced = 0
-    for fname in remote_files:
-        r_co = subprocess.run(
-            f"git checkout origin/main -- {fname}",
-            shell=True, cwd=workspace,
-            capture_output=True, text=True, timeout=30
-        )
-        if r_co.returncode == 0:
-            synced += 1
-
-    elapsed = time.time() - start
-    print(f"✓  {elapsed:.1f}s ({synced} 个代码文件已同步, 模板已保护)")
 
 
 def _check_code_version(workspace):

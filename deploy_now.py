@@ -179,84 +179,14 @@ def sync_remote_data():
 
 
 def _ensure_dist_fresh():
-    """源码模板比 dist 新则自动重建，防止部署旧版 UI。
+    """强制重建 dist，防止部署旧版 UI。
 
-    这是今晚血的教训：改了 index_master.html 但不跑 update_data_v2.py，
-    deploy_now.py 推的是旧版 dist，所有 UI 改动白改。
-
-    第二次血的教训：_rebuild_dist() 失败仍继续部署，导致旧版上线。
-    改为：重建失败 → 阻塞部署，打印详细错误。
-
-    【2026-07-01 双机修复】不再 git pull 全量代码（会导致双机互相覆盖模板），
-    改为只从远程拉取模板文件白名单（index_master.html / index.html / multi_resonance.html）。
+    【2026-07-01 根因修复】：
+      - 不再从 origin/main 拉取模板（main 可能比本地旧，会导致覆盖）
+      - 本地模板永远是权威版本
+      - 模板同步由 _auto_push_source() 在部署前推送到 main
     """
-    # 模板白名单：只有这些文件才从 Git 远程同步
-    TEMPLATE_WHITELIST = ["index_master.html", "index.html", "multi_resonance.html"]
-
-    log("   🔄 同步远程最新模板（仅白名单文件）...")
-
-    # 1. stash 所有改动（含未跟踪文件）
-    r = run("git stash -u -m 'deploy-stash'", cwd=PROJECT_ROOT)
-    stashed = (r.returncode == 0 and
-                 "No local changes" not in r.stdout and
-                 "no changes added" not in r.stdout.lower())
-    if stashed:
-        log("   ✓ 本地改动已 stash")
-    else:
-        log("   ℹ️ 无本地改动需 stash")
-
-    # 2. 只拉取模板白名单文件（不拉全量代码）
-    r = run("git fetch origin main --depth=1", cwd=PROJECT_ROOT)
-    if r.returncode != 0:
-        err = r.stderr.strip()[:200] if r.stderr else r.stdout.strip()[:200]
-        log(f"   ⚠️ git fetch 失败，使用本地模板: {err}")
-    else:
-        pulled_count = 0
-        for tpl_name in TEMPLATE_WHITELIST:
-            r_show = run(f"git show origin/main:{tpl_name}", cwd=PROJECT_ROOT)
-            if r_show.returncode == 0 and r_show.stdout.strip():
-                local_path = os.path.join(PROJECT_ROOT, tpl_name)
-                # 只在远程版本更新时覆盖
-                if os.path.exists(local_path):
-                    with open(local_path, "r", encoding="utf-8") as f:
-                        local_content = f.read()
-                    if r_show.stdout.strip() == local_content.strip():
-                        continue  # 相同则跳过
-                with open(local_path, "w", encoding="utf-8") as f:
-                    f.write(r_show.stdout)
-                pulled_count += 1
-                log(f"   ✓ 已同步 {tpl_name}（来自远程 main）")
-        if pulled_count > 0:
-            log(f"   ✓ 共同步 {pulled_count} 个模板文件")
-        else:
-            log(f"   ✓ 模板已是最新，无需同步")
-
-    # 3. 恢复本地未提交改动
-    if stashed:
-        r_pop = run("git stash pop", cwd=PROJECT_ROOT)
-        if r_pop.returncode != 0:
-            log(f"   ⚠️ git stash pop 冲突，接受本地版本并清理标记")
-            run("git checkout --ours .", cwd=PROJECT_ROOT)
-            run("git add .", cwd=PROJECT_ROOT)
-            log("   ✓ 冲突标记已清理，本地版本保留")
-
-    # 3.5. 同步模板：确保 index_master.html 基于最新的 index.html（防止双机同步覆盖）
-    master_path = os.path.join(PROJECT_ROOT, "index_master.html")
-    html_path = os.path.join(PROJECT_ROOT, "index.html")
-    if os.path.exists(html_path):
-        html_mtime = os.path.getmtime(html_path)
-        master_mtime = os.path.getmtime(master_path) if os.path.exists(master_path) else 0
-        # 修复：只有当 index.html 确实比 index_master.html 更新时才同步
-        # 避免旧 index.html 因大小差异覆盖已修改的 index_master.html
-        if html_mtime > master_mtime:
-            import shutil as _shutil
-            _shutil.copy2(html_path, master_path)
-            log(f"   ✓ index_master.html 已从 index.html 同步（防止旧模板覆盖）")
-        else:
-            log(f"   ✓ index_master.html 比 index.html 新，跳过同步，保留当前模板")
-
-    # 4. 强制重建 dist
-    log("   🔄 强制重建 dist（确保数据注入+JS验证）...")
+    log("   🔄 强制重建 dist（本地模板为权威版本）...")
     ok = _rebuild_dist()
     if not ok:
         log("   ❌ dist 重建失败，阻塞部署")
@@ -436,6 +366,7 @@ def main():
             log("   WARN --force: skipping pre-deploy audit")
 
         # 0.5. 自动重建 dist（模板改了必须重生成，防止部署旧版）
+        _auto_push_source()
         if not _ensure_dist_fresh():
             log("\nERROR deploy aborted: dist 重建或验证失败")
             return 1
@@ -566,7 +497,6 @@ def main():
         # 5. 自动同步源代码到 main 分支（永久防止双机版号冲突）
         log("-" * 55)
         log("5. Auto-syncing source code to main...")
-        _auto_push_source()
 
         return 0
 
@@ -615,35 +545,6 @@ def _auto_push_source():
         log(f"      {f}")
     if len(dirty) > 5:
         log(f"      ... 共 {len(dirty)} 个")
-
-    # 【双机冲突修复】先拉取对端最新代码再推送，避免覆盖别人刚推的模板变更
-    # 注意：只拉模板白名单文件，不拉全量代码（防止旧版覆盖）
-    log("   🔄 拉取远程最新模板...")
-    r_stash = run("git stash -u", cwd=git_root)
-    r_fetch = run("git fetch origin main --depth=1", cwd=git_root)
-    if r_fetch.returncode == 0:
-        # 只同步模板白名单
-        for tpl_name in ["index_master.html", "index.html", "multi_resonance.html"]:
-            r_show = run(f"git show origin/main:{tpl_name}", cwd=git_root)
-            if r_show.returncode == 0 and r_show.stdout.strip():
-                tpl_path = os.path.join(git_root, tpl_name)
-                if os.path.exists(tpl_path):
-                    with open(tpl_path, "r", encoding="utf-8") as f:
-                        local = f.read()
-                    if r_show.stdout.strip() != local.strip():
-                        with open(tpl_path, "w", encoding="utf-8") as f:
-                            f.write(r_show.stdout)
-        log("   ✓ 已同步远程最新模板")
-    else:
-        log(f"   ⚠️ git fetch 失败: {r_fetch.stderr.strip()[:100]}")
-    # 恢复本地未提交改动
-    if r_stash.returncode == 0 and "No local changes" not in (r_stash.stdout + r_stash.stderr):
-        r_pop = run("git stash pop", cwd=git_root)
-        if r_pop.returncode != 0:
-            log(f"   ⚠️ git stash pop 冲突，接受本地版本并清理标记")
-            run("git checkout --theirs .", cwd=git_root)
-            run("git add .", cwd=git_root)
-            log("   ✓ 冲突标记已清理")
 
     # 统一 git add（依赖 .gitignore 排除 data/ dist/）
     r = run("git add -A", cwd=git_root)
