@@ -219,10 +219,21 @@ def _ensure_dist_fresh():
     if stashed:
         r_pop = run("git stash pop", cwd=PROJECT_ROOT)
         if r_pop.returncode != 0:
-            log(f"   ⚠️ git stash pop 冲突，接受本地版本(stash)并清理标记")
-            run("git checkout --theirs .", cwd=PROJECT_ROOT)
+            log(f"   ⚠️ git stash pop 冲突，接受远程版本并清理标记")
+            run("git checkout --ours .", cwd=PROJECT_ROOT)
             run("git add .", cwd=PROJECT_ROOT)
-            log("   ✓ 冲突标记已清理，本地版本保留")
+            log("   ✓ 冲突标记已清理，远程版本保留")
+
+    # 3.5. 同步模板：确保 index_master.html 基于最新的 index.html（防止双机同步覆盖）
+    master_path = os.path.join(PROJECT_ROOT, "index_master.html")
+    html_path = os.path.join(PROJECT_ROOT, "index.html")
+    if os.path.exists(html_path):
+        html_mtime = os.path.getmtime(html_path)
+        master_mtime = os.path.getmtime(master_path) if os.path.exists(master_path) else 0
+        if html_mtime > master_mtime or os.path.getsize(html_path) != os.path.getsize(master_path):
+            import shutil as _shutil
+            _shutil.copy2(html_path, master_path)
+            log(f"   ✓ index_master.html 已从 index.html 同步（防止旧模板覆盖）")
 
     # 4. 强制重建 dist
     log("   🔄 强制重建 dist（确保数据注入+JS验证）...")
