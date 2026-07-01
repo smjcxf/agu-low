@@ -21,6 +21,7 @@ import subprocess
 import sys
 import time
 import os
+import concurrent.futures
 
 WORKSPACE = os.path.dirname(os.path.abspath(__file__))
 
@@ -149,52 +150,64 @@ MODES = {
         ],
     },
     "close": {
-        "desc": "收盘后全量 (19:30)",
+        "desc": "收盘后全量 (19:30) — 并行优化",
         "steps": [
-            ("guanlan_extractor.py", 300),
-            ("fetch_mahoro_signals.py --non-interactive", 120),
-            ("fetch_nt_data.py", 120),
-            ("fetch_margin.py", 120),
-            ("fetch_margin_etf.py", 120),
-            ("fetch_etf_subscription.py", 120),
-            ("fetch_suspension_alert.py", 120),
-            ("fetch_stock_deviation.py", 180),
-            ("fetch_sector_fund_flow.py", 180),
-            ("fetch_sector_rs.py", 90),           # 相对强度（板块连续强势）
-            ("fetch_main_week.py", 120),
-            ("fetch_market_alerts.py", 180),
-            ("fetch_concept_ranking.py", 180),
-            ("fetch_lhb.py", 300),
-            ("fetch_main_stock.py", 300),
-            ("fetch_north_fund.py", 300),
-            ("fetch_south_individual.py", 300),
-            ("fetch_herding_data.py", 180),
-            ("fetch_cffex_holdings.py", 120),
-            ("fetch_inst_trade.py", 120),
-            ("fetch_ipo_data.py", 120),
-            ("fetch_macro_data.py", 180),
-            ("fetch_fomc.py", 60),
-            ("fetch_sh_sz_history.py", 120),
-            ("fetch_up_down_stats.py", 120),
-            ("fetch_sh_index_fib.py", 60),
+            # ══ Group 1: 研报+投行信号（并行） ══
+            [
+                ("guanlan_extractor.py", 300),
+                ("fetch_mahoro_signals.py --non-interactive", 120),
+            ],
+            # ══ Group 2: 全量数据抓取（并行） ══
+            [
+                ("fetch_nt_data.py", 120),
+                ("fetch_margin.py", 120),
+                ("fetch_margin_etf.py", 120),
+                ("fetch_etf_subscription.py", 120),
+                ("fetch_suspension_alert.py", 120),
+                ("fetch_stock_deviation.py", 180),
+                ("fetch_sector_fund_flow.py", 180),
+                ("fetch_sector_rs.py", 90),
+                ("fetch_main_week.py", 120),
+                ("fetch_market_alerts.py", 180),
+                ("fetch_concept_ranking.py", 180),
+                ("fetch_lhb.py", 300),
+                ("fetch_main_stock.py", 300),
+                ("fetch_north_fund.py", 300),
+                ("fetch_south_individual.py", 300),
+                ("fetch_herding_data.py", 180),
+                ("fetch_cffex_holdings.py", 120),
+                ("fetch_inst_trade.py", 120),
+                ("fetch_ipo_data.py", 120),
+                ("fetch_macro_data.py", 180),
+                ("fetch_fomc.py", 60),
+                ("fetch_sh_sz_history.py", 120),
+                ("fetch_up_down_stats.py", 120),
+                ("fetch_sh_index_fib.py", 60),
+            ],
+            # ══ Group 3: 全量扫描（串行） ══
             ("scanner.py full", 600),
-            ("fetch_overnight_brief.py", 120),     # 全球隔夜速报（完整版，非--news-only）
-            ("generate_recommend.py", 120),
-            ("generate_top10.py", 60),
-            ("fetch_industry_map.py", 300),
-            ("fetch_limit_up_heatmap.py", 120),
-            ("fetch_52w_high.py", 120),
-            ("fetch_analyst_ratings.py", 60),
-            ("fetch_policy_density.py", 120),
-            ("update_triple_resonance_daily.py", 120),
-            ("update_multi_resonance_daily.py", 60),
+            # ══ Group 4: 生成脚本（并行） ══
+            [
+                ("fetch_overnight_brief.py", 120),
+                ("generate_recommend.py", 120),
+                ("generate_top10.py", 60),
+                ("fetch_industry_map.py", 300),
+                ("fetch_limit_up_heatmap.py", 120),
+                ("fetch_52w_high.py", 120),
+                ("fetch_analyst_ratings.py", 60),
+                ("fetch_policy_density.py", 120),
+                ("update_triple_resonance_daily.py", 120),
+                ("update_multi_resonance_daily.py", 60),
+            ],
+            # ══ Group 5: 注入+部署（串行） ══
             ("update_data_v2.py", 300),
             ("enhance_dist.py", 30),
             ("check_syntax.py", 30),
-            ("sync_check.py", 30),      # 坚果云同步检查（收盘关键部署）
+            ("sync_check.py", 30),
             ("deploy_now.py", 180),
             ("push_notify.py", 120),
         ],
+        "max_parallel": 6,
     },
     "backup": {
         "desc": "审核+自动备份 (21:00)",
@@ -240,6 +253,31 @@ def run_step(command, timeout):
     except Exception as e:
         elapsed = time.time() - start
         return False, elapsed, str(e)[:150]
+
+
+def run_parallel_group(group_steps, max_workers=6):
+    """Run a group of steps in parallel. Returns results in original order.
+    
+    group_steps: list of (command, timeout)
+    Returns: list of (command, ok, elapsed, detail)
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    
+    def _run_one(cmd_timeout):
+        cmd, timeout = cmd_timeout
+        ok, elapsed, detail = run_step(cmd, timeout)
+        return (cmd, ok, elapsed, detail)
+    
+    results = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(_run_one, ct) for ct in group_steps]
+        for f in as_completed(futures):
+            results.append(f.result())
+    
+    # Return in original order (for consistent output)
+    order = {ct[0]: i for i, ct in enumerate(group_steps)}
+    results.sort(key=lambda r: order.get(r[0], 999))
+    return results
 
 
 def _sync_dual_machine_code(workspace):
@@ -432,7 +470,26 @@ def main():
     import datetime as _dt
     _today_wd = _dt.date.today().weekday()
     for i in range(start_idx, len(cfg["steps"])):
-        cmd, tmo = cfg["steps"][i]
+        step = cfg["steps"][i]
+
+        # ═══ 并行组：列表中包含多个 (cmd, tmo) ═══
+        if isinstance(step, list):
+            label = f"[{i + 1}/{len(cfg['steps'])}]"
+            max_workers = cfg.get("max_parallel", 6)
+            print(f"  {label} 🔀 并行组 ({len(step)}个任务, 最多{max_workers}并发)")
+            group_ok, group_elapsed, group_detail = run_parallel_group(step, max_workers)
+            # 存储组内每个结果
+            for j, (cmd_j, tmo_j) in enumerate(step):
+                results[(i, j)] = group_detail.get(j, (cmd_j, False, 0, "NOT_RUN"))
+            # 用组摘要作为 i 的结果
+            results[i] = (f"PARALLEL_GROUP_{len(step)}", group_ok, group_elapsed, "")
+            _write_heartbeat(i + 1, len(cfg["steps"]), start_ts)
+            if not group_ok:
+                failed_indices.append(i)
+            continue
+
+        # ═══ 单步执行 ═══
+        cmd, tmo = step
         cmd_name = cmd.split()[0]
 
         # 停更数据源：仅每周指定日运行
@@ -462,7 +519,21 @@ def main():
     if failed_indices:
         print(f"\n  ── 重试 {len(failed_indices)} 个失败步骤 ──")
         for idx in failed_indices:
-            cmd, tmo = cfg["steps"][idx]
+            step = cfg["steps"][idx]
+
+            # 并行组：重试组内失败的任务
+            if isinstance(step, list):
+                max_workers = cfg.get("max_parallel", 6)
+                print(f"  [R] 🔀 并行组重试 ({len(step)}个任务)")
+                group_ok, group_elapsed, group_detail = run_parallel_group(step, max_workers)
+                for j, (cmd_j, tmo_j) in enumerate(step):
+                    results[(idx, j)] = group_detail.get(j, (cmd_j, False, 0, "NOT_RUN"))
+                if not group_ok:
+                    still_failed.append(f"PARALLEL_GROUP_{len(step)}")
+                continue
+
+            # 单步重试
+            cmd, tmo = step
             label = "[R]"
             print(f"  {label} {cmd:<35s} ", end="", flush=True)
             ok, elapsed, detail = run_step(cmd, tmo)

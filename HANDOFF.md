@@ -1,93 +1,86 @@
-# 阿狸咪 → 小九 交接记录
+# 阿狸咪 → 小九 交接文档
 
-## 最新版本信息
-- **交接时间**: 2026-07-01 23:50
-- **最新 commit**: `2c0ee7d`
-- **Build**: `20260701234650`
-- **已部署**: ✅ gh-pages（GitHub Pages 已更新）
+**日期**: 2026-07-02 上午  
+**交接人**: 阿狸咪（家里电脑）  
+**接收人**: 小九（单位电脑）  
 
 ---
 
-## 小九明天晚上跑任务前请确认
+## ✅ 本次修改摘要（昨晚+今早）
 
-### ✅ 自动完成（无需手动操作）
-`batch_update.py` 启动时自动执行：
-```
-git pull --autostash --no-rebase origin main
-```
-会自动拉取最新代码，包括今晚阿狸咪的所有修改。
+### 1. IPO 申购显示逻辑修复
+- **问题**: 已过申购日的新股（如6月29日的托伦斯）仍然显示
+- **修复**: `renderIpoScore()` 中增加 `apply_date < today` 判断，**过期直接跳过不显示**
+- **效果**: 只有"今日申购"或"未来申购"的新股才会展示
 
-### ⚠️ 手动确认（仅需确认一次）
-运行 `git log --oneline -3`，输出应包含：
-```
-2c0ee7d fix: 已过申购日的新股直接不显示...
-afb84fe fix: 逻辑详解页泄露二次修复+健康看板缓存问题...
-75288e4 fix: 止损公式案例说明...
-```
-如果看不到这些 commit，说明 git pull 没成功，手动执行：
-```bash
-cd E:\workspace\stock-scanner
-git pull origin main
-```
+### 2. 逻辑详解页 — 定时任务映射表修复
+- **11:45 午间复盘**: 补充"概念涨跌榜"
+- **15:30 尾盘扫描**: 补充"概念涨跌榜"
+- **19:30 卡片**: 
+  - ✅ 添加"🔄 双机代码同步"说明（第一步拉取对方最新代码）
+  - ❌ 删除错误的"周二07:30拉取小九代码"行（实际是19:30自动 `git pull`）
 
----
+### 3. `batch_update.py` — 19:30 全量任务并行优化（⚠️ 重要）
+- **改造内容**:
+  - `close` 模式步骤重组为 **5个并行组**
+  - 新增 `run_parallel_group()` 函数，支持并发执行
+  - 主循环支持识别并行组（列表）vs 单步（元组）
+- **预期效果**:
+  - 原来串行 ~80分钟 → 并行后 **~35分钟**
+  - 并行组1（研报）: guanlan + mahoro 同时跑
+  - 并行组2（全量数据抓取）: **19个数据源并发**，最多6个同时跑
+  - 并行组3（扫描）: 串行（依赖数据）
+  - 并行组4（生成脚本）: 9个生成脚本并发
+  - 并行组5（注入部署）: 串行
 
-## 今晚主要修改内容（小九需了解）
+- **兼容性**: 其他模式（pre_market, morning_scan 等）不受影响，它们的 steps 仍是扁平列表
 
-### 1. IPO申购日过滤（renderIpoScore）
-- **修改**: `index_master.html` 第452442行附近
-- **逻辑**: `if (ad < today) continue;` → 已过申购日的新股完全不显示
-- **影响**: 打新研判卡片只显示"今日申购"或未来申购的新股
-
-### 2. 逻辑详解页泄露修复（共2轮，约54处）
-- **修改**: `index_master.html` 多处
-- **铁律**: 不显示脚本名、数据源名、内部变量名
-- **影响**: 逻辑详解页 + 定时任务表格区域
-
-### 3. deploy_now.py 双机覆盖根因修复
-- **修改**: `deploy_now.py`
-- **关键**: 删除从 origin/main 拉模板的逻辑，避免覆盖本地修改
-- **影响**: 小九和阿狸咪互不影响对方的模板修改
-
-### 4. batch_update.py git pull 恢复
-- **修改**: `batch_update.py` `_sync_dual_machine_code()`
-- **关键**: 恢复 `git pull --autostash --no-rebase origin main`
-- **影响**: 小九每次跑任务前自动拉取最新代码
-
-### 5. 止损公式案例说明
-- **修改**: `index_master.html` 逻辑详解页
-- **内容**: 补充V型反弹股票止损线较宽的案例解释
+### 4. 双机协作确认
+- **阿狸咪**（家里）: 周末/节假日 19:30 跑
+- **小九**（单位）: 工作日 19:30 跑
+- **每次跑前**: 自动 `git pull` 拉取对方最新代码
+- **白天关机**: 完全没问题，不影响数据
 
 ---
 
-## 双机协作规范（重要！）
+## 📋 小九行动清单（今晚执行前）
 
-| 规则 | 说明 |
-|------|------|
-| 小九跑时间 | 工作日 19:30-21:00 |
-| 阿狸咪跑时间 | 周末/节假日 19:30-21:00 |
-| 代码推送 | 修改完立即 commit + push main |
-| 部署目标 | gh-pages（deploy_now.py 自动处理）|
-| 模板修改 | 任意一方修改 index_master.html 后推 main，另一方自动拉取 |
-
----
-
-## 故障处理
-
-### 如果小九跑任务时报错
-1. 先看 `batch_update.log`（和 batch_update.py 同目录）
-2. 确认 git status 是否干净（无未提交修改）
-3. 如果模板被覆盖，从 main 重新拉取
-
-### 如果页面显示旧版本
-1. 强刷浏览器：Ctrl+Shift+R
-2. 确认 GitHub Pages 构建状态（仓库 Settings → Pages）
-3. 确认 dist/index.html 的 Build stamp 是否是最新的
+- [ ] `git pull origin main` 拉取最新代码（应该会自动执行，但手动确认一下）
+- [ ] 检查 `batch_update.py` 是否能正常启动：
+  ```bash
+  cd E:\workspace\stock-scanner
+  python batch_update.py --help
+  ```
+- [ ] **今晚第一次跑并行版**，观察是否有报错：
+  ```bash
+  python batch_update.py close
+  ```
+- [ ] 如果并行版有问题，回滚方法：
+  ```bash
+  git log --oneline -5   # 找到并行优化前的版本
+  git checkout <commit_hash> batch_update.py
+  git commit -m "hotfix: 回滚batch_update.py并行优化"
+  ```
 
 ---
 
-## 联系人
-- 阿狸咪（家里电脑）: 周末/节假日值班
-- 小九（单位电脑）: 工作日值班
+## 🔍 验证清单
 
-交接完成 ✅
+跑完后检查：
+- [ ] 所有 fetch_*.py 脚本都成功（或跳过合理）
+- [ ] scanner.py full 成功
+- [ ] update_data_v2.py 成功
+- [ ] deploy_now.py 成功（网站更新）
+- [ ] 耗时是否明显缩短（目标 <40分钟）
+
+---
+
+## 📞 有问题联系
+
+- 阿狸咪坚果云文件夹: `E:\Nutstore\九宝量化备份\`
+- GitHub 仓库: https://github.com/ah-quant999/quant-scanner-v6
+- 网站: https://ah-quant999.github.io/quant-scanner-v6/
+
+---
+
+**阿狸咪签名**: 🔥 2026-07-02 上午
