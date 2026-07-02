@@ -1,497 +1,427 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-打新价值评分数据获取 -- 每天开盘前自动更新
+打新价值评分数据获取 —— 支持申购期/上市首日/上市后追踪
 用法: python fetch_ipo_data.py
 输出: data/ipo_score.json
 
-数据源:
-  1. 东方财富 push2 API — 新股申购列表（发行价、PE、中签率等）
-  2. 东方财富 datacenter API — 行业市盈率基准
+状态分类:
+  - applying: 待申购（显示评分+建议申购等级）
+  - listed_today: 今日上市（显示首日表现）
+  - tracking: 上市后5日内追踪（显示是否值得追入）
+  - 超5天: 隐藏
 
-评分维度（满分100）:
-  - PE折价 (0-40分): (行业PE - 发行PE) / 行业PE * 40，上限40分
-  - 行业热度 (0-25分): 基于板块资金流入方向评分
-  - 发行价合理性 (0-20分): 10-30元区间最优
-  - 板块溢价 (0-15分): 主板15 > 创业板12 > 科创板10 > 北交所8
+数据源:
+  1. 东方财富 push2 API — 新股申购/上市列表
+  2. 东方财富行情 API — 实时行情（收盘价、涨幅、换手率）
 """
 import json
 import os
 import sys
 import time
 import subprocess
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
-def http_get(url, retry=5):
-    """HTTP GET using curl subprocess (sandbox compatible)"""
+def http_get(url, retry=3):
+    """HTTP GET using curl subprocess"""
     last_err = None
     for i in range(retry):
         try:
             if i > 0:
-                time.sleep(3 * i)  # 递增退避
+                time.sleep(3 * i)
             result = subprocess.run([
                 "curl", "-s", "--max-time", "20",
-                "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
                 "-H", "Referer: https://data.eastmoney.com/xg/xg/",
                 "-H", "Accept: application/json, text/html, */*",
                 url
             ], capture_output=True, text=True, timeout=30)
             if result.returncode != 0:
                 err_msg = result.stderr[:200] or f"exit={result.returncode}"
-                if result.returncode in (28, 56, 7):  # timeout, recv error, connect error
-                    raise ConnectionError(f"curl {err_msg}")
-                raise Exception(f"curl exit {result.returncode}: {err_msg}")
+                raise ConnectionError(f"curl {err_msg}")
             if not result.stdout or not result.stdout.strip():
                 raise ValueError("Empty response")
             return json.loads(result.stdout)
-        except (json.JSONDecodeError, ValueError, ConnectionError) as e:
-            last_err = e
         except Exception as e:
             last_err = e
     raise last_err
 
 def board_name(market_code):
-    """市场代码 → 板块名称"""
-    m = {
-        "SH": "沪市主板", "SZ": "深市主板", "CY": "创业板",
-        "KC": "科创板", "BJ": "北交所"
-    }
+    m = {"SH": "沪市主板", "SZ": "深市主板", "CY": "创业板", "KC": "科创板", "BJ": "北交所"}
     return m.get(market_code, "其他")
 
 def board_score(board):
-    """板块溢价评分"""
     s = {"沪市主板": 15, "深市主板": 14, "创业板": 12, "科创板": 10, "北交所": 8}
     return s.get(board, 8)
 
-def fetch_sector_flow():
-    """读取已有的板块资金流数据用于行业热度评分"""
-    flow_path = os.path.join(DATA_DIR, "sector_fund_flow.json")
-    if os.path.exists(flow_path):
-        with open(flow_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
-
-def score_industry_heat(industry, sector_flow):
-    """行业热度评分 (0-25分)"""
-    if not sector_flow:
-        return 15  # 默认中等
-    sorted_sectors = sector_flow.get("sorted_sectors", [])
-    flow_map = sector_flow.get("flows", {})
-    
-    # 在流入板块中查找
-    rank = 0
-    for s in sorted_sectors:
-        rank += 1
-        if industry in s.get("name", ""):
-            direction = flow_map.get(s.get("name", ""), {}).get("direction", "")
-            if direction == "流入":
-                if rank <= 3: return 25
-                if rank <= 10: return 20
-                return 18
-            elif direction == "流出":
-                if rank <= 3: return 8
-                return 10
-    return 12  # 未找到，中等偏低
-
 def score_price(price):
-    """发行价合理性评分 (0-20分)"""
     if not price or price <= 0:
         return 10
-    if price <= 5:
-        return 12   # 低价股
-    if price <= 15:
-        return 20   # 黄金区间
-    if price <= 30:
-        return 18   # 不错
-    if price <= 50:
-        return 14   # 偏贵但可接受
-    if price <= 80:
-        return 8    # 高价
-    return 4        # 超高价
+    if price <= 5: return 12
+    if price <= 15: return 20
+    if price <= 30: return 18
+    if price <= 50: return 14
+    if price <= 80: return 8
+    return 4
 
 def fetch_apply_dates_from_calendar():
-    """从东方财富新股申购日历获取真实申购日期。
-
-    返回 {code: apply_date_str(YYYYMMDD), ...}
-    只包含近7天内（含未来）的申购记录，确保用户至少提前1天看到研判。
-    """
+    """从东方财富新股申购日历获取真实申购日期"""
     result = {}
-
-    # ═══ 主方案：从东方财富日历页面提取内嵌JSON数据 ═══
     try:
         raw = subprocess.run(
             ["curl", "-s", "--max-time", "15",
-             "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+             "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
              "https://data.eastmoney.com/xg/xg/calendar.html"],
             capture_output=True, text=True, timeout=20
         )
         if raw.returncode == 0 and raw.stdout.strip():
             import re
             html = raw.stdout
-
-            # 日历页面内嵌了JSON数组格式的数据，格式：
-            # {"SECUCODE":"301583.SZ","TRADE_DATE":"2026-06-29 00:00:00","DATE_TYPE":"申购","SECURITY_CODE":"301583","SECURITY_NAME_ABBR":"托伦斯",...}
-
-            # 方法1：直接用正则提取所有JSON记录
             json_pattern = re.compile(
                 r'\{"SECUCODE":"[^"]+","TRADE_DATE":"([^"]+)","DATE_TYPE":"([^"]+)"'
                 r',"SECURITY_CODE":"(\d{6})","SECURITY_NAME_ABBR":"([^"]+)"[^}]*\}'
             )
             matches = json_pattern.findall(html)
-
             for trade_date, date_type, code, name in matches:
                 if date_type != "申购":
                     continue
-                # 提取日期部分 YYYY-MM-DD
                 apply_date = trade_date.split(" ")[0].replace("-", "")
                 if code and apply_date and len(apply_date) >= 8:
                     result[code] = apply_date
-
             if result:
-                print(f"  ✓ 日历页面提取到 {len(result)} 条申购日期")
-                # 打印关键信息
-                for c in list(result.keys())[:5]:
-                    print(f"    📅 {c} → {result[c]}")
                 return result
-
-            # 方法2：如果正则没匹配到，尝试找更大的JSON块
-            json_block_pattern = re.compile(r'(\[{".*?"DATE_TYPE".*?"申购".*?}\])', re.DOTALL)
-            block_match = json_block_pattern.search(html)
-            if block_match:
-                try:
-                    records = json.loads(block_match.group(1))
-                    for rec in records:
-                        if rec.get("DATE_TYPE") != "申购":
-                            continue
-                        code = str(rec.get("SECURITY_CODE") or "")
-                        td = rec.get("TRADE_DATE", "")
-                        apply_date = str(td).split(" ")[0].replace("-", "") if td else ""
-                        if code and apply_date and len(apply_date) >= 8:
-                            result[code] = apply_date
-                    if result:
-                        print(f"  ✓ JSON块解析到 {len(result)} 条申购日期")
-                        return result
-                except json.JSONDecodeError:
-                    pass
-
     except Exception as e:
-        print(f"  ⚠️ 日历页面抓取失败: {e}")
-
+        print(f"  ⚠️ 日历抓取失败: {e}")
     return result
 
+def fetch_realtime_quote(code, market_code):
+    """获取实时行情：收盘价、涨幅、换手率"""
+    secid = f"0.{code}" if market_code in ("SZ", "CY") else f"1.{code}"
+    url = f"https://push2.eastmoney.com/api/qt/stock/get?secid={secid}&fields=f43,f44,f45,f46,f47,f48,f57,f58,f60,f170,f168"
+    try:
+        data = http_get(url)
+        info = data.get("data", {})
+        # f43=最新价, f44=最高价, f45=最低价, f46=开盘价, f47=成交量, f48=成交额
+        # f57=代码, f58=名称, f60=昨收, f170=涨幅, f168=换手率
+        latest = info.get("f43", 0) or 0
+        open_price = info.get("f46", 0) or 0
+        prev_close = info.get("f60", 0) or 0
+        change_pct = info.get("f170", 0) or 0
+        turnover = info.get("f168", 0) or 0
+        return {
+            "latest": float(latest) / 100 if latest else 0,  # 注意：有些接口需要除以100
+            "open_price": float(open_price) / 100 if open_price else 0,
+            "prev_close": float(prev_close) / 100 if prev_close else 0,
+            "change_pct": float(change_pct) / 100 if change_pct else 0,
+            "turnover": float(turnover) / 100 if turnover else 0,
+        }
+    except Exception as e:
+        print(f"    ⚠️ {code} 行情获取失败: {e}")
+        return None
+
+def classify_status(listing_str, today_str):
+    """判断新股状态"""
+    if listing_str in ("-", "", "None", None):
+        return "applying", None
+    try:
+        listing_int = int(listing_str)
+        today_int = int(today_str)
+        if listing_int == today_int:
+            return "listed_today", listing_int
+        elif today_int - listing_int <= 5:
+            return "tracking", listing_int
+        else:
+            return "expired", listing_int
+    except:
+        return "applying", None
+
+def tracking_advice(issue_price, latest_price, change_pct, turnover):
+    """上市后追踪建议：是否值得追入"""
+    if not issue_price or issue_price <= 0 or not latest_price or latest_price <= 0:
+        return "数据不足，无法判断", "#999", "#f5f5f5"
+    
+    total_return = (latest_price - issue_price) / issue_price * 100
+    
+    # 判断逻辑
+    if total_return > 50 and change_pct > 5:
+        return "🔴 强势上涨，可考虑追入", "#c62828", "#ffebee"
+    elif total_return > 20 and change_pct > 0:
+        return "🟡 表现良好，观望等回调", "#e65100", "#fff3e0"
+    elif total_return > 0 and change_pct > -3:
+        return "🟠 温和上涨，可小仓位", "#f57f17", "#fffde7"
+    elif total_return < 0 or change_pct < -5:
+        return "🟢 已破发或走弱，不建议追", "#2e7d32", "#e8f5e9"
+    else:
+        return "⚪ 震荡，建议观望", "#888", "#f5f5f5"
 
 def fetch_ipo_list():
-    """
-    从东方财富获取当前可申购新股列表
-    使用 push2 API，筛选可申购状态新股
-    返回 [(code, name, issue_price, issue_pe, industry_pe, lottery_rate, 
-             market_code, industry_name, apply_date, apply_code), ...]
-    """
+    """获取新股列表并分类"""
     candidates = []
+    today_str = datetime.now().strftime("%Y%m%d")
     
-    # ═══ push2 API — 获取全A股按上市日期升序，"f26=-"的未上市新股排在最前 ═══
+    # push2 API: 获取按上市日期排序的新股
     url1 = ("https://push2.eastmoney.com/api/qt/clist/get?"
-            "fid=f26&po=0&pz=15&pn=1&np=1&fltt=2&invt=2"
+            "fid=f26&po=0&pz=30&pn=1&np=1&fltt=2&invt=2"
             "&fs=m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23"
             "&fields=f12,f14,f18,f26,f115")
     
     try:
         data = http_get(url1)
         stocks = data.get("data", {}).get("diff", [])
-        if stocks:
-            today_str = datetime.now().strftime("%Y%m%d")
-
-            # 获取真实申购日期（提前至少1天展示研判）
-            apply_date_map = fetch_apply_dates_from_calendar()
-
-            for s in stocks:
-                code = s.get("f12", "")
-                name = s.get("f14", "")
-                if not code or not name:
-                    continue
-                
-                f26_raw = s.get("f26", "")
-                listing_str = str(f26_raw) if f26_raw else ""
-                
-                # 关键：f26="-" 表示未上市 → 这就是待申购新股！
-                is_unlisted = (listing_str == "-" or listing_str == "" or listing_str == "None")
-                
-                listing_int = 0
-                if not is_unlisted:
-                    try:
-                        listing_int = int(listing_str)
-                    except:
-                        is_unlisted = True
-                
-                # 筛掉上市超过30天的老股
-                if not is_unlisted:
-                    try:
-                        today_int = int(today_str)
-                        if listing_int < today_int - 30:
-                            continue
-                    except:
-                        continue
-                
-                # 提取PE和价格（注意API返回的可能是字符串，需要类型转换）
-                issue_pe_raw = s.get("f115", 0)
-                issue_price_raw = s.get("f18", 0)
-                
-                try:
-                    issue_pe = float(issue_pe_raw) if issue_pe_raw and issue_pe_raw != "-" else 0
-                except (ValueError, TypeError):
-                    issue_pe = 0
-                try:
-                    issue_price = float(issue_price_raw) if issue_price_raw and issue_price_raw != "-" else 0
-                except (ValueError, TypeError):
-                    issue_price = 0
-                
-                # 板块判断
-                if code.startswith("688"):
-                    market_code = "KC"
-                elif code.startswith("30"):
-                    market_code = "CY"
-                elif code.startswith("92"):
-                    market_code = "BJ"
-                elif code.startswith("00") or code.startswith("001"):
-                    market_code = "SZ"
-                else:
-                    market_code = "SH"
-                
-                candidates.append({
-                    "code": code,
-                    "name": name,
-                    "issue_price": round(issue_price, 2) if issue_price > 0 else 0,
-                    "issue_pe": round(issue_pe, 2) if issue_pe > 0 else 0,
-                    "industry_pe": 0,
-                    "lottery_rate": 0,
-                    "market_code": market_code,
-                    "industry": "",
-                    # 使用真实申购日期，未获取到则用今天日期兜底
-                    "apply_date": apply_date_map.get(code, today_str) if not is_unlisted else apply_date_map.get(code, today_str),
-                    "is_unlisted": is_unlisted,
-                    "apply_code": code
-                })
-
-            # 日志：显示哪些股票获取到了真实申购日期
-            for c in candidates:
-                real_date = apply_date_map.get(c["code"], "")
-                date_note = f"（真实申购日:{real_date}）" if real_date and real_date != today_str else ""
-                if real_date and real_date != today_str:
-                    print(f"    📅 {c['name']}({c['code']}) → {real_date}{date_note}")
+        apply_date_map = fetch_apply_dates_from_calendar()
+        
+        for s in stocks:
+            code = s.get("f12", "")
+            name = s.get("f14", "")
+            if not code or not name:
+                continue
             
-            unlisted = [c for c in candidates if c.get("is_unlisted")]
-            listed_new = [c for c in candidates if not c.get("is_unlisted")]
-            if unlisted:
-                print(f"  ✓ push2: {len(unlisted)} 只待上市新股")
-            if listed_new:
-                print(f"  ✓ push2: {len(listed_new)} 只近30天上市新股")
+            f26_raw = s.get("f26", "")
+            listing_str = str(f26_raw) if f26_raw else ""
+            
+            status, listing_int = classify_status(listing_str, today_str)
+            if status == "expired":
+                continue
+            
+            # 提取PE和价格
+            issue_pe_raw = s.get("f115", 0)
+            issue_price_raw = s.get("f18", 0)
+            try:
+                issue_pe = float(issue_pe_raw) if issue_pe_raw and issue_pe_raw != "-" else 0
+            except:
+                issue_pe = 0
+            try:
+                issue_price = float(issue_price_raw) if issue_price_raw and issue_price_raw != "-" else 0
+            except:
+                issue_price = 0
+            
+            # 板块判断
+            if code.startswith("688"): market_code = "KC"
+            elif code.startswith("30"): market_code = "CY"
+            elif code.startswith("92"): market_code = "BJ"
+            elif code.startswith("00") or code.startswith("001"): market_code = "SZ"
+            else: market_code = "SH"
+            
+            candidates.append({
+                "code": code,
+                "name": name,
+                "issue_price": round(issue_price, 2) if issue_price > 0 else 0,
+                "issue_pe": round(issue_pe, 2) if issue_pe > 0 else 0,
+                "market_code": market_code,
+                "apply_date": apply_date_map.get(code, ""),
+                "listing_date": str(listing_int) if listing_int else "",
+                "status": status,
+            })
+        
+        print(f"  ✓ push2: {len(candidates)} 只新股（待申购+上市+追踪）")
     except Exception as e:
         print(f"  ⚠️ push2 API 失败: {e}")
-        import traceback
-        traceback.print_exc()
-
-    if not candidates:
-        print("  ℹ️  未找到可申购/近期上市新股，将输出空数据")
     
     return candidates
 
-def fetch_stock_detail(code, market_code):
-    """查询单只股票详情（发行价、PE等）"""
-    secid = f"0.{code}" if market_code in ("SZ", "CY") else f"1.{code}"
-    url = f"https://push2.eastmoney.com/api/qt/stock/get?secid={secid}&fields=f9,f18,f100,f115,f162"
-    try:
-        data = http_get(url)
-        info = data.get("data", {})
-        return {
-            "issue_pe": info.get("f115", 0) or info.get("f9", 0) or 0,
-            "issue_price": info.get("f18", 0) or 0,
-            "industry_pe": info.get("f100", 0) or info.get("f162", 0) or 0,
-        }
-    except:
-        return {"issue_pe": 0, "issue_price": 0, "industry_pe": 0}
-
-def calculate_scores(candidates, sector_flow):
-    """计算每个新股的评分"""
+def calculate_applying_scores(candidates):
+    """计算待申购新股的评分"""
     results = []
-    
     for c in candidates:
+        if c["status"] != "applying":
+            continue
+        
         issue_pe = c["issue_pe"]
-        industry_pe = c["industry_pe"]
         price = c["issue_price"]
         board = board_name(c["market_code"])
-        industry = c["industry"] or "待确认"
         
-        # 如果行业PE缺失，用发行PE + 板块加成估算
-        if industry_pe <= 0 and issue_pe > 0:
-            board_pe_add = {"沪市主板": 8, "深市主板": 8, "创业板": 15, "科创板": 20, "北交所": 5}
-            industry_pe = issue_pe + board_pe_add.get(board, 10)
+        # 估算行业PE（发行PE + 板块加成）
+        board_pe_add = {"沪市主板": 8, "深市主板": 8, "创业板": 15, "科创板": 20, "北交所": 5}
+        industry_pe = issue_pe + board_pe_add.get(board, 10) if issue_pe > 0 else 20
         
-        # PE折价评分 (0-40)
+        # PE折价评分
         if issue_pe > 0 and industry_pe > 0 and industry_pe > issue_pe:
             pe_discount = round((industry_pe - issue_pe) / industry_pe * 100, 1)
-            pe_discount = min(pe_discount, 80)  # 封顶80%折价（防止数据异常）
+            pe_discount = min(pe_discount, 80)
         else:
             pe_discount = 0
-        
         pe_score = min(40, max(0, pe_discount * 0.5)) if pe_discount > 0 else 0
         
-        # 行业热度评分 (0-25)
-        heat_score = score_industry_heat(industry, sector_flow)
-        
-        # 发行价合理性 (0-20)
+        # 发行价合理性
         price_score = score_price(price)
-        
-        # 板块溢价 (0-15)
+        # 板块溢价
         board_bonus = board_score(board)
+        # 行业热度（默认中等）
+        heat_score = 15
         
         total = round(pe_score + heat_score + price_score + board_bonus)
         
-        # 推荐等级
         if total >= 80:
-            recommend = "强烈推荐申购"
-            tag_color = "#2e7d32"
-            bg_color = "#e8f5e9"
+            recommend, tag_color, bg_color = "强烈推荐申购", "#2e7d32", "#e8f5e9"
         elif total >= 65:
-            recommend = "建议申购"
-            tag_color = "#e65100"
-            bg_color = "#fff3e0"
+            recommend, tag_color, bg_color = "建议申购", "#e65100", "#fff3e0"
         elif total >= 50:
-            recommend = "谨慎参与"
-            tag_color = "#f57f17"
-            bg_color = "#fffde7"
+            recommend, tag_color, bg_color = "谨慎参与", "#f57f17", "#fffde7"
         else:
-            recommend = "不建议申购"
-            tag_color = "#c62828"
-            bg_color = "#ffebee"
+            recommend, tag_color, bg_color = "不建议申购", "#c62828", "#ffebee"
         
-        # 亮点文案（PE折价已在dims行显示，此处不再重复）
         highlights = []
-        if c.get("lottery_rate", 0) > 0:
-            highlights.append(f"中签率{c['lottery_rate']}%")
-        if heat_score >= 20:
-            highlights.append("行业热度高")
         if 10 <= price <= 30:
-            highlights.append("发行价适中")
+            highlights.append(f"发行价¥{price}适中")
+        if pe_discount > 20:
+            highlights.append(f"PE折价{pe_discount}%")
         if board in ("沪市主板", "深市主板"):
             highlights.append(f"{board}溢价")
         
-        # 首日预估收益
-        est_return = 0
-        if price > 0 and pe_discount > 0:
-            # 粗略估算：按PE折价的一半作为首日涨幅基础
-            est_pct = min(pe_discount * 0.6, 44)  # 首个交易日44%涨停板限制
-            est_return = round(price * est_pct / 100 * 500, -2)  # 每签500股
-        if est_return >= 1000:
-            highlights.append(f"首日预估收益{int(est_return):,}+")
-        
         results.append({
-            "code": c["code"],
-            "name": c["name"],
-            "apply_code": c.get("apply_code", c["code"]),
-            "issue_price": price,
-            "issue_pe": round(issue_pe, 1),
-            "industry_pe": round(industry_pe, 1),
-            "pe_discount": pe_discount,
-            "lottery_rate": c.get("lottery_rate", 0),
-            "board": board,
-            "industry": industry,
-            "apply_date": c.get("apply_date", ""),
-            "score": total,
-            "recommend": recommend,
-            "tag_color": tag_color,
-            "bg_color": bg_color,
-            "highlights": highlights[:3],  # 最多3条
+            "code": c["code"], "name": c["name"],
+            "issue_price": price, "issue_pe": issue_pe,
+            "industry_pe": round(industry_pe, 1), "pe_discount": pe_discount,
+            "board": board, "apply_date": c["apply_date"],
+            "listing_date": c["listing_date"],
+            "score": total, "recommend": recommend,
+            "tag_color": tag_color, "bg_color": bg_color,
+            "highlights": highlights[:3],
+            "status": "applying",
         })
-    
-    # 按评分降序
     results.sort(key=lambda x: -x["score"])
     return results
 
-def generate_summary(results):
+def process_listed_and_tracking(candidates):
+    """处理已上市新股：抓取行情并生成建议"""
+    results = []
+    for c in candidates:
+        if c["status"] not in ("listed_today", "tracking"):
+            continue
+        
+        quote = fetch_realtime_quote(c["code"], c["market_code"])
+        if not quote:
+            continue
+        
+        issue_price = c["issue_price"]
+        latest = quote["latest"]
+        open_price = quote["open_price"]
+        change_pct = quote["change_pct"]
+        turnover = quote["turnover"]
+        
+        # 计算首日/累计收益率
+        if issue_price > 0:
+            total_return = round((latest - issue_price) / issue_price * 100, 2)
+            open_return = round((open_price - issue_price) / issue_price * 100, 2) if open_price > 0 else 0
+        else:
+            total_return = 0
+            open_return = 0
+        
+        if c["status"] == "listed_today":
+            # 上市首日：展示首日表现
+            recommend = "上市首日"
+            tag_color = "#1565c0"
+            bg_color = "#e3f2fd"
+            highlights = []
+            if open_return > 0:
+                highlights.append(f"首日开盘涨{open_return}%→{open_price}")
+            if total_return > 0:
+                highlights.append(f"当前涨{total_return}%")
+            if turnover > 0:
+                highlights.append(f"换手率{turnover}%")
+        else:
+            # 上市后追踪：给出是否值得追入建议
+            advise, tag_color, bg_color = tracking_advice(issue_price, latest, change_pct, turnover)
+            recommend = advise
+            highlights = []
+            if total_return > 0:
+                highlights.append(f"较发行价+{total_return}%")
+            elif total_return < 0:
+                highlights.append(f"已破发{abs(total_return)}%")
+            if turnover > 0:
+                highlights.append(f"换手率{turnover}%")
+        
+        results.append({
+            "code": c["code"], "name": c["name"],
+            "issue_price": issue_price,
+            "latest_price": latest,
+            "open_price": open_price,
+            "change_pct": change_pct,
+            "turnover": turnover,
+            "total_return": total_return,
+            "open_return": open_return,
+            "board": board_name(c["market_code"]),
+            "listing_date": c["listing_date"],
+            "score": 0,  # 上市后不评分
+            "recommend": recommend,
+            "tag_color": tag_color, "bg_color": bg_color,
+            "highlights": highlights[:3],
+            "status": c["status"],
+        })
+    return results
+
+def generate_summary(applying, listed, tracking):
     """生成综合打新判断"""
-    if not results:
-        return "当前无可申购新股，建议关注后续IPO安排。"
-    
-    high = sum(1 for r in results if r["score"] >= 80)
-    mid = sum(1 for r in results if 65 <= r["score"] < 80)
-    low = sum(1 for r in results if r["score"] < 65)
-    
     parts = []
-    if high > 0:
-        parts.append(f"{high}只强烈推荐")
-    if mid > 0:
-        parts.append(f"{mid}只建议申购")
-    if low > 0:
-        parts.append(f"{low}只需谨慎参与")
+    if applying:
+        high = sum(1 for r in applying if r["score"] >= 80)
+        mid = sum(1 for r in applying if 65 <= r["score"] < 80)
+        if high > 0: parts.append(f"{high}只强烈推荐申购")
+        if mid > 0: parts.append(f"{mid}只建议申购")
+        if not parts: parts.append(f"{len(applying)}只谨慎参与")
     
-    sentiment = "建议积极参与" if high + mid >= 2 else "建议精选参与" if high + mid >= 1 else "建议谨慎观望"
+    if listed:
+        parts.append(f"今日{len(listed)}只上市")
     
-    # 主板溢价判断
-    main_board = [r for r in results if "主板" in r["board"]]
-    if main_board:
-        avg_pe_discount = sum(r["pe_discount"] for r in main_board) / len(main_board)
-        if avg_pe_discount > 20:
-            parts.append("当前主板新股估值优势明显")
-            sentiment = "建议积极参与"
+    if tracking:
+        strong = sum(1 for r in tracking if r["total_return"] > 20)
+        if strong > 0: parts.append(f"{strong}只上市后表现强势")
     
-    return f"{'，'.join(parts)}。{sentiment}。"
+    if not parts:
+        return "当前无可关注新股，建议关注后续IPO安排。"
+    
+    return f"{'，'.join(parts)}。"
 
 def main():
     print("=" * 50)
-    print("打新价值评分数据获取")
+    print("打新价值评分数据获取（申购+上市+追踪）")
     print("=" * 50)
     
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    # 1. 获取可申购新股列表
-    print("[1/3] 获取可申购新股列表...")
+    # 1. 获取新股列表
+    print("[1/4] 获取新股列表...")
     candidates = fetch_ipo_list()
-    print(f"  找到 {len(candidates)} 只可申购/待上市新股")
     
-    # 2. 补充发行价、PE和行业PE（对未上市新股逐个查询）
-    print("[2/3] 补充发行价和市盈率...")
-    for c in candidates:
-        if c.get("is_unlisted") or c["issue_price"] <= 0 or c["issue_pe"] <= 0:
-            detail = fetch_stock_detail(c["code"], c.get("market_code", "SH"))
-            if detail["issue_price"] > 0 and c["issue_price"] <= 0:
-                c["issue_price"] = round(detail["issue_price"], 2)
-            if detail["issue_pe"] > 0 and c["issue_pe"] <= 0:
-                c["issue_pe"] = round(detail["issue_pe"], 2)
-            if detail["industry_pe"] > 0:
-                # 过滤明显离谱的值（>500 大概率不是PE）
-                if detail["industry_pe"] <= 200:
-                    c["industry_pe"] = round(detail["industry_pe"], 2)
-            # 未上市的新股：用发行价占比估算（部分接口返回）
-            if c["issue_price"] <= 0:
-                c["issue_price"] = 0  # 标记为未知
-            if c["issue_pe"] <= 0:
-                c["issue_pe"] = 0
-            time.sleep(0.5)  # 避免限流
+    applying_list = [c for c in candidates if c["status"] == "applying"]
+    listed_list = [c for c in candidates if c["status"] == "listed_today"]
+    tracking_list = [c for c in candidates if c["status"] == "tracking"]
     
-    # 3. 读取板块资金流用于行业热度
-    print("[3/3] 读取板块资金流...")
-    sector_flow = fetch_sector_flow()
+    print(f"  待申购: {len(applying_list)}, 今日上市: {len(listed_list)}, 追踪中: {len(tracking_list)}")
     
-    # 计算评分
-    results = calculate_scores(candidates, sector_flow)
-
-    # 过滤掉已过申购日期的股票（只保留今天及未来可申购的）
-    today_str = datetime.now().strftime("%Y%m%d")
-    results = [r for r in results if r.get("apply_date", "") >= today_str]
-
-    # 重新生成summary（过滤后可能为空）
-    summary = generate_summary(results)
-    eligible_count = len(results)
+    # 2. 补充待申购新股的详细数据
+    print("[2/4] 补充待申购新股详情...")
+    for c in applying_list:
+        if c["issue_price"] <= 0 or c["issue_pe"] <= 0:
+            detail = fetch_realtime_quote(c["code"], c["market_code"])
+            if detail and detail.get("prev_close") > 0 and c["issue_price"] <= 0:
+                c["issue_price"] = round(detail["prev_close"], 2)
+            time.sleep(0.3)
     
-    # 输出
+    # 3. 计算待申购评分
+    print("[3/4] 计算待申购评分...")
+    applying_results = calculate_applying_scores(applying_list)
+    
+    # 4. 处理已上市/追踪中的新股
+    print("[4/4] 获取已上市新股行情...")
+    listed_results = process_listed_and_tracking(listed_list)
+    tracking_results = process_listed_and_tracking(tracking_list)
+    
+    # 合并所有结果
+    all_results = applying_results + listed_results + tracking_results
+    
+    summary = generate_summary(applying_results, listed_results, tracking_results)
+    
     ipo_data = {
         "update_time": now,
-        "eligible_count": len(results),
+        "eligible_count": len(applying_results),
+        "listed_count": len(listed_results),
+        "tracking_count": len(tracking_results),
         "summary": summary,
-        "stocks": results
+        "stocks": all_results,
     }
     
     out_path = os.path.join(DATA_DIR, "ipo_score.json")
@@ -499,9 +429,13 @@ def main():
         json.dump(ipo_data, f, ensure_ascii=False, indent=2)
     
     print(f"\n✅ 写入 {out_path}")
-    print(f"   可申购: {len(results)} 只")
-    for r in results:
-        print(f"   {'⭐' * (r['score']//20)}{r['score']:3d}分 {r['name']}({r['code']}) — {r['recommend']} | PE折价{r['pe_discount']}% | {r['board']}")
+    print(f"   待申购: {len(applying_results)} 只, 上市首日: {len(listed_results)}, 追踪中: {len(tracking_results)}")
+    for r in applying_results:
+        print(f"   {'⭐' * (r['score']//20)}{r['score']:3d}分 {r['name']}({r['code']}) — {r['recommend']} | {r['board']}")
+    for r in listed_results:
+        print(f"   📈 {r['name']}({r['code']}) — 首日涨{r['total_return']:.1f}% | 开盘{r['open_return']:.1f}%")
+    for r in tracking_results:
+        print(f"   📊 {r['name']}({r['code']}) — {r['recommend']} | 较发行{r['total_return']:+.1f}%")
     print(f"\n💡 {summary}")
 
 if __name__ == "__main__":
