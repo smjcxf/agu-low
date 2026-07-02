@@ -68604,7 +68604,7 @@ false
 },
 "last_update": "2026-06-16 11:05:27",
 "total_count": 574,
-"update_time": "2026-07-03 06:56:51"
+"update_time": "2026-07-03 07:04:39"
 };var SH_FIB = window.SH_FIB = {};var SZ_FIB = window.SZ_FIB = {};window.SECTOR_FUND_FLOW = {
 "update_time": "2026-07-01 19:28",
 "data_type": "real",
@@ -69975,7 +69975,7 @@ false
 "sh": [],
 "update_time": ""
 };window.MACRO_DATA = {
-"update_time": "2026-07-03 06:57:34",
+"update_time": "2026-07-03 07:05:48",
 "monetary": {
 "cn_bond_10y": {
 "value": 1.741,
@@ -70056,18 +70056,18 @@ false
 },
 "usdcnh": {
 "price": 6.7878,
-"prev_close": 6.7884,
+"prev_close": 6.7881,
 "date": "2026-07-03",
 "source": "Sina实时"
 },
 "commodities": {
 "gold": {
-"value": 4137.1,
+"value": 4136.9,
 "unit": "美元/盎司",
 "date": "2026-07-03"
 },
 "silver": {
-"value": 61.48,
+"value": 61.49,
 "unit": "美元/盎司",
 "date": "2026-07-03"
 },
@@ -70077,7 +70077,7 @@ false
 "date": "2026-07-02"
 },
 "oil": {
-"value": 68.48,
+"value": 68.47,
 "unit": "美元/桶",
 "date": "2026-07-03"
 }
@@ -88603,6 +88603,7 @@ function renderSummaryOverview() {
   var mgn = window.MARGIN_DATA || {}, mgnSh = mgn.sh || [];
   var rzNow = mgnSh.length ? (mgnSh[mgnSh.length-1].rz_balance || 0) : 0;
   var sfIn = (sf.summary || {}).in_count || 0;
+  var sfOut = (sf.summary || {}).out_count || 0;
   var techWarn = fibCur2.days_down >= 15 || (fibCur2.total_pct || 0) <= -5;
   var macroWarn = (pmi2 !== null && pmi2 < 50) || (sprd2 !== null && sprd2 < -2);
   var instWarn = cffexNet < -3000;
