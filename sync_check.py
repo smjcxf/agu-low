@@ -137,7 +137,14 @@ def git_sync(force=False):
 
 
 def check_nutstore_lag():
-    """检查坚果云同步延迟：比较本地文件修改时间和 git HEAD 时间"""
+    """检查坚果云同步延迟：比较本地文件修改时间和 git HEAD 时间
+    
+    ⚠️ 重要：.nutstoreignore 文件坚果云不认！
+    必须在坚果云 GUI 中手动设置排除规则：
+      右键 stock-scanner 文件夹 → 设置 → 不同步（排除）下列文件/文件夹
+      添加：.git, dist, index_master.html, __pycache__, .pytest_cache
+    """
+    key_files = ["index_master.html", "update_data_v2.py", "deploy_now.py"]
     key_files = ["index_master.html", "update_data_v2.py", "deploy_now.py"]
     issues = []
     
@@ -298,7 +305,13 @@ def main():
         if not master_ok:
             print(f"❌ index_master.html 被覆盖或锁定失败！")
             print(f"   可能原因：坚果云同步了旧版 index_master.html")
-            print(f"   解决方法：检查 .nutstoreignore 是否排除 .git/ 目录")
+            print(f"   ⚠️ 重要：.nutstoreignore 文件坚果云不认！")
+            print(f"   必须在坚果云 GUI 中手动设置排除规则：")
+            print(f"     1. 打开坚果云客户端")
+            print(f"     2. 找到 stock-scanner 文件夹，右键 → 设置")
+            print(f"     3. 找到「不同步」或「排除」选项")
+            print(f"     4. 添加：.git、dist、index_master.html、__pycache__")
+            print(f"   参考文档：https://help.jianguoyun.com/?p=3162")
         print(f"{'='*55}\n")
         return 1
 
