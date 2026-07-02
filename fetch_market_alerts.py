@@ -85,8 +85,9 @@ def fetch_sina_indices():
 def fetch_index_spot():
     """获取主要指数实时行情（akshare + Sina兜底，含日经/韩股）"""
     result = []
+    # 固定顺序：A股4大指数 → 韩股 → 日经（符合用户阅读习惯）
     targets = ['上证指数', '深证成指', '创业板指', '科创50']
-    foreign_targets = list(FOREIGN_SINA_MAP.keys()) + list(FOREIGN_AKSHARE.keys())
+    foreign_targets = ['韩国KOSPI', '日经225']  # 韩股在创业板指后，日经最后
 
     # Step 1: akshare（上交所指数）
     for attempt in range(1, MAX_RETRY + 1):
@@ -140,6 +141,10 @@ def fetch_index_spot():
                 if kospi:
                     result.append(kospi)
                     log(f"    ✓ {ft} {kospi['pct']:+.2f}% (akshare)")
+    
+    # Step 4: 按固定顺序重排，确保显示顺序一致
+    order_map = {name: i for i, name in enumerate(all_targets)}
+    result.sort(key=lambda x: order_map.get(x['name'], 99))
     
     return result
 

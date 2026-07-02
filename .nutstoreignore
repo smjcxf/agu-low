@@ -16,6 +16,11 @@ __pycache__/
 *.lock
 .deploy_lock
 .scanner.lock
+.index_master_md5_lock
+
+# 禁止坚果云同步代码文件（代码走 Git，坚果云只同步数据）
+# 防止坚果云把 index_master.html 覆盖为旧版
+index_master.html
 
 # 允许同步的数据文件（data/ 目录需要双向同步）
 # data/ 内的文件不受上述规则影响，因为 data/ 在项目根目录下
