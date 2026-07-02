@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-07-02 16:31:51",
+  "update_time": "2026-07-02 19:30:35",
   "total_scored": 604,
   "count_80plus": 1,
   "top10": [
@@ -13,13 +13,13 @@
       "close": 82.17,
       "pct_chg": 1.44,
       "pct_chg_20d": 0,
-      "total_score": 88,
+      "total_score": 83,
       "sectors": [],
       "stop_loss": 25.14,
       "target_price": 92.03,
       "score_base": 75,
       "score_enhance": 4,
-      "score_fund": 5,
+      "score_fund": 0,
       "score_sector": 0,
       "score_inst": 4,
       "signals": {
@@ -29,42 +29,12 @@
         "trend": true
       },
       "consecutive_days": 2,
-      "fund_detail": "龙虎榜纯共振",
+      "fund_detail": "",
       "sector_detail": "",
       "inst_detail": "52周新高"
     },
     {
       "rank": 2,
-      "code": "300566",
-      "name": "激智科技",
-      "market": "sz",
-      "board": "创业板",
-      "sig_count": 3,
-      "close": 38.99,
-      "pct_chg": -7.69,
-      "pct_chg_20d": 54.78,
-      "total_score": 77,
-      "sectors": [],
-      "stop_loss": 31.78,
-      "target_price": 43.67,
-      "score_base": 75,
-      "score_enhance": -1,
-      "score_fund": 3,
-      "score_sector": 0,
-      "score_inst": 0,
-      "signals": {
-        "chan": true,
-        "jinzuan": false,
-        "jigou": true,
-        "trend": true
-      },
-      "consecutive_days": 2,
-      "fund_detail": "龙虎榜+5864万",
-      "sector_detail": "",
-      "inst_detail": ""
-    },
-    {
-      "rank": 3,
       "code": "688521",
       "name": "芯原股份",
       "market": "sh",
@@ -94,7 +64,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 4,
+      "rank": 3,
       "code": "300661",
       "name": "圣邦股份",
       "market": "sz",
@@ -124,7 +94,67 @@
       "inst_detail": ""
     },
     {
+      "rank": 4,
+      "code": "300566",
+      "name": "激智科技",
+      "market": "sz",
+      "board": "创业板",
+      "sig_count": 3,
+      "close": 38.99,
+      "pct_chg": -7.69,
+      "pct_chg_20d": 54.78,
+      "total_score": 74,
+      "sectors": [],
+      "stop_loss": 31.78,
+      "target_price": 43.67,
+      "score_base": 75,
+      "score_enhance": -1,
+      "score_fund": 0,
+      "score_sector": 0,
+      "score_inst": 0,
+      "signals": {
+        "chan": true,
+        "jinzuan": false,
+        "jigou": true,
+        "trend": true
+      },
+      "consecutive_days": 2,
+      "fund_detail": "",
+      "sector_detail": "",
+      "inst_detail": ""
+    },
+    {
       "rank": 5,
+      "code": "002326",
+      "name": "永太科技",
+      "market": "sz",
+      "board": "主板",
+      "sig_count": 2,
+      "close": 28.0,
+      "pct_chg": 7.61,
+      "pct_chg_20d": 0,
+      "total_score": 59,
+      "sectors": [],
+      "stop_loss": 26.04,
+      "target_price": 31.36,
+      "score_base": 50,
+      "score_enhance": 0,
+      "score_fund": 5,
+      "score_sector": 0,
+      "score_inst": 4,
+      "signals": {
+        "chan": false,
+        "jinzuan": false,
+        "jigou": true,
+        "trend": true
+      },
+      "consecutive_days": 0,
+      "fund_detail": "龙虎榜纯共振",
+      "sector_detail": "",
+      "inst_detail": "52周新高"
+    },
+    {
+      "rank": 6,
       "code": "300274",
       "name": "阳光电源",
       "market": "sz",
@@ -154,7 +184,7 @@
       "inst_detail": "投行看多"
     },
     {
-      "rank": 6,
+      "rank": 7,
       "code": "01072",
       "name": "东方电气",
       "market": "hk",
@@ -184,7 +214,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 7,
+      "rank": 8,
       "code": "06181",
       "name": "老铺黄金",
       "market": "hk",
@@ -214,7 +244,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 8,
+      "rank": 9,
       "code": "00384",
       "name": "中国燃气",
       "market": "hk",
@@ -244,7 +274,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 9,
+      "rank": 10,
       "code": "02276",
       "name": "康耐特光学",
       "market": "hk",
@@ -274,7 +304,37 @@
       "inst_detail": ""
     },
     {
-      "rank": 10,
+      "rank": 11,
+      "code": "00688",
+      "name": "中国海外发展",
+      "market": "hk",
+      "board": "投行关注池",
+      "sig_count": 2,
+      "close": 12.39,
+      "pct_chg": 2.74,
+      "pct_chg_20d": 0,
+      "total_score": 58,
+      "sectors": [],
+      "stop_loss": 11.52,
+      "target_price": 13.88,
+      "score_base": 55,
+      "score_enhance": 0,
+      "score_fund": 0,
+      "score_sector": 0,
+      "score_inst": 3,
+      "signals": {
+        "chan": true,
+        "jinzuan": true,
+        "jigou": false,
+        "trend": false
+      },
+      "consecutive_days": 0,
+      "fund_detail": "",
+      "sector_detail": "",
+      "inst_detail": "投行看多"
+    },
+    {
+      "rank": 12,
       "code": "688166",
       "name": "博瑞医药",
       "market": "sh",
@@ -304,7 +364,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 11,
+      "rank": 13,
       "code": "300505",
       "name": "川金诺",
       "market": "sz",
@@ -334,7 +394,7 @@
       "inst_detail": "52周新高"
     },
     {
-      "rank": 12,
+      "rank": 14,
       "code": "300568",
       "name": "星源材质",
       "market": "sz",
@@ -364,37 +424,7 @@
       "inst_detail": "52周新高"
     },
     {
-      "rank": 13,
-      "code": "300873",
-      "name": "海晨股份",
-      "market": "sz",
-      "board": "创业板",
-      "sig_count": 2,
-      "close": 30.01,
-      "pct_chg": 4.49,
-      "pct_chg_20d": 0,
-      "total_score": 57,
-      "sectors": [],
-      "stop_loss": 27.91,
-      "target_price": 33.61,
-      "score_base": 50,
-      "score_enhance": 0,
-      "score_fund": 3,
-      "score_sector": 0,
-      "score_inst": 4,
-      "signals": {
-        "chan": false,
-        "jinzuan": false,
-        "jigou": true,
-        "trend": true
-      },
-      "consecutive_days": 0,
-      "fund_detail": "龙虎榜+21781万",
-      "sector_detail": "",
-      "inst_detail": "52周新高"
-    },
-    {
-      "rank": 14,
+      "rank": 15,
       "code": "300263",
       "name": "隆华科技",
       "market": "sz",
@@ -424,7 +454,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 15,
+      "rank": 16,
       "code": "03328",
       "name": "交通银行",
       "market": "hk",
@@ -454,7 +484,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 16,
+      "rank": 17,
       "code": "09988",
       "name": "阿里巴巴-W",
       "market": "hk",
@@ -484,7 +514,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 17,
+      "rank": 18,
       "code": "01810",
       "name": "小米集团-W",
       "market": "hk",
@@ -514,7 +544,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 18,
+      "rank": 19,
       "code": "300763",
       "name": "锦浪科技",
       "market": "sz",
@@ -544,7 +574,7 @@
       "inst_detail": ""
     },
     {
-      "rank": 19,
+      "rank": 20,
       "code": "688502",
       "name": "茂莱光学",
       "market": "sh",
@@ -567,36 +597,6 @@
         "jinzuan": false,
         "jigou": true,
         "trend": true
-      },
-      "consecutive_days": 0,
-      "fund_detail": "",
-      "sector_detail": "",
-      "inst_detail": ""
-    },
-    {
-      "rank": 20,
-      "code": "01288",
-      "name": "农业银行",
-      "market": "hk",
-      "board": "港股",
-      "sig_count": 2,
-      "close": 5.31,
-      "pct_chg": -0.56,
-      "pct_chg_20d": 0,
-      "total_score": 55,
-      "sectors": [],
-      "stop_loss": 4.94,
-      "target_price": 5.95,
-      "score_base": 55,
-      "score_enhance": 0,
-      "score_fund": 0,
-      "score_sector": 0,
-      "score_inst": 0,
-      "signals": {
-        "chan": true,
-        "jinzuan": true,
-        "jigou": false,
-        "trend": false
       },
       "consecutive_days": 0,
       "fund_detail": "",

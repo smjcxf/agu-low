@@ -256,12 +256,17 @@ def run_step(command, timeout):
 
 
 def run_parallel_group(group_steps, max_workers=6):
-    """Run a group of steps in parallel. Returns results in original order.
+    """Run a group of steps in parallel.
     
     group_steps: list of (command, timeout)
-    Returns: list of (command, ok, elapsed, detail)
+    Returns: (group_ok, group_elapsed, group_detail)
+        - group_ok: bool, True if all tasks succeeded
+        - group_elapsed: float, total elapsed time in seconds
+        - group_detail: dict, {index: (command, ok, elapsed, detail)}
     """
     from concurrent.futures import ThreadPoolExecutor, as_completed
+    
+    start = time.time()
     
     def _run_one(cmd_timeout):
         cmd, timeout = cmd_timeout
@@ -277,7 +282,13 @@ def run_parallel_group(group_steps, max_workers=6):
     # Return in original order (for consistent output)
     order = {ct[0]: i for i, ct in enumerate(group_steps)}
     results.sort(key=lambda r: order.get(r[0], 999))
-    return results
+    
+    # Calculate return values
+    group_ok = all(ok for _, ok, _, _ in results)
+    group_elapsed = time.time() - start
+    group_detail = {i: r for i, r in enumerate(results)}
+    
+    return group_ok, group_elapsed, group_detail
 
 
 def _sync_dual_machine_code(workspace):
