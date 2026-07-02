@@ -400,19 +400,37 @@ def main():
                 open(nojekyll, "w").close()
                 log("   ✓ .nojekyll 已创建")
 
-        # 1.5 CDN cache busting
+        # 1.5 CDN cache busting（改注释 + 改 title + 加 meta 标签，三重确保 CDN 感知文件变化）
         log("1.5. Busting CDN cache...")
         import re
         now_stamp = datetime.now().strftime("%Y%m%d%H%M%S")
         pattern = re.compile(r'<!-- build: \d+ -->')
+        pattern_title = re.compile(r'<title>九宝量化 v\d\.\d</title>')
+        pattern_meta = re.compile(r'<meta name="build-stamp" content="[^"]*">')
         for root, dirs, files in os.walk(DIST_DIR):
             for fname in files:
                 if fname.endswith('.html'):
                     fpath = os.path.join(root, fname)
                     with open(fpath, 'r', encoding='utf-8') as f:
                         c = f.read()
-                    c, n = pattern.subn(f'<!-- build: {now_stamp} -->', c)
-                    if n > 0:
+                    changed = False
+                    # ① 改 build 注释
+                    if pattern.search(c):
+                        c = pattern.sub(f'<!-- build: {now_stamp} -->', c)
+                        changed = True
+                    # ② 改 title（文件内容确实变化，CDN 无法忽略）
+                    if pattern_title.search(c):
+                        c = pattern_title.sub(f'<title>九宝量化 v6.0 ({now_stamp})</title>', c)
+                        changed = True
+                    # ③ 加/更新 meta build-stamp
+                    if pattern_meta.search(c):
+                        c = pattern_meta.sub(f'<meta name="build-stamp" content="{now_stamp}">', c)
+                        changed = True
+                    else:
+                        # 没有 meta 标签，在 <head> 之后插入
+                        c = c.replace('<head>', f'<head>\n<meta name="build-stamp" content="{now_stamp}">')
+                        changed = True
+                    if changed:
                         with open(fpath, 'w', encoding='utf-8') as f:
                             f.write(c)
         log(f"   Build stamp: {now_stamp}")
