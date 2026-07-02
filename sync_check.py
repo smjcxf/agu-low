@@ -37,6 +37,11 @@ SAFETY_MARKERS = {
     ],
 }
 
+# ─────────── 满意版 index_master.html MD5 锁定 ───────────
+# 坚果云同步可能覆盖满意版 → 部署前校验 MD5，不匹配则阻断并回退
+INDEX_MASTER_MD5 = "37fbe6ff63cecbcf6a4972a7a442e783"  # 满意版 MD5
+INDEX_MASTER_MD5_FILE = os.path.join(PROJECT_ROOT, ".index_master_md5_lock")
+
 
 def run(cmd, cwd=None):
     """执行命令并返回 CompletedProcess"""
@@ -163,33 +168,106 @@ def check_nutstore_lag():
         return True
 
 
+def check_index_master_lock():
+    """检查 index_master.html 是否被坚果云覆盖为旧版（MD5 锁定）
+    
+    坚果云同步可能把家里电脑的旧版 index_master.html 覆盖到本地。
+    本机存储满意版的 MD5 校验值，每次部署前对比。
+    不匹配 → 阻断部署并自动从 Git 回退到满意版。
+    """
+    fpath = os.path.join(PROJECT_ROOT, "index_master.html")
+    if not os.path.exists(fpath):
+        print(f"  ❌ index_master.html 不存在！")
+        return False
+    
+    import hashlib
+    with open(fpath, "rb") as f:
+        actual_md5 = hashlib.md5(f.read()).hexdigest()
+    
+    # 从锁定文件中读取期望 MD5，没有则使用代码中的常量
+    expected_md5 = INDEX_MASTER_MD5
+    if os.path.exists(INDEX_MASTER_MD5_FILE):
+        with open(INDEX_MASTER_MD5_FILE, "r") as f:
+            locked = f.read().strip()
+            if locked:
+                expected_md5 = locked
+    
+    if actual_md5 != expected_md5:
+        print(f"  🚨 index_master.html 被坚果云覆盖为旧版！")
+        print(f"     期望 MD5: {expected_md5[:16]}...")
+        print(f"     实际 MD5: {actual_md5[:16]}...")
+        print(f"     → 自动执行 git checkout HEAD -- index_master.html 回退")
+        r = run("git checkout HEAD -- index_master.html")
+        if r.returncode == 0:
+            # 重新验证
+            with open(fpath, "rb") as f:
+                restored_md5 = hashlib.md5(f.read()).hexdigest()
+            if restored_md5 == expected_md5:
+                print(f"  ✓ 已回退到满意版")
+                return True
+            else:
+                print(f"  ❌ git checkout 回退失败，MD5 仍不匹配，阻断部署")
+                return False
+        else:
+            print(f"  ❌ git checkout 执行失败: {r.stderr.strip()[:200]}")
+            return False
+    else:
+        print(f"  ✓ index_master.html 满意版锁定通过 (MD5: {actual_md5[:16]}...)")
+        return True
+
+
+def update_index_master_lock():
+    """更新 index_master.html 的 MD5 锁定值（手动调用，确认当前版本为满意版后执行）"""
+    import hashlib
+    fpath = os.path.join(PROJECT_ROOT, "index_master.html")
+    if not os.path.exists(fpath):
+        print(f"  ❌ index_master.html 不存在")
+        return False
+    with open(fpath, "rb") as f:
+        new_md5 = hashlib.md5(f.read()).hexdigest()
+    with open(INDEX_MASTER_MD5_FILE, "w") as f:
+        f.write(new_md5)
+    print(f"  ✓ 已锁定 index_master.html 满意版 MD5: {new_md5[:16]}...")
+    return True
+
+
 def main():
     force = "--force" in sys.argv
+    lock_cmd = "--lock" in sys.argv
+    
+    # 手动锁定当前版本为满意版
+    if lock_cmd:
+        update_index_master_lock()
+        return 0
     
     print(f"\n{'='*55}")
     print(f"🔍 部署前同步检查 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*55}")
     
     # 1. 清理冲突文件
-    print("\n[1/4] 清理坚果云冲突文件...")
+    print("\n[1/5] 清理坚果云冲突文件...")
     clean_conflict_files()
     
     # 2. Git 同步
-    print("\n[2/4] Git 同步...")
+    print("\n[2/5] Git 同步...")
     sync_ok = git_sync(force=force)
     
     # 3. 版本标记检查
-    print("\n[3/4] 版本标记检查...")
+    print("\n[3/5] 版本标记检查...")
     version_ok = check_version_markers()
     
     # 4. 坚果云延迟检查
-    print("\n[4/4] 坚果云同步检查...")
+    print("\n[4/5] 坚果云同步检查...")
     nutstore_ok = check_nutstore_lag()
+    
+    # 5. 满意版 MD5 锁定检查（最强防线：坚果云覆盖自动回退）
+    print("\n[5/5] index_master.html 满意版锁定...")
+    master_ok = check_index_master_lock()
     
     # 汇总
     print(f"\n{'='*55}")
-    if sync_ok and version_ok:
-        print(f"✅ 同步检查通过，可以安全部署")
+    if sync_ok and version_ok and master_ok:
+        print(f"✅ 同步检查通过，满意版锁定正常，可以安全部署")
         print(f"{'='*55}\n")
         return 0
     else:
@@ -199,6 +277,10 @@ def main():
             print(f"❌ 关键代码版本标记不匹配！")
             print(f"   可能原因：坚果云未同步最新代码")
             print(f"   解决方法：1) 等坚果云同步完成 2) 手动 git pull")
+        if not master_ok:
+            print(f"❌ index_master.html 被覆盖或锁定失败！")
+            print(f"   可能原因：坚果云同步了旧版 index_master.html")
+            print(f"   解决方法：检查 .nutstoreignore 是否排除 .git/ 目录")
         print(f"{'='*55}\n")
         return 1
 
