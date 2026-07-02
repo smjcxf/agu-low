@@ -205,7 +205,7 @@ MODES = {
             ("check_syntax.py", 30),
             ("sync_check.py", 30),
             ("deploy_now.py", 180),
-            ("push_notify.py", 120),
+            ("push_notify.py", 30),
         ],
         "max_parallel": 6,
     },

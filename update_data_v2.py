@@ -1443,6 +1443,15 @@ def main():
             os.remove(sf_path)
     print(f"  ✓ 已同步 data/*.json → dist/data/")
 
+    # 同步静态资源（favicon.svg 等）→ dist/
+    _static_assets = ["favicon.svg"]
+    for _sa in _static_assets:
+        _src_sa = os.path.join(BASE_DIR, _sa)
+        _dst_sa = os.path.join(DIST_DIR, _sa)
+        if os.path.exists(_src_sa):
+            shutil.copy2(_src_sa, _dst_sa)
+    print(f"  ✓ 已同步静态资源 → dist/")
+
     print(f"\n✅ 数据块更新成功！")
     print(f"   部署: python deploy_now.py")
     print(f"   网址: https://ah-quant999.github.io/quant-scanner-v6/")

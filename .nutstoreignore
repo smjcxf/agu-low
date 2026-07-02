@@ -11,6 +11,11 @@ dist/
 __pycache__/
 *.pyc
 *.bak
+.pytest_cache/
+.playwright-cli/
+
+# 禁止同步临时部署目录
+_gh_pages_deploy/
 
 # 禁止同步锁文件和临时文件
 *.lock
@@ -21,6 +26,9 @@ __pycache__/
 # 禁止坚果云同步代码文件（代码走 Git，坚果云只同步数据）
 # 防止坚果云把 index_master.html 覆盖为旧版
 index_master.html
+
+# 禁止同步备份目录（保留7天，本地管理）
+backup_*/
 
 # 允许同步的数据文件（data/ 目录需要双向同步）
 # data/ 内的文件不受上述规则影响，因为 data/ 在项目根目录下
