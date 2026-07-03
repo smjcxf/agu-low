@@ -253,6 +253,19 @@ def _rebuild_dist():
         log(f"   {line}")
     if result.returncode == 0:
         log("   ✓ dist 重建成功")
+        # 运行 enhance_dist 同步逻辑详解/投行覆盖/getScore
+        enhancer = os.path.join(PROJECT_ROOT, "enhance_dist.py")
+        if os.path.exists(enhancer):
+            log(f"   执行: python enhance_dist.py")
+            e_result = subprocess.run(
+                [python_exe, enhancer],
+                capture_output=True, text=True, timeout=60,
+                cwd=PROJECT_ROOT
+            )
+            if e_result.returncode == 0:
+                log("   ✓ enhance_dist 完成")
+            else:
+                log(f"   ⚠️ enhance_dist 失败: {e_result.stderr.strip()[:200]}")
     else:
         err = result.stderr.strip()[:300] if result.stderr else 'unknown'
         log(f"   ❌ 重建失败（returncode={result.returncode}），阻塞部署: {err}")
