@@ -681,10 +681,26 @@ def fetch_sector_flow():
                 if net_60d is not None and net_60d != 0:
                     item["net_60d"] = net_60d
         
-        # 【2026-07-03 修复】不再使用暴力系数估算！
-        # 原逻辑: 当日净流入 × 3(5日) / × 8(20日) → 遇到大数值会爆炸（如比亚迪迪念 11万亿亿）
-        # 新逻辑: neodata/同花顺都没有数据的板块 → 保持为0 → 前端显示"--"或"暂无"
-        # 宁可空着也不造假！
+        # 【2026-07-03 修复 v2】温和估算方案（严格限幅，防爆炸）
+        # 背景: neodata token过期 + 同花顺匹配率低 → 大部分板块5d/20d为0
+        #       history只有1天(刚重建)，累加不出5日/20日
+        # 方案: 用当日净流入做保守估算，但严格限制在合理范围内
+        #       前端可看到标注 source="估算"，neodata恢复后自动覆盖为精确值
+        estimated = 0
+        for item in top_list:
+            if item.get("net_5d", 0) == 0 and item.get("net", 0) != 0:
+                net_today = item["net"]
+                abs_today = abs(net_today)
+                sign = 1 if net_today > 0 else -1 if net_today < 0 else 0
+                # 保守倍数 + 绝对上限（A股单板块5日/20日净流入历史极值级别）
+                est_5d = round(sign * min(abs_today * 3, 500.0), 2)
+                est_20d = round(sign * min(abs_today * 8, 1500.0), 2)
+                item["net_5d"] = est_5d
+                item["net_20d"] = est_20d
+                item["source"] = "估算"
+                estimated += 1
+        if estimated > 0:
+            print(f"  📐 [温和估算] {estimated} 个板块使用保守估算(上限500/1500亿)")
 
     # 如果真实数据获取失败，尝试 neodata 备选（仅当日数据）
     if not top_list:
