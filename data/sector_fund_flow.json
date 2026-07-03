@@ -1,12 +1,12 @@
 {
-  "update_time": "2026-07-03 20:16",
+  "update_time": "2026-07-03 19:38",
   "data_type": "real",
   "summary": {
     "in_count": 40,
     "out_count": 0,
     "in_text": "人形机器人(226.2亿)、机器人概念(184.0亿)、同花顺出海50(131.2亿)、人民币贬值受益(126.7亿)、5G(121.7亿)",
     "out_text": "无",
-    "alert": "🔥 40个板块大幅流入；🚀 人形机器人+226.2亿(连4天)、机器人概念+184.0亿(连5天)、同花顺出海50+131.2亿"
+    "alert": "🔥 40个板块大幅流入；🚀 人形机器人+226.2亿、机器人概念+184.0亿、同花顺出海50+131.2亿"
   },
   "sectors_in": [
     {
@@ -15,7 +15,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -24,7 +24,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -42,7 +42,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -51,7 +51,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -60,7 +60,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -69,7 +69,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -78,7 +78,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -87,7 +87,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -96,7 +96,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -105,7 +105,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -114,7 +114,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -123,7 +123,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -141,7 +141,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -150,7 +150,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -159,7 +159,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -168,7 +168,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -177,7 +177,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -186,7 +186,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -195,7 +195,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -204,7 +204,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -222,7 +222,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -231,7 +231,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -240,7 +240,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -249,7 +249,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -258,7 +258,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -267,7 +267,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -276,7 +276,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -285,7 +285,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -294,7 +294,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -303,7 +303,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -312,7 +312,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -321,7 +321,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -339,7 +339,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -348,7 +348,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -357,7 +357,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 10,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -366,7 +366,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     }
   ],
@@ -378,7 +378,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -387,7 +387,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -405,7 +405,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -414,7 +414,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -423,7 +423,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -432,7 +432,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -441,7 +441,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -450,7 +450,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -459,7 +459,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -468,7 +468,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -477,7 +477,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -486,7 +486,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -504,7 +504,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -513,7 +513,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -522,7 +522,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -531,7 +531,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -540,7 +540,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -549,7 +549,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -558,7 +558,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -567,7 +567,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -585,7 +585,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -594,7 +594,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -603,7 +603,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -612,7 +612,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -621,7 +621,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -630,7 +630,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 4,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -639,7 +639,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -648,7 +648,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -657,7 +657,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -666,7 +666,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -675,7 +675,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -684,7 +684,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -702,7 +702,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 3,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -711,7 +711,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 2,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -720,7 +720,7 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "行业",
-      "consecutive_days": 10,
+      "consecutive_days": 1,
       "trend": "in"
     },
     {
@@ -729,17 +729,17 @@
       "net_5d": 0,
       "net_20d": 0,
       "type": "概念",
-      "consecutive_days": 5,
+      "consecutive_days": 1,
       "trend": "in"
     }
   ],
   "consecutive": {
     "人形机器人": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "机器人概念": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     },
     "同花顺出海50": {
@@ -747,43 +747,43 @@
       "trend": "in"
     },
     "人民币贬值受益": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     },
     "5G": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "数据中心(AIDC)": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "新能源汽车": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     },
     "无人驾驶": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "商业航天": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "特斯拉概念": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "同花顺新质50": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "无人机": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "减速器": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "高端装备": {
@@ -791,35 +791,35 @@
       "trend": "in"
     },
     "粤港澳大湾区": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "汽车零部件": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "液冷服务器": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     },
     "新型工业化": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "汽车热管理": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "汽车电子": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "一带一路": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "军工": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "AI手机": {
@@ -827,51 +827,51 @@
       "trend": "in"
     },
     "消费电子": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "消费电子概念": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     },
     "元件": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "低空经济": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "军工装备": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "小米汽车": {
-      "days": 4,
+      "days": 1,
       "trend": "in"
     },
     "机器视觉": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "车联网(车路协同)": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "无线耳机": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "小米概念": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     },
     "军民融合": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "DeepSeek概念": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "毫米波雷达": {
@@ -879,175 +879,23 @@
       "trend": "in"
     },
     "中字头股票": {
-      "days": 3,
+      "days": 1,
       "trend": "in"
     },
     "华为汽车": {
-      "days": 2,
+      "days": 1,
       "trend": "in"
     },
     "通信设备": {
-      "days": 10,
+      "days": 1,
       "trend": "in"
     },
     "比亚迪概念": {
-      "days": 5,
+      "days": 1,
       "trend": "in"
     }
   },
-  "trend_5d": [
-    {
-      "name": "芯片概念",
-      "net": 56.28,
-      "net_5d": 1273.34,
-      "net_20d": 0,
-      "net_60d": null,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in"
-    },
-    {
-      "name": "机器人概念",
-      "net": 183.96,
-      "net_5d": 1116.34,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "新能源汽车",
-      "net": 110.5,
-      "net_5d": 832.46,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "人民币贬值受益",
-      "net": 126.65,
-      "net_5d": 734.79,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "液冷服务器",
-      "net": 62.37,
-      "net_5d": 642.67,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "半导体",
-      "net": 57.32,
-      "net_5d": 616.07,
-      "net_20d": 655.67,
-      "net_60d": null,
-      "type": "行业",
-      "consecutive_days": 5,
-      "trend": "in"
-    },
-    {
-      "name": "PCB概念",
-      "net": 79.57,
-      "net_5d": 569.13,
-      "net_20d": 0,
-      "net_60d": null,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in"
-    },
-    {
-      "name": "消费电子概念",
-      "net": 56.07,
-      "net_5d": 499.77,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "小米概念",
-      "net": 44.69,
-      "net_5d": 425.47,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "专精特新",
-      "net": 51.07,
-      "net_5d": 396.12,
-      "net_20d": 0,
-      "net_60d": null,
-      "type": "行业",
-      "consecutive_days": 5,
-      "trend": "in"
-    },
-    {
-      "name": "比亚迪概念",
-      "net": 39.8,
-      "net_5d": 335.21,
-      "net_20d": 0,
-      "type": "概念",
-      "consecutive_days": 5,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "OLED",
-      "net": 31.04,
-      "net_5d": 297.17,
-      "net_20d": 0,
-      "net_60d": null,
-      "type": "行业",
-      "consecutive_days": 5,
-      "trend": "in"
-    }
-  ],
-  "trend_20d": [
-    {
-      "name": "半导体",
-      "net": 57.32,
-      "net_5d": 616.07,
-      "net_20d": 655.67,
-      "net_60d": null,
-      "type": "行业",
-      "consecutive_days": 5,
-      "trend": "in"
-    },
-    {
-      "name": "通信设备",
-      "net": 41.23,
-      "net_5d": 186.8,
-      "net_20d": 294.1,
-      "type": "行业",
-      "consecutive_days": 10,
-      "trend": "in",
-      "net_60d": null
-    },
-    {
-      "name": "汽车零部件",
-      "net": 65.64,
-      "net_5d": 70.16,
-      "net_20d": -29.04,
-      "type": "行业",
-      "consecutive_days": 4,
-      "trend": "in",
-      "net_60d": null
-    }
-  ],
+  "trend_5d": [],
+  "trend_20d": [],
   "trend_60d": []
 }

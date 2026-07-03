@@ -1,36 +1,81 @@
 {
-  "timestamp": "2026-07-03T20:43:34.902031",
-  "errors": 0,
-  "warnings": 5,
-  "ok": 44,
+  "timestamp": "2026-07-03T19:45:23.222666",
+  "errors": 14,
+  "warnings": 0,
+  "ok": 19,
   "details": {
-    "errors": [],
-    "warnings": [
+    "errors": [
       {
         "dashboard": "选股观测台",
-        "check": "stock_names.json 新鲜度",
-        "message": "文件已老化 77.6h（阈值 72h）"
+        "check": "watch_result.json 新鲜度",
+        "message": "文件不存在: watch_result.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "watch_result.json 格式",
+        "message": "文件不存在: watch_result.json"
       },
       {
         "dashboard": "选股观测台",
         "check": "signal_backtest.json 新鲜度",
-        "message": "文件已老化 460.1h（阈值 72h）"
+        "message": "文件不存在: signal_backtest.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "signal_backtest.json 格式",
+        "message": "文件不存在: signal_backtest.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "industry_map.json 新鲜度",
+        "message": "文件不存在: industry_map.json"
+      },
+      {
+        "dashboard": "选股观测台",
+        "check": "industry_map.json 格式",
+        "message": "文件不存在: industry_map.json"
       },
       {
         "dashboard": "观澜台",
         "check": "guanlan_reports.json 新鲜度",
-        "message": "文件已老化 418.1h（阈值 48h）"
+        "message": "文件不存在: guanlan_reports.json"
       },
       {
-        "dashboard": "部署",
-        "check": "dist/data完整性",
-        "message": "data/ 有但 dist/data/ 缺少: mahoro_signals.json"
+        "dashboard": "观澜台",
+        "check": "guanlan_reports.json 格式",
+        "message": "文件不存在: guanlan_reports.json"
       },
       {
-        "dashboard": "部署",
-        "check": "dist/data完整性",
-        "message": "data/ 有但 dist/data/ 缺少: zsxq_token.json"
+        "dashboard": "观澜台",
+        "check": "recommend.json 新鲜度",
+        "message": "文件不存在: recommend.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "recommend.json 格式",
+        "message": "文件不存在: recommend.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "guanlan_watchlist.json 新鲜度",
+        "message": "文件不存在: guanlan_watchlist.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "guanlan_watchlist.json 格式",
+        "message": "文件不存在: guanlan_watchlist.json"
+      },
+      {
+        "dashboard": "观澜台",
+        "check": "脚本检查",
+        "message": "guanlan_extractor.py 不存在！"
+      },
+      {
+        "dashboard": "全球股市台",
+        "check": "industry_map.json 新鲜度",
+        "message": "文件不存在: industry_map.json"
       }
-    ]
+    ],
+    "warnings": []
   }
 }

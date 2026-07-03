@@ -1,46 +1,46 @@
 {
-  "update_time": "2026-07-03 16:11",
+  "update_time": "2026-07-03 19:40",
   "upgrades": [],
   "downgrades": [],
   "new_coverage": [],
   "hot_stocks": [
     {
-      "code": "688003",
-      "name": "天准科技",
+      "code": "688362",
+      "name": "甬矽电子",
       "rating": "买入",
       "institution": "中邮证券",
-      "report_count_1m": 2,
+      "report_count_1m": 1,
       "date": "2026-07-03"
     },
     {
-      "code": "600276",
-      "name": "恒瑞医药",
+      "code": "688548",
+      "name": "广钢气体",
       "rating": "买入",
-      "institution": "西南证券",
-      "report_count_1m": 1,
-      "date": "2026-07-01"
-    },
-    {
-      "code": "300759",
-      "name": "康龙化成",
-      "rating": "买入",
-      "institution": "长城国瑞证券",
-      "report_count_1m": 1,
-      "date": "2026-07-01"
+      "institution": "国金证券",
+      "report_count_1m": 2,
+      "date": "2026-07-03"
     }
   ],
   "latest_reports": [
     {
-      "code": "688003",
-      "name": "天准科技",
-      "title": "智能成就工业之美",
+      "code": "688362",
+      "name": "甬矽电子",
+      "title": "甬立芯峰，矽创佳绩",
       "rating": "买入",
       "institution": "中邮证券",
       "date": "2026-07-03"
+    },
+    {
+      "code": "688548",
+      "name": "广钢气体",
+      "title": "业绩预告超预期，超临界CO2长坡厚雪",
+      "rating": "买入",
+      "institution": "国金证券",
+      "date": "2026-07-03"
     }
   ],
-  "note": "数据源: akshare(TOP40个股), 近3日新增推荐3只（买入/增持）",
+  "note": "数据源: akshare(TOP40个股), 近3日新增推荐2只（买入/增持）",
   "rating_summary": {
-    "买入": 1
+    "买入": 2
   }
 }

@@ -1,86 +1,86 @@
 {
-  "update_time": "2026-07-02 19:52:03",
+  "update_time": "2026-07-03 19:38:31",
   "current_clusters": [
     {
       "rank": 1,
       "medal": "🥇",
-      "sector": "光学光电子",
-      "amount": 25.55,
+      "sector": "汽车零部件",
+      "amount": 65.64,
       "unit": "亿",
       "direction": "流入",
-      "leader": "华映科技",
-      "pct": -3.02
+      "leader": "贝斯特",
+      "pct": 4.24
     },
     {
       "rank": 2,
       "medal": "🥈",
-      "sector": "贵金属",
-      "amount": 21.43,
+      "sector": "消费电子",
+      "amount": 57.0,
       "unit": "亿",
       "direction": "流入",
-      "leader": "招金黄金",
-      "pct": 3.91
+      "leader": "信濠光电",
+      "pct": 2.39
     },
     {
       "rank": 3,
       "medal": "🥉",
-      "sector": "游戏",
-      "amount": 12.88,
+      "sector": "元件",
+      "amount": 55.11,
       "unit": "亿",
       "direction": "流入",
-      "leader": "昆仑万维",
-      "pct": -0.09
+      "leader": "贤丰控股",
+      "pct": 0.2
     }
   ],
   "high_prob": [
     {
-      "sector": "新股与次新股",
-      "net": 31.57,
+      "sector": "人形机器人",
+      "net": 226.22,
       "unit": "亿",
-      "leader": "吉和昌",
-      "pct": -2.12
+      "leader": "丰光精密",
+      "pct": 3.46
     },
     {
-      "sector": "注册制次新股",
-      "net": 31.57,
+      "sector": "机器人概念",
+      "net": 183.96,
       "unit": "亿",
-      "leader": "华润新能源",
-      "pct": -2.54
+      "leader": "丰光精密",
+      "pct": 2.38
     },
     {
-      "sector": "电子纸",
-      "net": 30.61,
+      "sector": "同花顺出海50",
+      "net": 131.18,
       "unit": "亿",
-      "leader": "宜宾纸业",
-      "pct": -2.3
+      "leader": "拓普集团",
+      "pct": 2.98
     },
     {
-      "sector": "稀土永磁",
-      "net": 27.12,
+      "sector": "人民币贬值受益",
+      "net": 126.65,
       "unit": "亿",
-      "leader": "争光股份",
-      "pct": 1.01
+      "leader": "先锋新材",
+      "pct": 1.54
     },
     {
-      "sector": "智慧灯杆",
-      "net": 18.36,
+      "sector": "5G",
+      "net": 121.69,
       "unit": "亿",
-      "leader": "时空科技",
-      "pct": -2.37
+      "leader": "科达自控",
+      "pct": 0.69
     }
   ],
   "cautious": [
     {
-      "sector": "通信设备",
-      "reason": "主力净流出-88.54亿"
+      "sector": "光学光电子",
+      "reason": "主力净流出-103.6亿"
     },
     {
-      "sector": "证券",
-      "reason": "主力净流出-70.73亿"
+      "sector": "电子化学品",
+      "reason": "主力净流出-38.6亿"
     },
     {
-      "sector": "元件",
-      "reason": "主力净流出-68.6亿"
+      "sector": "光伏设备",
+      "reason": "主力净流出-37.56亿"
     }
   ],
   "catalysts": [],
@@ -88,162 +88,162 @@
   "industry_flow": {
     "inflow": [
       {
-        "name": "光学光电子",
-        "net": 25.55,
-        "pct": -3.02,
-        "leader": "华映科技"
-      },
-      {
-        "name": "贵金属",
-        "net": 21.43,
-        "pct": 3.91,
-        "leader": "招金黄金"
-      },
-      {
-        "name": "游戏",
-        "net": 12.88,
-        "pct": -0.09,
-        "leader": "昆仑万维"
-      },
-      {
         "name": "汽车零部件",
-        "net": 8.0,
-        "pct": 0.76,
-        "leader": "易实精密"
+        "net": 65.64,
+        "pct": 4.24,
+        "leader": "贝斯特"
       },
       {
-        "name": "通用设备",
-        "net": 7.46,
-        "pct": -0.15,
-        "leader": "科德数控"
+        "name": "消费电子",
+        "net": 57.0,
+        "pct": 2.39,
+        "leader": "信濠光电"
+      },
+      {
+        "name": "元件",
+        "net": 55.11,
+        "pct": 0.2,
+        "leader": "贤丰控股"
+      },
+      {
+        "name": "军工装备",
+        "net": 51.2,
+        "pct": 4.42,
+        "leader": "航天环宇"
+      },
+      {
+        "name": "通信设备",
+        "net": 41.23,
+        "pct": 0.71,
+        "leader": "锐捷网络"
       }
     ],
     "outflow": [
       {
-        "name": "通信设备",
-        "net": -88.54,
-        "pct": -4.4,
-        "leader": "*ST春兴"
+        "name": "光学光电子",
+        "net": -103.6,
+        "pct": -1.43,
+        "leader": "天山电子"
       },
       {
-        "name": "证券",
-        "net": -70.73,
-        "pct": -2.23,
-        "leader": "国盛证券"
-      },
-      {
-        "name": "元件",
-        "net": -68.6,
-        "pct": -5.82,
-        "leader": "方正科技"
-      },
-      {
-        "name": "消费电子",
-        "net": -62.98,
-        "pct": -3.28,
-        "leader": "利安科技"
+        "name": "电子化学品",
+        "net": -38.6,
+        "pct": -5.37,
+        "leader": "方邦股份"
       },
       {
         "name": "光伏设备",
-        "net": -50.06,
-        "pct": -2.78,
-        "leader": "国晟科技"
+        "net": -37.56,
+        "pct": -0.28,
+        "leader": "亚玛顿"
+      },
+      {
+        "name": "化学制品",
+        "net": -35.89,
+        "pct": -1.52,
+        "leader": "鹿山新材"
+      },
+      {
+        "name": "文化传媒",
+        "net": -28.03,
+        "pct": -0.59,
+        "leader": "风语筑"
       }
     ]
   },
   "concept_flow": {
     "inflow": [
       {
-        "name": "新股与次新股",
-        "net": 31.57,
-        "pct": -2.12,
-        "leader": "吉和昌"
+        "name": "人形机器人",
+        "net": 226.22,
+        "pct": 3.46,
+        "leader": "丰光精密"
       },
       {
-        "name": "注册制次新股",
-        "net": 31.57,
-        "pct": -2.54,
-        "leader": "华润新能源"
+        "name": "机器人概念",
+        "net": 183.96,
+        "pct": 2.38,
+        "leader": "丰光精密"
       },
       {
-        "name": "电子纸",
-        "net": 30.61,
-        "pct": -2.3,
-        "leader": "宜宾纸业"
+        "name": "同花顺出海50",
+        "net": 131.18,
+        "pct": 2.98,
+        "leader": "拓普集团"
       },
       {
-        "name": "稀土永磁",
-        "net": 27.12,
-        "pct": 1.01,
-        "leader": "争光股份"
+        "name": "人民币贬值受益",
+        "net": 126.65,
+        "pct": 1.54,
+        "leader": "先锋新材"
       },
       {
-        "name": "智慧灯杆",
-        "net": 18.36,
-        "pct": -2.37,
-        "leader": "时空科技"
+        "name": "5G",
+        "net": 121.69,
+        "pct": 0.69,
+        "leader": "科达自控"
       },
       {
-        "name": "民营医院",
-        "net": 18.07,
-        "pct": 0.99,
-        "leader": "欣龙控股"
+        "name": "数据中心(AIDC)",
+        "net": 118.43,
+        "pct": 0.77,
+        "leader": "江苏雷利"
       },
       {
-        "name": "金属钴",
-        "net": 17.67,
-        "pct": 0.11,
-        "leader": "大地熊"
+        "name": "新能源汽车",
+        "net": 110.5,
+        "pct": 2.08,
+        "leader": "丰光精密"
       },
       {
-        "name": "高股息精选",
-        "net": 12.11,
-        "pct": 0.9,
-        "leader": "中国重汽"
+        "name": "无人驾驶",
+        "net": 103.63,
+        "pct": 1.87,
+        "leader": "维科精密"
       },
       {
-        "name": "金属铜",
-        "net": 11.62,
-        "pct": 0.58,
-        "leader": "鹏欣资源"
+        "name": "商业航天",
+        "net": 100.01,
+        "pct": 1.68,
+        "leader": "盟升电子"
       },
       {
-        "name": "可降解塑料",
-        "net": 9.37,
-        "pct": -0.02,
-        "leader": "彤程新材"
+        "name": "特斯拉概念",
+        "net": 92.2,
+        "pct": 2.61,
+        "leader": "贝斯特"
       }
     ],
     "outflow": [
       {
-        "name": "融资融券",
-        "net": -649.85,
-        "pct": -1.1,
-        "leader": "吉和昌"
+        "name": "光伏概念",
+        "net": -122.52,
+        "pct": 0.24,
+        "leader": "泰胜风能"
       },
       {
-        "name": "深股通",
-        "net": -463.04,
-        "pct": -1.18,
-        "leader": "争光股份"
+        "name": "OLED",
+        "net": -115.94,
+        "pct": -2.57,
+        "leader": "北京君正"
       },
       {
-        "name": "芯片概念",
-        "net": -387.34,
-        "pct": -3.33,
-        "leader": "争光股份"
+        "name": "AI应用",
+        "net": -100.15,
+        "pct": 0.58,
+        "leader": "科达自控"
       },
       {
-        "name": "数据中心(AIDC)",
-        "net": -362.14,
-        "pct": -2.54,
-        "leader": "ST银江"
+        "name": "先进封装",
+        "net": -88.48,
+        "pct": -2.31,
+        "leader": "鼎智科技"
       },
       {
-        "name": "沪股通",
-        "net": -292.17,
-        "pct": -1.16,
-        "leader": "热景生物"
+        "name": "MicroLED概念",
+        "net": -83.35,
+        "pct": -2.13,
+        "leader": "凌云光"
       }
     ]
   }
