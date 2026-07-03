@@ -396,6 +396,64 @@ def fetch_akshare_ths_5d20d_backup(sector_names):
     return result
 
 
+def _fetch_akshare_real_5d20d(top_list):
+    """
+    【2026-07-03 新增】用akshare真实历史资金流接口获取5日/20日精确累计
+    接口: stock_board_industry_hist_em / stock_board_concept_hist_em（东方财富）
+    数据: 每日主力净流入 → 累加 = 精确的5日/20日累计
+    优势: 100%真实数据，非估算
+    限制: 只查当日净流入TOP20(避免40+个请求超时)
+    """
+    import akshare as ak_mod
+    result = {}
+    start_20d = (datetime.now() - timedelta(days=30)).strftime("%Y%m%d")
+    end_d = datetime.now().strftime("%Y%m%d")
+
+    # 只查TOP20（按当日净流入排序，最重要的板块）
+    sorted_items = sorted(top_list, key=lambda x: abs(x.get("net", 0)), reverse=True)[:20]
+
+    total_ok = 0
+    total_fail = 0
+
+    for idx, item in enumerate(sorted_items):
+        name = item["name"]
+        stype = item.get("type", "概念")
+        func = (ak_mod.stock_board_industry_hist_em if stype == "行业"
+                else ak_mod.stock_board_concept_hist_em)
+
+        for retry in range(2):
+            try:
+                df = func(symbol=name, start_date=start_20d, end_date=end_d)
+                if df is not None and len(df) >= 2:
+                    net_col = None
+                    for c in ["净额", "主力净流入"]:
+                        if c in df.columns:
+                            net_col = c
+                            break
+                    if net_col and len(df) >= 2:
+                        nets = [float(x) / 1e8 for x in df[net_col].astype(float).tolist()]
+                        if len(nets) >= 5:
+                            net_5d = round(sum(nets[-5:]), 2)
+                            net_20d = round(sum(nets[-min(20, len(nets)):]), 2)
+                            result[name] = {"net_5d": net_5d, "net_20d": net_20d}
+                            total_ok += 1
+                            print(f"    ✓ [{idx+1}/{len(sorted_items)}] {name}: 5d={net_5d}亿 20d={net_20d}亿")
+                        else:
+                            print(f"    ⚠ [{idx+1}] {name}: 仅{len(df)}天数据,不足5天")
+                    break
+            except Exception as e:
+                if retry < 1:
+                    time.sleep(1)
+                else:
+                    total_fail += 1
+                    print(f"    ✗ [{idx+1}] {name}: {type(e).__name__}")
+
+        time.sleep(0.3)  # 避免限流
+
+    print(f"    ══ akshare真实历史: 成功{total_ok}, 失败{total_fail} / 共查询{len(sorted_items)}个板块")
+    return result
+
+
 def fetch_from_neodata():
     """使用 NeoData 接口获取板块资金流向（备选数据源）"""
     import requests as req
@@ -681,26 +739,20 @@ def fetch_sector_flow():
                 if net_60d is not None and net_60d != 0:
                     item["net_60d"] = net_60d
         
-        # 【2026-07-03 修复 v2】温和估算方案（严格限幅，防爆炸）
-        # 背景: neodata token过期 + 同花顺匹配率低 → 大部分板块5d/20d为0
-        #       history只有1天(刚重建)，累加不出5日/20日
-        # 方案: 用当日净流入做保守估算，但严格限制在合理范围内
-        #       前端可看到标注 source="估算"，neodata恢复后自动覆盖为精确值
-        estimated = 0
+        # 【2026-07-03 修复 v3】用akshare真实历史接口替代估算
+        # 真实数据源优先级: 1.akshare历史资金流 2.neodata 3.保持为0(前端显示"--")
+        # 绝不造假！宁可空着也不用假数据
+        print("  🔍 [真实] 尝试akshare历史资金流接口获取5日/20日累计...")
+        ak_hist = _fetch_akshare_real_5d20d(top_list)
         for item in top_list:
-            if item.get("net_5d", 0) == 0 and item.get("net", 0) != 0:
-                net_today = item["net"]
-                abs_today = abs(net_today)
-                sign = 1 if net_today > 0 else -1 if net_today < 0 else 0
-                # 保守倍数 + 绝对上限（A股单板块5日/20日净流入历史极值级别）
-                est_5d = round(sign * min(abs_today * 3, 500.0), 2)
-                est_20d = round(sign * min(abs_today * 8, 1500.0), 2)
-                item["net_5d"] = est_5d
-                item["net_20d"] = est_20d
-                item["source"] = "估算"
-                estimated += 1
-        if estimated > 0:
-            print(f"  📐 [温和估算] {estimated} 个板块使用保守估算(上限500/1500亿)")
+            name = item["name"]
+            if name in ak_hist:
+                h = ak_hist[name]
+                item["net_5d"] = h["net_5d"]
+                item["net_20d"] = h["net_20d"]
+                item["source"] = "东财历史"
+        matched_ak = sum(1 for x in top_list if x.get("net_5d", 0) != 0)
+        print(f"  ✅ [真实] akshare历史: {matched_ak}/{len(top_list)} 个板块有精确5d/20d")
 
     # 如果真实数据获取失败，尝试 neodata 备选（仅当日数据）
     if not top_list:
