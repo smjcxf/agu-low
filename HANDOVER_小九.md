@@ -100,14 +100,10 @@ python update_data_v2.py  # 完整注入（可能需要10-15分钟）
 python deploy_now.py --force
 ```
 
-### 问题2：独立页面空白（竞彩/逻辑）
-**原因**: `extract_panels_v6.py` 覆盖了这两个页  
-**解决**:
-```bash
-python extract_standalone_final.py  # 重新生成竞彩+逻辑页
-python refresh_standalone_and_deploy.py --skip-data
-```
-**预防**: 别运行 `extract_panels_v6.py`，除非你改了它的 `PANELS` 列表
+### 问题2：独立页面导航页少了竞彩/逻辑/三线/多维
+**原因**: `extract_panels_v6.py` 重新生成时覆盖了 `index.html`，只生成 PANELS 列表中的6个  
+**解决**: 已修改脚本，导航页会自动包含全部10个页面（6个主面板 + 4个额外页）  
+**预防**: 不用手动改，脚本已修复
 
 ### 问题3：GitHub Pages 部署失败
 **原因**: `deploy_now.py` 审计失败或 git 冲突  
