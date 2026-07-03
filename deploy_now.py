@@ -266,13 +266,6 @@ def _rebuild_dist():
                 log("   ✓ enhance_dist 完成")
             else:
                 log(f"   ⚠️ enhance_dist 失败: {e_result.stderr.strip()[:200]}")
-        # 同步根目录 index.html 给 Cloudflare Pages
-        dist_index = os.path.join(PROJECT_ROOT, "dist", "index.html")
-        root_index = os.path.join(PROJECT_ROOT, "index.html")
-        if os.path.exists(dist_index):
-            import shutil
-            shutil.copy2(dist_index, root_index)
-            log("   ✓ 根目录 index.html 已同步（Cloudflare Pages）")
     else:
         err = result.stderr.strip()[:300] if result.stderr else 'unknown'
         log(f"   ❌ 重建失败（returncode={result.returncode}），阻塞部署: {err}")
