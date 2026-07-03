@@ -26,8 +26,12 @@ INDEX_SINA_MAP = {
 
 # 海外指数 → Sina代码映射（盘中实时，港股日韩跟随A股指数一起刷新）
 FOREIGN_SINA_MAP = {
+    '恒生指数': 'int_hangseng',
     '日经225': 'int_nikkei',
 }
+
+# 港股科技指数 → 单独处理（hkHSTECH格式不同于int_前缀，pct在parts[8]）
+HK_TECH_SINA = 'hkHSTECH'
 
 # 海外指数 → 名称（需单独akshare获取的）
 FOREIGN_AKSHARE = {
@@ -87,7 +91,7 @@ def fetch_index_spot():
     result = []
     # 固定顺序：A股4大指数 → 韩股 → 日经（符合用户阅读习惯）
     targets = ['上证指数', '深证成指', '创业板指', '科创50']
-    foreign_targets = ['韩国KOSPI', '日经225']  # 韩股在创业板指后，日经最后
+    foreign_targets = ['恒生指数', '恒生科技指数', '韩国KOSPI', '日经225']  # 恒生系→韩股→日经
 
     # Step 1: akshare（上交所指数）
     for attempt in range(1, MAX_RETRY + 1):
@@ -122,6 +126,14 @@ def fetch_index_spot():
                 if m in sina:
                     result.append({'name': m, 'pct': sina[m]})
                     log(f"    ✓ {m} {sina[m]:+.2f}% (Sina)")
+                elif m == '恒生科技指数':
+                    # hkHSTECH格式不同于int_前缀，单独获取
+                    hkpct = fetch_hktech_pct()
+                    if hkpct is not None:
+                        result.append({'name': '恒生科技指数', 'pct': hkpct})
+                        log(f"    ✓ 恒生科技指数 {hkpct:+.2f}% (Sina-hkHSTECH)")
+                    else:
+                        log(f"    ✗ 恒生科技指数 无法获取")
                 elif m in FOREIGN_AKSHARE:
                     # KOSPI: Sina不支持，用akshare单独获取
                     kospi = fetch_kospi_spot()
@@ -133,10 +145,15 @@ def fetch_index_spot():
                 else:
                     log(f"    ✗ {m} 无法获取")
     
-    # Step 3: 获取KOSPI（即使Sina已尝试，确保数据准确）
+    # Step 3: 兜底获取恒生科技/KOSPI（即使Sina已尝试）
     for ft in foreign_targets:
         if ft not in {r['name'] for r in result}:
-            if ft in FOREIGN_AKSHARE:
+            if ft == '恒生科技指数':
+                hkpct = fetch_hktech_pct()
+                if hkpct is not None:
+                    result.append({'name': '恒生科技指数', 'pct': hkpct})
+                    log(f"    ✓ 恒生科技指数 {hkpct:+.2f}% (Sina-hkHSTECH)")
+            elif ft in FOREIGN_AKSHARE:
                 kospi = fetch_kospi_spot()
                 if kospi:
                     result.append(kospi)
@@ -164,6 +181,28 @@ def fetch_kospi_spot():
             return {'name': '韩国KOSPI', 'pct': pct}
     except Exception as e:
         log(f"  ⚠️ KOSPI获取失败: {e}")
+    return None
+
+
+def fetch_hktech_pct():
+    """获取恒生科技指数涨跌幅（hkHSTECH格式，pct在parts[8]）"""
+    try:
+        r = requests.get(
+            'https://hq.sinajs.cn/list=hkHSTECH',
+            headers={'Referer': 'https://finance.sina.com.cn'},
+            timeout=10
+        )
+        if r.status_code != 200:
+            return None
+        text = r.text.strip()
+        if 'var hq_str_hkHSTECH' not in text:
+            return None
+        data_str = text.split('"')[1]
+        parts = data_str.split(',')
+        if len(parts) >= 9:
+            return round(float(parts[8]), 2)
+    except Exception as e:
+        log(f"  ⚠️ 恒生科技获取失败: {e}")
     return None
 
 
