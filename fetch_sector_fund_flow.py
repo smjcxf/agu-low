@@ -216,6 +216,16 @@ def fetch_neodata_5d20d_supplement(sector_names):
                         "net_5d": round(net5_wan / 10000, 2),
                         "net_20d": round(net20_wan / 10000, 2),
                     })
+            # 【2026-07-03 修复】过滤5日==20日的异常数据
+            filtered = []
+            for r in results:
+                n5 = r.get("net_5d", 0)
+                n20 = r.get("net_20d", 0)
+                if n5 != 0 and n20 != 0 and abs(n5 - n20) < 0.1:
+                    print(f"    ⚠️ neodata 数据异常：{r['name']} 5日({n5}) == 20日({n20})，丢弃")
+                    continue
+                filtered.append(r)
+            results = filtered
             print(f"    ✓ {query_desc}: {len(results)}只板块")
             return results
         except Exception as e:
@@ -327,6 +337,10 @@ def fetch_from_neodata():
                 net_yi = round(net_wan / 10000, 2)
                 net5_yi = round(net5_wan / 10000, 2)
                 net20_yi = round(net20_wan / 10000, 2)
+                # 【2026-07-03 修复】校验：5日累计不可能等于20日累计
+                if net5_yi != 0 and net20_yi != 0 and abs(net5_yi - net20_yi) < 0.1:
+                    print(f"    ⚠️ neodata 数据异常：{name} 5日({net5_yi}) == 20日({net20_yi})，丢弃")
+                    continue
                 if name and net_yi != 0 and name not in seen_local:
                     seen_local.add(name)
                     results.append({
@@ -500,6 +514,7 @@ def fetch_sector_flow():
             print(f"    ⚠️ 方法2失败: {e}")
     
     # 【2026-06-28 修复】akshare 拿到数据后，用 neodata 补充 5d/20d 累计
+    # 【2026-07-03 修复】增加数据校验：5日累计不可能等于20日累计
     if top_list and ak is not None:
         sector_names = [item["name"] for item in top_list]
         supplement = fetch_neodata_5d20d_supplement(sector_names)
@@ -507,10 +522,16 @@ def fetch_sector_flow():
             name = item["name"]
             if name in supplement:
                 s = supplement[name]
-                if s.get("net_5d", 0) != 0:
-                    item["net_5d"] = s["net_5d"]
-                if s.get("net_20d", 0) != 0:
-                    item["net_20d"] = s["net_20d"]
+                net_5d = s.get("net_5d", 0)
+                net_20d = s.get("net_20d", 0)
+                # 校验：5日累计与20日累计不可能完全相同（除非数据不足）
+                if net_5d != 0 and net_20d != 0 and abs(net_5d - net_20d) < 0.1:
+                    print(f"  ⚠️ neodata 数据异常：{name} 5日累计({net_5d}) == 20日累计({net_20d})，跳过")
+                    continue
+                if net_5d != 0:
+                    item["net_5d"] = net_5d
+                if net_20d != 0:
+                    item["net_20d"] = net_20d
 
     # 如果真实数据获取失败，尝试 neodata 备选（仅当日数据）
     if not top_list:
@@ -611,18 +632,18 @@ def fetch_sector_flow():
     
     candidate_list = list(candidate_map.values())
     
-    # 【2026-06-26新增】60日累计净流入（从history累加，至少30天数据才有效）
+    # 【2026-07-03 修复】60日累计净流入（从history累加，数据不足则不计算）
     for item in candidate_list:
         name = item["name"]
         hist = history.get(name, [])
-        # 5日/20日/60日累计（从历史数据累加）
-        net_5d_val = round(sum(h["net"] for h in hist[-5:]), 2) if len(hist) >= 3 else 0
-        net_20d_val = round(sum(h["net"] for h in hist[-20:]), 2) if len(hist) >= 5 else 0
+        # 5日/20日/60日累计（从历史数据累加，严格检查数据量）
+        net_5d_val = round(sum(h["net"] for h in hist[-5:]), 2) if len(hist) >= 5 else 0
+        net_20d_val = round(sum(h["net"] for h in hist[-20:]), 2) if len(hist) >= 20 else 0
         if net_5d_val != 0:
             item["net_5d"] = net_5d_val
         if net_20d_val != 0:
             item["net_20d"] = net_20d_val
-        if len(hist) >= 30:
+        if len(hist) >= 60:
             item["net_60d"] = round(sum(h["net"] for h in hist[-60:]), 2)
         else:
             item["net_60d"] = None  # 数据不足，前端显示"积累中"
