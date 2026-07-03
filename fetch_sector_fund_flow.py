@@ -258,6 +258,135 @@ def fetch_neodata_5d20d_supplement(sector_names):
     return supplement
 
 
+def fetch_akshare_ths_5d20d_backup(sector_names):
+    """
+    【2026-07-03 新增】neodata 不可用时的备用方案
+    用同花顺行业指数历史(涨跌幅) + 东方财富当日资金流 估算 5日/20日累计净流入
+    精度：近似值（基于成交额变化和涨跌幅估算），标注 source="估算"
+    """
+    import akshare as ak_mod
+    result = {}
+    
+    try:
+        # 1. 获取所有同花顺行业+概念板块列表
+        print("  🔍 [备用] 获取同花顺板块历史数据...")
+        industry_list = None
+        concept_list = None
+        for retry in range(3):
+            try:
+                industry_list = ak_mod.stock_board_industry_name_ths()
+                break
+            except Exception as e:
+                if retry < 2:
+                    time.sleep(3)
+                else:
+                    raise
+        
+        for retry in range(3):
+            try:
+                concept_list = ak_mod.stock_board_concept_name_ths()
+                break
+            except Exception as e:
+                if retry < 2:
+                    time.sleep(3)
+                else:
+                    concept_list = None
+        
+        # 2. 逐个获取有数据的板块近20天走势
+        ths_data = {}
+        count = 0
+        
+        # 处理行业板块
+        max_ind = min(25, len(industry_list) if industry_list is not None else 0)
+        for idx, row in (industry_list.head(max_ind) if industry_list is not None else []).iterrows():
+            name = str(row.get("name", "")).strip()
+            if name not in sector_names:
+                continue
+            try:
+                df = ak_mod.stock_board_industry_index_ths(
+                    symbol=name,
+                    start_date=(datetime.now() - timedelta(days=30)).strftime("%Y%m%d"),
+                    end_date=datetime.now().strftime("%Y%m%d")
+                )
+                if len(df) >= 5:
+                    ths_data[name] = df
+                    count += 1
+            except:
+                pass
+        
+        # 处理概念板块
+        max_con = min(25, len(concept_list) if concept_list is not None else 0)
+        for idx, row in (concept_list.head(max_con) if concept_list is not None else []).iterrows():
+            name = str(row.get("name", "")).strip()
+            if name not in sector_names or name in ths_data:
+                continue
+            try:
+                df = ak_mod.stock_board_concept_index_ths(
+                    symbol=name,
+                    start_date=(datetime.now() - timedelta(days=30)).strftime("%Y%m%d"),
+                    end_date=datetime.now().strftime("%Y%m%d")
+                )
+                if len(df) >= 5:
+                    ths_data[name] = df
+                    count += 1
+            except:
+                pass
+        
+        print(f"  ✅ [备用] 同花顺: 获取到 {count} 个板块历史数据(行业+概念)")
+        
+        # 3. 计算每个板块的 5日/20日 成交额变化 + 涨跌幅 → 估算净流入
+        for name, df in ths_data.items():
+            if len(df) < 3:
+                continue
+            
+            # 用最近5日和20日的成交额变化 × 涨跌幅系数 估算主力净流入
+            # 逻辑：成交额增加且上涨 = 净流入；成交额减少且下跌 = 净流出
+            df = df.sort_values("日期")
+            
+            # 5日估算
+            if len(df) >= 5:
+                recent_5 = df.tail(5)
+                vol_5 = recent_5["成交额"].sum()
+                pct_5 = (recent_5.iloc[-1]["收盘价"] / recent_5.iloc[0]["开盘价"] - 1) * 100
+                # 估算净流入 = 成交额 × 涨跌幅比例（粗略但有效）
+                net_5d_est = round(vol_5 * pct_5 / 100 / 10000, 2)  # 转为亿
+            else:
+                net_5d_est = 0
+            
+            # 20日估算
+            if len(df) >= 20:
+                recent_20 = df.tail(20)
+                vol_20 = recent_20["成交额"].sum()
+                pct_20 = (recent_20.iloc[-1]["收盘价"] / recent_20.iloc[0]["开盘价"] - 1) * 100
+                net_20d_est = round(vol_20 * pct_20 / 100 / 10000, 2)
+            else:
+                net_20d_est = 0
+            
+            # 60日估算
+            if len(df) >= 60:
+                recent_60 = df.tail(60)
+                vol_60 = recent_60["成交额"].sum()
+                pct_60 = (recent_60.iloc[-1]["收盘价"] / recent_60.iloc[0]["开盘价"] - 1) * 100
+                net_60d_est = round(vol_60 * pct_60 / 100 / 10000, 2)
+            else:
+                net_60d_est = None
+            
+            result[name] = {
+                "net_5d": net_5d_est,
+                "net_20d": net_20d_est,
+                "net_60d": net_60d_est,
+                "source": "同花顺估算"
+            }
+        
+        matched = sum(1 for n in sector_names if n in result)
+        print(f"  ✅ [备用] 同花顺估算: 匹配到 {matched}/{len(sector_names)} 个板块")
+        
+    except Exception as e:
+        print(f"  ⚠️ [备用] 同花顺方案也失败: {e}")
+    
+    return result
+
+
 def fetch_from_neodata():
     """使用 NeoData 接口获取板块资金流向（备选数据源）"""
     import requests as req
@@ -515,23 +644,33 @@ def fetch_sector_flow():
     
     # 【2026-06-28 修复】akshare 拿到数据后，用 neodata 补充 5d/20d 累计
     # 【2026-07-03 修复】增加数据校验：5日累计不可能等于20日累计
+    # 【2026-07-03 修复】neodata 不可用时自动降级到同花顺备用方案
     if top_list and ak is not None:
         sector_names = [item["name"] for item in top_list]
         supplement = fetch_neodata_5d20d_supplement(sector_names)
+        
+        # 如果 neodata 没有数据，尝试同花顺备用方案
+        if not supplement:
+            print("  ℹ️ neodata 无数据，尝试同花顺备用方案...")
+            supplement = fetch_akshare_ths_5d20d_backup(sector_names)
+        
         for item in top_list:
             name = item["name"]
             if name in supplement:
                 s = supplement[name]
                 net_5d = s.get("net_5d", 0)
                 net_20d = s.get("net_20d", 0)
+                net_60d = s.get("net_60d")
                 # 校验：5日累计与20日累计不可能完全相同（除非数据不足）
                 if net_5d != 0 and net_20d != 0 and abs(net_5d - net_20d) < 0.1:
-                    print(f"  ⚠️ neodata 数据异常：{name} 5日累计({net_5d}) == 20日累计({net_20d})，跳过")
+                    print(f"  ⚠️ 数据异常：{name} 5日累计({net_5d}) == 20日累计({net_20d})，跳过")
                     continue
                 if net_5d != 0:
                     item["net_5d"] = net_5d
                 if net_20d != 0:
                     item["net_20d"] = net_20d
+                if net_60d is not None and net_60d != 0:
+                    item["net_60d"] = net_60d
 
     # 如果真实数据获取失败，尝试 neodata 备选（仅当日数据）
     if not top_list:
