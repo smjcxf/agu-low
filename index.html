@@ -89633,10 +89633,10 @@ function renderAISummary() {
   rows.push(row('市场健康度', '#43a047', '#e8f5e9', healthHtml, '#f1f8e9'));
 
   // ---- 指数表现（8个核心指数） ----
-  var idxWL = ['\u4e0a\u8bc1\u6307\u6570','\u6df1\u8bc1\u6210\u5206','\u521b\u4e1a\u677f\u6307','\u79d1\u521b50','\u6052\u751f\u6307\u6570','\u6052\u7511\u79d1\u6280\u6307\u6570','\u65e5\u7ecf225','\u97e9\u56fdKOSPI'];
+  var idxWL = ['\u4e0a\u8bc1\u6307\u6570','\u6df1\u8bc1\u6210\u6307','\u521b\u4e1a\u677f\u6307','\u79d1\u521b50','\u6052\u751f\u6307\u6570','\u6052\u7511\u79d1\u6280\u6307\u6570','\u65e5\u7ecf225','\u97e9\u56fdKOSPI'];
   var indices = (ma.indices || []).filter(function(x){ return idxWL.indexOf(x.name) >= 0; }).sort(function(a,b){
-    var oa = a.name==='\u4e0a\u8bc1\u6307\u6570'?1:a.name==='\u6df1\u8bc1\u6210\u5206'?2:a.name==='\u521b\u4e1a\u677f\u6307'?3:a.name==='\u79d1\u521b50'?4:a.name==='\u6052\u751f\u6307\u6570'?5:a.name==='\u6052\u7511\u79d1\u6280\u6307\u6570'?6:a.name==='\u65e5\u7ecf225'?7:a.name==='\u97e9\u56fdKOSPI'?8:99;
-    var ob = b.name==='\u4e0a\u8bc1\u6307\u6570'?1:b.name==='\u6df1\u8bc1\u6210\u5206'?2:b.name==='\u521b\u4e1a\u677f\u6307'?3:b.name==='\u79d1\u521b50'?4:b.name==='\u6052\u751f\u6307\u6570'?5:b.name==='\u6052\u7511\u79d1\u6280\u6307\u6570'?6:b.name==='\u65e5\u7ecf225'?7:b.name==='\u97e9\u56fdKOSPI'?8:99;
+    var oa = a.name==='\u4e0a\u8bc1\u6307\u6570'?1:a.name==='\u6df1\u8bc1\u6210\u6307'?2:a.name==='\u521b\u4e1a\u677f\u6307'?3:a.name==='\u79d1\u521b50'?4:a.name==='\u6052\u751f\u6307\u6570'?5:a.name==='\u6052\u7511\u79d1\u6280\u6307\u6570'?6:a.name==='\u65e5\u7ecf225'?7:a.name==='\u97e9\u56fdKOSPI'?8:99;
+    var ob = b.name==='\u4e0a\u8bc1\u6307\u6570'?1:b.name==='\u6df1\u8bc1\u6210\u6307'?2:b.name==='\u521b\u4e1a\u677f\u6307'?3:b.name==='\u79d1\u521b50'?4:b.name==='\u6052\u751f\u6307\u6570'?5:b.name==='\u6052\u7511\u79d1\u6280\u6307\u6570'?6:b.name==='\u65e5\u7ecf225'?7:b.name==='\u97e9\u56fdKOSPI'?8:99;
     return oa - ob;
   });
   if (indices.length > 0) {
