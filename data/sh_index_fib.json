@@ -1,13 +1,13 @@
 {
   "current": {
-    "index": 4028.9,
+    "index": 4043.64,
     "change_pct": 0,
     "change_points": 0,
-    "days_down": 36,
-    "total_pct": -5.04,
-    "total_points": -213.67,
-    "avg_pct": 0.14,
-    "peak_date": "20260513",
+    "days_down": 37,
+    "total_pct": -4.69,
+    "total_points": -198.93,
+    "avg_pct": 0.13,
+    "peak_date": "2026-05-13",
     "peak_close": 4242.57,
     "date": "2026-07-03",
     "mode": "阴跌磨底"
@@ -18,42 +18,92 @@
       "date": "2026-05-25",
       "desc": "小反弹窗口",
       "days_left": -39,
-      "status": "passed"
+      "observation": {
+        "index": 4152.57,
+        "change_pct": -2.3,
+        "volume_yi": 615.9,
+        "reversal": "none",
+        "verified": false,
+        "note": "未触发(仍跌2.3%)"
+      },
+      "status": "missed"
     },
     {
       "name": "F(5)",
       "date": "2026-05-27",
       "desc": "短期变盘",
       "days_left": -37,
-      "status": "passed"
+      "observation": {
+        "index": 4152.57,
+        "change_pct": -0.2,
+        "volume_yi": 615.9,
+        "reversal": "none",
+        "verified": false,
+        "note": "未触发(仍跌0.2%)"
+      },
+      "status": "missed"
     },
     {
       "name": "F(8)",
       "date": "2026-05-30",
       "desc": "8日变盘",
       "days_left": -34,
-      "status": "passed"
+      "observation": {
+        "index": 4098.64,
+        "change_pct": -2.4,
+        "volume_yi": 621.2,
+        "reversal": "none",
+        "verified": false,
+        "note": "未触发(仍跌2.4%)"
+      },
+      "status": "missed"
     },
     {
       "name": "F(13)",
       "date": "2026-06-04",
       "desc": "13日重要窗口",
       "days_left": -29,
-      "status": "passed"
+      "observation": {
+        "index": 4075.1,
+        "change_pct": -1.7,
+        "volume_yi": 642.2,
+        "reversal": "none",
+        "verified": false,
+        "note": "未触发(仍跌1.7%)"
+      },
+      "status": "missed"
     },
     {
       "name": "F(21)",
       "date": "2026-06-12",
       "desc": "21日大窗口",
       "days_left": -21,
-      "status": "passed"
+      "observation": {
+        "index": 3993.23,
+        "change_pct": 3.3,
+        "volume_yi": 598.7,
+        "reversal": "confirmed",
+        "verified": true,
+        "note": "反弹3.9%，反转确认",
+        "rebound_pct": 3.9,
+        "low_point": 4008.18
+      },
+      "status": "triggered"
     },
     {
       "name": "F(34)",
       "date": "2026-06-25",
       "desc": "34日中期窗口",
       "days_left": -8,
-      "status": "passed"
+      "observation": {
+        "index": 4106.25,
+        "change_pct": -2.2,
+        "volume_yi": 709.0,
+        "reversal": "none",
+        "verified": false,
+        "note": "未触发(仍跌2.2%)"
+      },
+      "status": "missed"
     },
     {
       "name": "F(55)",
@@ -63,10 +113,26 @@
       "status": "future"
     }
   ],
-  "next_cycle": [],
+  "next_cycle": [
+    {
+      "name": "F(21)",
+      "date": "2026-07-13",
+      "desc": "下轮21日"
+    },
+    {
+      "name": "F(34)",
+      "date": "2026-07-29",
+      "desc": "下轮34日"
+    },
+    {
+      "name": "F(55)",
+      "date": "2026-08-28",
+      "desc": "下轮55日"
+    }
+  ],
   "judgement": {
-    "summary": "从20260513高点跌36天（-5.04%），阴跌磨底",
-    "key_window": "🎯 下个窗口: F(55)（2026-07-16）"
+    "summary": "从2026-05-13高点跌37天（-4.69%），阴跌磨底",
+    "key_window": "⚡ F(21)窗口(2026-06-12)反转确认，下轮周期已推算"
   },
-  "update_time": "2026-07-03 16:12"
+  "update_time": "2026-07-03 19:26"
 }
