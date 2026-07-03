@@ -87,13 +87,13 @@ html,body{{height:auto;min-height:100vh;overflow-y:auto;padding-top:56px}}
 </style>
 <script>
 // 顶栏
-(function(){{
+document.addEventListener('DOMContentLoaded',function(){{
   var d=document.createElement('div');d.className='sa-bar';
   d.innerHTML='<span class=r>🚀</span>'
     +'<div><div class=b>九宝量化 V6.0</div><div class=s>独立 · {target_name}</div></div>'
     +'<a href=index.html>← 全部</a>';
   document.body.insertBefore(d,document.body.firstChild);
-}})();
+}});
 // 渲染
 window.addEventListener('load',function(){{
   var list=[
