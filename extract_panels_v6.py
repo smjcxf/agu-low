@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# DO NOT DELETE: 独立页生成脚本，standalone/ 目录的来源 (see DO_NOT_DELETE.md)
 """
 独立页面提取 v6（最小改动方案）
 只改两处：1) CSS 让所有面板可见 2) 隐藏标签栏 + 注入顶栏渲染JS

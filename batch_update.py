@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# DO NOT DELETE: 核心调度脚本，所有定时任务的入口 (see DO_NOT_DELETE.md)
 """
 batch_update.py — 九宝量化统一调度脚本
 每个步骤独立超时 → 失败自动重试一次 → 汇总报告
