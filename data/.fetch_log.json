@@ -1,17 +1,17 @@
 {
   "fetch_sector_fund_flow": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-03 15:33:14",
+    "last_success": "2026-07-03 16:26:54",
     "last_error": null
   },
   "fetch_concept_ranking": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-03 15:33:37",
+    "last_success": "2026-07-03 16:25:59",
     "last_error": null
   },
   "fetch_market_alerts": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-03 15:34:18",
+    "last_success": "2026-07-03 16:26:52",
     "last_error": null
   },
   "fetch_sh_sz_history": {
@@ -26,7 +26,12 @@
   },
   "fetch_macro_data": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-03 15:37:22",
+    "last_success": "2026-07-03 16:28:36",
+    "last_error": null
+  },
+  "fetch_overnight_brief": {
+    "consecutive_failures": 0,
+    "last_success": "2026-07-03 16:25:49",
     "last_error": null
   }
 }
