@@ -375,6 +375,42 @@ def _release_deploy_lock():
         log("   [LOCK] already released")
 
 
+def _regen_standalone_if_needed():
+    """Auto-regenerate standalone pages if index_master.html is newer"""
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    index_master = os.path.join(project_root, "index_master.html")
+    standalone_dir = os.path.join(project_root, "standalone")
+    
+    if not os.path.exists(index_master):
+        return
+    
+    index_mtime = os.path.getmtime(index_master)
+    
+    # Check if any standalone HTML is older than index_master
+    need_regen = False
+    if os.path.exists(standalone_dir):
+        for f in os.listdir(standalone_dir):
+            if f.endswith(".html"):
+                fp = os.path.join(standalone_dir, f)
+                if os.path.getmtime(fp) < index_mtime:
+                    need_regen = True
+                    break
+    
+    if need_regen:
+        log("   Auto-regenerating standalone pages (index_master.html updated)...")
+        extract_py = os.path.join(project_root, "extract_panels_v6.py")
+        if os.path.exists(extract_py):
+            result = subprocess.run([sys.executable, extract_py],
+                                   capture_output=True, text=True, timeout=120, cwd=project_root)
+            if result.returncode == 0:
+                log("   ✓ Standalone pages regenerated")
+            else:
+                log(f"   WARN standalone regeneration failed: {result.stderr[:200]}")
+        else:
+            log("   WARN extract_panels_v6.py not found, skipping standalone regen")
+    else:
+        log("   ✓ Standalone pages up-to-date (skipping regen)")
+
 def main():
     log("=== Start Deploy (GitHub Pages) ===")
     project_root = os.path.dirname(os.path.abspath(__file__))
@@ -382,6 +418,9 @@ def main():
 
     # 0.0 清理未合并文件（合并冲突状态），防止后续 git commit/pull 失败
     _fix_unmerged_files()
+    
+    # 0.0.1 Auto-regenerate standalone pages if needed
+    _regen_standalone_if_needed()
 
     # 0. Deploy lock: only one machine deploys at a time
     if not _acquire_deploy_lock():
