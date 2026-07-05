@@ -30,8 +30,10 @@ def log(msg):
         print(msg.encode("ascii", "replace").decode(), flush=True)
 
 def run(cmd, cwd=None):
+    env = os.environ.copy()
+    env["PYTHONIOENCODING"] = "utf-8"
     result = subprocess.run(cmd, shell=True, cwd=cwd,
-                            capture_output=True, text=True)
+                            capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result.returncode != 0:
         err = result.stderr.strip()
         if err:
