@@ -6,32 +6,32 @@
   },
   "fetch_concept_ranking": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-05 14:26:08",
+    "last_success": "2026-07-05 15:26:29",
     "last_error": null
   },
   "fetch_sector_fund_flow": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-05 14:27:22",
+    "last_success": "2026-07-05 15:26:08",
     "last_error": null
   },
   "fetch_market_alerts": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-05 14:26:49",
+    "last_success": "2026-07-05 15:27:09",
     "last_error": null
   },
   "fetch_sh_sz_history": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-04 17:27:09",
+    "last_success": "2026-07-05 15:27:10",
     "last_error": null
   },
   "fetch_up_down_stats": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-04 17:28:27",
+    "last_success": "2026-07-05 15:28:29",
     "last_error": null
   },
   "fetch_macro_data": {
     "consecutive_failures": 0,
-    "last_success": "2026-07-05 14:29:04",
+    "last_success": "2026-07-05 15:30:09",
     "last_error": null
   },
   "fetch_etf_subscription": {
