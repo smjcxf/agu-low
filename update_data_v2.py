@@ -1456,7 +1456,7 @@ def main():
 
     print(f"\n✅ 数据块更新成功！")
     print(f"   部署: python deploy_now.py")
-    print(f"   网址: https://ah-quant999.github.io/quant-scanner-v6/")
+    print(f"   网址: https://smjcxf.github.io/agu/")
     return True
 if __name__ == "__main__":
     success = main()

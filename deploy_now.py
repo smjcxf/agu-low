@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """GitHub Pages deploy -- push dist/ to gh-pages branch
 
-Target: https://ah-quant999.github.io/quant-scanner-v6/
-Repo: ah-quant999/quant-scanner-v6
+Target: https://smjcxf.github.io/agu/
+Repo: smjcxf/agu
 
 Pre-deploy audit via deploy_audit.py:
   - ERROR > 0 => block deploy
@@ -14,7 +14,7 @@ import os, sys, time, shutil, subprocess, tempfile, json
 from datetime import datetime
 
 DIST_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dist")
-OUTPUT_URL = "https://ah-quant999.github.io/quant-scanner-v6/"
+OUTPUT_URL = "https://smjcxf.github.io/agu/"
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 AUDIT_SUMMARY = os.path.join(PROJECT_ROOT, "data", "audit_summary.json")
 MAX_WARNINGS = 5  # 2026-07-01 调整：今天WARNING=4导致部署被阻止，实际不影响主功能
@@ -448,7 +448,7 @@ def main():
 
         # Use temp dir for gh-pages
         tmpdir = tempfile.mkdtemp(prefix="gh-pages-deploy-")
-        GITHUB_REMOTE = "git@github.com:ah-quant999/quant-scanner-v6.git"
+        GITHUB_REMOTE = "git@github.com:smjcxf/agu.git"
         log(f"1. Cloning gh-pages from GitHub to temp dir...")
         r = run(f"git clone --branch gh-pages --depth 1 {GITHUB_REMOTE} {tmpdir}")
         if r.returncode != 0:

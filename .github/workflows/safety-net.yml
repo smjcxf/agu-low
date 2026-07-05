@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: 检查站点可访问性
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://ah-quant999.github.io/quant-scanner-v6/ || echo "000")
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://smjcxf.github.io/agu/ || echo "000")
           echo "::notice::站点状态码: $STATUS"
           if [ "$STATUS" != "200" ]; then
             echo "::error::站点不可访问！状态码: $STATUS"
@@ -27,7 +27,7 @@ jobs:
       - name: 检测数据新鲜度
         id: fresh
         run: |
-          HTML=$(curl -sL https://ah-quant999.github.io/quant-scanner-v6/ 2>/dev/null)
+          HTML=$(curl -sL https://smjcxf.github.io/agu/ 2>/dev/null)
           
           # 提取 SCAN_DATA.scan_time
           SCAN_TIME=$(echo "$HTML" | grep -oP '"scan_time":\s*"\K[^"]+' | head -1)
@@ -45,9 +45,9 @@ jobs:
           
           echo "::notice::数据年龄: ${DIFF_HOURS}小时"
           
-          if [ $DIFF_HOURS -gt 6 ]; then
+          if [ $DIFF_HOURS -gt 12 ]; then
             echo "::warning::数据已超过6小时未更新（${DIFF_HOURS}h），定时任务可能中断！"
-          elif [ $DIFF_HOURS -gt 12 ]; then
+          elif [ $DIFF_HOURS -gt 6 ]; then
             echo "::error::数据已超过12小时未更新（${DIFF_HOURS}h），定时任务中断！请立即检查双机状态。"
           fi
           
