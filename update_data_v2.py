@@ -701,7 +701,7 @@ def main():
             _existing_codes.add(_code)
             _missing_in_stock_list += 1
     if _missing_in_stock_list:
-        print(f"  ▸ 兜底补全 STOCK_LIST: +{_missing_in_stock_list} 只（来自金股池+扫描+监控+行业）")
+        print(f"  > 兜底补全 STOCK_LIST: +{_missing_in_stock_list} 只（来自金股池+扫描+监控+行业）")
 
     # 【EMA修复】从 scan_result + watch_result 同步 latest 到 gold_pool
     # 根因：scanner.py full 模式只扫描信号子集（~237只），gold_pool 有 517 只
@@ -802,7 +802,7 @@ def main():
                 # else: 已有有效 latest（含EMA），保持不动
         _total_synced = _wp_updated + _wp_fallback
         if _total_synced > 0:
-            print(f"  ▸ GOLD_POOL: 从扫描数据同步 {_wp_updated} 只 + fallback {_wp_fallback} 只 = {_total_synced} 只补全latest")
+            print(f"  > GOLD_POOL: 从扫描数据同步 {_wp_updated} 只 + fallback {_wp_fallback} 只 = {_total_synced} 只补全latest")
         # 总是写回（日期不同+确保最新EMA落盘）
         _old_ut = gold_pool.get("update_time", "")
         _new_ut = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -814,7 +814,7 @@ def main():
             try:
                 with open(os.path.join(DATA_DIR, "gold_pool.json"), "w", encoding="utf-8") as _f:
                     json.dump(gold_pool, _f, ensure_ascii=False, indent=2)
-                print(f"  ▸ GOLD_POOL: 已写回磁盘 (update_time: {_old_ut[:10]} → {_new_ut[:10]}, 517只, EMA完整)")
+                print(f"  > GOLD_POOL: 已写回磁盘 (update_time: {_old_ut[:10]} → {_new_ut[:10]}, 517只, EMA完整)")
             except Exception as _e:
                 print(f"  ⚠ GOLD_POOL 写回失败: {_e}")
 
@@ -1000,11 +1000,11 @@ def main():
             mahoro_coverage[code] = stance
     has_cov = len(mahoro_coverage) > 1  # >1 因为有 _update_time 键
     if has_cov:
-        print(f"  ▸ 投行覆盖: {len(mahoro_coverage)-1} 只")
+        print(f"  > 投行覆盖: {len(mahoro_coverage)-1} 只")
 
     if not fast_mode:
         # 自动采集最新宏观数据
-        print("  ▸ 正在刷新宏观数据...")
+        print("  > 正在刷新宏观数据...")
         try:
             import importlib, fetch_macro_data as fmd
             importlib.reload(fmd)
@@ -1022,7 +1022,7 @@ def main():
         try:
             import importlib, fetch_macro_data as fmd
             importlib.reload(fmd)
-            print("  ▸ 正在采集最新宏观数据...")
+            print("  > 正在采集最新宏观数据...")
             macro_data = fmd.fetch_all()
             if macro_data:
                 save_json(os.path.join(DATA_DIR, "macro_data.json"), macro_data)
@@ -1034,7 +1034,7 @@ def main():
             print(f"    ⚠️ 宏观数据采集异常: {e}，使用缓存")
 
         # 自动刷新宏观数据（先采集最新数据再使用）
-        print("  ▸ 刷新宏观数据...")
+        print("  > 刷新宏观数据...")
         try:
             import subprocess
             _r = subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "fetch_macro_data.py")],
@@ -1048,22 +1048,22 @@ def main():
         except Exception as _e:
             print(f"    ⚠ 宏观数据跳过: {_e}")
     else:
-        print("  ▸ 快速模式：跳过宏观数据刷新")
+        print("  > 快速模式：跳过宏观数据刷新")
 
     print(f"\n  数据:")
-    print(f"  ▸ SCAN_DATA:  {len(scan_data.get('all_results',[]))} 条, time={scan_data.get('scan_time','N/A')}")
-    print(f"  ▸ WATCH_DATA: {len(watch_data.get('all_results',[]))} 条")
-    print(f"  ▸ GOLD_POOL:  {len(gold_pool.get('stocks',{}))} 只")
-    print(f"  ▸ STOCK_LIST: {len(stock_list)} 只")
-    print(f"  ▸ RECOMMEND:  {len(recommend)} 条推荐")
-    print(f"  ▸ SH_FIB:     {len(sh_fib.get('windows',[]))} 个窗口")
-    print(f"  ▸ SECTOR_FLOW:{len(sector_flow.get('top_list',[]))} 个板块")
-    print(f"  ▸ SH_SZ_HIST: {len(sh_sz_history.get('amount_history',[]))} 天历史")
-    print(f"  ▸ MARKET_ALERTS: {'有' if market_alerts.get('summary') else '无'}数据")
-    print(f"  ▸ MARGIN_DATA: {len(margin_data.get('sh',[]))} 天两融数据")
-    print(f"  ▸ ETF_SUB: {len(etf_subscription.get('sh',[]))} 天ETF数据")
-    print(f"  ▸ MACRO_DATA: 更新={macro_data.get('update_time','N/A')}")
-    print(f"  ▸ FOMC: {'有' if fomc_summary.get('meeting_date') else '无'}速览 (会议={fomc_summary.get('meeting_date','N/A')})")
+    print(f"  > SCAN_DATA:  {len(scan_data.get('all_results',[]))} 条, time={scan_data.get('scan_time','N/A')}")
+    print(f"  > WATCH_DATA: {len(watch_data.get('all_results',[]))} 条")
+    print(f"  > GOLD_POOL:  {len(gold_pool.get('stocks',{}))} 只")
+    print(f"  > STOCK_LIST: {len(stock_list)} 只")
+    print(f"  > RECOMMEND:  {len(recommend)} 条推荐")
+    print(f"  > SH_FIB:     {len(sh_fib.get('windows',[]))} 个窗口")
+    print(f"  > SECTOR_FLOW:{len(sector_flow.get('top_list',[]))} 个板块")
+    print(f"  > SH_SZ_HIST: {len(sh_sz_history.get('amount_history',[]))} 天历史")
+    print(f"  > MARKET_ALERTS: {'有' if market_alerts.get('summary') else '无'}数据")
+    print(f"  > MARGIN_DATA: {len(margin_data.get('sh',[]))} 天两融数据")
+    print(f"  > ETF_SUB: {len(etf_subscription.get('sh',[]))} 天ETF数据")
+    print(f"  > MACRO_DATA: 更新={macro_data.get('update_time','N/A')}")
+    print(f"  > FOMC: {'有' if fomc_summary.get('meeting_date') else '无'}速览 (会议={fomc_summary.get('meeting_date','N/A')})")
 
     if not fast_mode:
         # 获取三线共振股票概念
@@ -1090,7 +1090,7 @@ def main():
                 if concepts:
                     print(f"    {code} {stock['name']}: {', '.join(concepts[:3])}" + ("..." if len(concepts) > 3 else ""))
     else:
-        print("  ▸ 快速模式：跳过概念查询")
+        print("  > 快速模式：跳过概念查询")
 
     # 查找并替换数据块（13个块）
     markers = [
