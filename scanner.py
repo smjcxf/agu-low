@@ -45,6 +45,8 @@ RATE_LIMIT_WATCH = 0.01 # 金股精监限速 (极小延迟避免拥塞)
 
 # 重试次数 (避免阻塞太久)
 MAX_RETRIES = 1   # 只重试1次，之前3次太慢
+# 最高股价过滤（元），仅扫描低于此价格的股票，None 表示不过滤
+MAX_PRICE = 10.0
 
 # 金股池保留天数
 GOLD_POOL_DAYS = 45  # 保留约两个自然月的交易日（~45个交易日），支持回看上个月数据
@@ -1034,7 +1036,7 @@ def _fetch_board_top_mootdx(market_id, code_prefixes, board_label, top_n):
         quotes_df = pd.concat(all_quotes, ignore_index=True)
 
         # 过滤停牌(price=0) + 排序
-        quotes_df = quotes_df[quotes_df['price'] > 0].copy()
+        quotes_df = quotes_df[(quotes_df['price'] > 0) & (quotes_df['price'] < MAX_PRICE)].copy()
         quotes_df = quotes_df.sort_values('amount', ascending=False)
 
         stocks = []
@@ -1049,7 +1051,7 @@ def _fetch_board_top_mootdx(market_id, code_prefixes, board_label, top_n):
                 continue
 
             price = float(row.get('price', 0))
-            if price <= 0:
+            if price <= 0 or price >= MAX_PRICE:
                 continue
 
             volume_amount = float(row.get('amount', 0))  # 成交额(元)
@@ -1123,7 +1125,7 @@ def _fetch_board_top(board_fs, board_label, top_n, fid="f6"):
             if name.startswith(("N", "ST", "*ST", "退", "C")):
                 continue
             price = item.get("f2", "-")
-            if price == "-" or price <= 0:
+            if price == "-" or price <= 0 or price >= MAX_PRICE:
                 continue
             volume_amount = item.get("f6", 0)
             turnover_rate = item.get("f8", 0)
@@ -1314,7 +1316,7 @@ def _fetch_hk_volume_top_westock(top_n):
             price = float(r.get('price', 0) or 0)
         except (ValueError, TypeError):
             price = 0
-        if price <= 0:
+        if price <= 0 or price >= MAX_PRICE:
             continue
         
         amount = r['_amount']
@@ -1369,7 +1371,7 @@ def _fetch_hk_volume_top(top_n):
                     if any(x in name for x in ["优先", "信托", "ETF", "REIT", "基金", "衍"]):
                         continue
                     price = row.get('最新价', 0)
-                    if not price or float(price) <= 0:
+                    if not price or float(price) <= 0 or float(price) >= MAX_PRICE:
                         continue
                     volume_amount = row.get('成交额', 0)
                     try:
@@ -1418,7 +1420,7 @@ def _fetch_hk_volume_top(top_n):
                 if any(x in name for x in ["优先", "信托", "ETF", "REIT", "基金", "衍"]):
                     continue
                 price = item.get("f2", "-")
-                if price == "-" or price <= 0:
+                if price == "-" or price <= 0 or price >= MAX_PRICE:
                     continue
                 volume_amount = item.get("f6", 0)
                 total_mv = item.get("f20", 0)
